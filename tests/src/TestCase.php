@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FeatureToggles\Tests;
+namespace FeatureToggle\Tests;
 
-use FeatureToggles\ServiceProvider;
+use FeatureToggle\ServiceProvider;
 use Orchestra\Testbench\TestCase as SupportTestCase;
 
 class TestCase extends SupportTestCase

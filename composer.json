@@ -1,7 +1,7 @@
 {
-    "name": "ericdowell/feature-toggles",
+    "name": "ericdowell/feature-toggle",
     "description": "Simple feature toggle library.",
-    "keywords": ["laravel-package", "toggles", "feature-toggles", "toggle"],
+    "keywords": ["laravel-package", "toggles", "feature-toggles"],
     "license": "MIT",
     "authors": [
         {
@@ -20,12 +20,15 @@
     },
     "autoload": {
         "psr-4": {
-            "FeatureToggles\\": "src/"
-        }
+            "FeatureToggle\\": "src/"
+        },
+        "files": [
+            "helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "FeatureToggles\\Tests\\": "tests/src/"
+            "FeatureToggle\\Tests\\": "tests/src/"
         }
     },
     "scripts": {
@@ -37,7 +40,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "FeatureToggles\\ServiceProvider"
+                "FeatureToggle\\ServiceProvider"
             ]
         },
         "branch-alias": {

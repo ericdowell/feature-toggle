@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace FeatureApi;
+namespace FeatureToggle;
 
 use Illuminate\Support\Collection;
-use FeatureApi\Toggle\Local as LocalToggle;
-use FeatureApi\Contacts\Toggle as ToggleContract;
-use FeatureApi\Contacts\FeatureToggleApi as FeatureToggleApiContract;
+use FeatureToggle\Toggle\Local as LocalToggle;
+use FeatureToggle\Contacts\Toggle as ToggleContract;
+use FeatureToggle\Contacts\FeatureToggleApi as FeatureToggleApiContract;
 
 class FeatureToggleApi implements FeatureToggleApiContract
 {
@@ -122,7 +122,7 @@ class FeatureToggleApi implements FeatureToggleApiContract
      */
     protected function calculateLocalToggles(): array
     {
-        $localFeatures = config('features.toggles', []);
+        $localFeatures = config('feature-toggle.toggles', []);
 
         if (!is_array($localFeatures)) {
             return [];

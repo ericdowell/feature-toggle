@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FeatureToggles;
+namespace FeatureToggle;
 
-use FeatureApi\FeatureToggleApi;
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
-use FeatureApi\Contacts\FeatureToggleApi as FeatureToggleApiContract;
+use FeatureToggle\Contacts\FeatureToggleApi as FeatureToggleApiContract;
 
 class ServiceProvider extends SupportServiceProvider
 {
@@ -31,7 +30,7 @@ class ServiceProvider extends SupportServiceProvider
     {
         $this->publishes([
             $this->packageConfigFilePath() => config_path($this->packageConfigFilename()),
-        ], 'feature-toggles');
+        ], $this->packageName());
     }
 
     /**
@@ -41,7 +40,7 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function packageName()
     {
-        return 'feature-toggles';
+        return 'feature-toggle';
     }
 
     /**

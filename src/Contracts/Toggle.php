@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FeatureApi\Contacts;
+namespace FeatureToggle\Contacts;
 
 interface Toggle
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FeatureApi\Contacts;
+namespace FeatureToggle\Contacts;
 
 use Illuminate\Support\Collection;
-use FeatureApi\Contacts\Toggle as ToggleContract;
+use FeatureToggle\Contacts\Toggle as ToggleContract;
 
 interface FeatureToggleApi
 {

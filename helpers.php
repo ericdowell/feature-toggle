@@ -1,7 +1,7 @@
 <?php
 
-use FeatureApi\FeatureToggleApi;
-use FeatureApi\Contacts\FeatureToggleApi as FeatureToggleApiContract;
+use FeatureToggle\FeatureToggleApi;
+use FeatureToggle\Contacts\FeatureToggleApi as FeatureToggleApiContract;
 
 if (!function_exists('feature_toggle_api')) {
     /**

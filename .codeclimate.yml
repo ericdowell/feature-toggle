@@ -1,0 +1,19 @@
+version: "2"
+plugins:
+  phpcodesniffer:
+    enabled: true
+  fixme:
+    enabled: true
+exclude_patterns:
+  - ".circleci"
+  - ".codeclimate.yml"
+  - ".gitignore"
+  - ".styleci.yml"
+  - "composer.json"
+  - "LICENSE"
+  - "phpunit.php"
+  - "phpunit.xml"
+  - "readme.md"
+  - "src/ServiceProvider.php"
+  - "tests/**/*"
+  - "vendor/**/*"

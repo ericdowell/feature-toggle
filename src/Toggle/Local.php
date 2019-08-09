@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FeatureApi\Toggle;
+namespace FeatureToggle\Toggle;
 
 use Illuminate\Contracts\Support\Arrayable;
-use FeatureApi\Contacts\Toggle as ToggleContract;
+use FeatureToggle\Contacts\Toggle as ToggleContract;
 
 class Local implements ToggleContract, Arrayable
 {
