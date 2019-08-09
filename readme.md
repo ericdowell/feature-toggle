@@ -3,7 +3,7 @@
 ## Installation
 Install using composer by running:
 ```bash
-composer require ericdowell/feature-toggles ^1.0
+composer require ericdowell/feature-toggle ^1.0
 ```
 
 ## Road Map
