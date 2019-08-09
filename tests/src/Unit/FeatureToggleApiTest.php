@@ -13,18 +13,41 @@ class FeatureToggleApiTest extends TestCase
 {
     /**
      * @covers ::isActive
-     * @covers ::getActiveToggles
      * @covers ::refresh
      * @covers ::initialize
+     * @covers ::calculateToggles
+     * @covers ::calculateLocalToggles
      *
      * @return void
      */
     public function testActiveToggle(): void
     {
-        config()->set('feature-toggle.toggles', ['foo' => true]);
+        config()->set('feature-toggle.toggles', ['foo' => true, 'bar' => 'on']);
 
         $featureToggleApi = feature_toggle_api()->refresh();
 
         $this->assertTrue($featureToggleApi->isActive('foo'));
+        $this->assertTrue($featureToggleApi->isActive('bar'));
+        $this->assertCount(2, $featureToggleApi->getToggles());
+    }
+
+    /**
+     * @covers ::isActive
+     * @covers ::refresh
+     * @covers ::initialize
+     * @covers ::calculateToggles
+     * @covers ::calculateLocalToggles
+     *
+     * @return void
+     */
+    public function testInActiveToggle(): void
+    {
+        config()->set('feature-toggle.toggles', ['foo' => false, 'bar' => 'off']);
+
+        $featureToggleApi = feature_toggle_api()->refresh();
+
+        $this->assertFalse($featureToggleApi->isActive('foo'));
+        $this->assertFalse($featureToggleApi->isActive('bar'));
+        $this->assertCount(2, $featureToggleApi->getToggles());
     }
 }
