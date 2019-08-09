@@ -29,6 +29,50 @@ class ServiceProvider extends SupportServiceProvider
      */
     public function boot()
     {
-        //
+        $this->publishes([
+            $this->packageConfigFilePath() => config_path($this->packageConfigFilename()),
+        ], 'feature-toggles');
+    }
+
+    /**
+     * Name of the package.
+     *
+     * @return string
+     */
+    protected function packageName()
+    {
+        return 'feature-toggles';
+    }
+
+    /**
+     * Return the base path for this package.
+     *
+     * @param  string  $path
+     *
+     * @return string
+     */
+    protected function packageBasePath(string $path)
+    {
+        return dirname(__DIR__).DIRECTORY_SEPARATOR.$path;
+    }
+
+    /**
+     * Filename of config for package.
+     *
+     * @return string
+     */
+    protected function packageConfigFilename()
+    {
+        return $this->packageName().'.php';
+    }
+
+    /**
+     * File path of config for package.
+     *
+     * @return string
+     */
+    protected function packageConfigFilePath()
+    {
+        return $this->packageBasePath('config'.DIRECTORY_SEPARATOR.$this->packageConfigFilename());
     }
 }
