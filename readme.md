@@ -1,4 +1,5 @@
 # Feature Toggles
+[![CircleCI](https://circleci.com/gh/ericdowell/feature-toggle.svg?style=svg)](https://circleci.com/gh/ericdowell/feature-toggle)
 
 ## Installation
 Install using composer by running:
