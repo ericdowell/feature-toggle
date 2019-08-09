@@ -1,0 +1,53 @@
+{
+    "name": "ericdowell/feature-toggles",
+    "description": "Simple feature toggle library.",
+    "keywords": ["laravel-package", "toggles", "feature-toggles", "toggle"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eric Dowell",
+            "email": "github@ericdowell.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "illuminate/support": "^5.8"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.2",
+        "orchestra/testbench": "^3.8",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "FeatureToggles\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FeatureToggles\\Tests\\": "tests/src/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "@php vendor/orchestra/testbench-core/create-sqlite-db",
+            "phpunit --colors=always"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "FeatureToggles\\ServiceProvider"
+            ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "stable"
+}
