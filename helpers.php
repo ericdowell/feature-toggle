@@ -3,7 +3,7 @@
 use FeatureToggle\FeatureToggleApi;
 use FeatureToggle\Contacts\FeatureToggleApi as FeatureToggleApiContract;
 
-if (!function_exists('feature_toggle_api')) {
+if (! function_exists('feature_toggle_api')) {
     /**
      * @return FeatureToggleApiContract|FeatureToggleApi
      */
@@ -13,7 +13,7 @@ if (!function_exists('feature_toggle_api')) {
     }
 }
 
-if (!function_exists('feature_toggle')) {
+if (! function_exists('feature_toggle')) {
     /**
      * @param  string  $name
      *
