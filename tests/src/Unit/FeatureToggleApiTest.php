@@ -13,6 +13,24 @@ class FeatureToggleApiTest extends TestCase
 {
     /**
      * @covers ::__construct
+     * @covers ::getToggles
+     * @covers ::refresh
+     * @covers ::initialize
+     * @covers ::calculateToggles
+     * @covers ::calculateLocalToggles
+     *
+     * @return void
+     */
+    public function testNotArrayConfigToggles(): void
+    {
+        config()->set('feature-toggle.toggles', null);
+
+        $featureToggleApi = feature_toggle_api()->refresh();
+
+        $this->assertCount(0, $featureToggleApi->getToggles());
+    }
+    /**
+     * @covers ::__construct
      * @covers ::isActive
      * @covers ::getToggles
      * @covers ::getActiveToggles
