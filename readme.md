@@ -54,6 +54,7 @@ import React, { Component, Fragment } from 'react'
 import { Feature } from './featureToggleApi'
 
 // ...
+
 if (Feature.isActive('Example')) {
     // do something about it.
 }
