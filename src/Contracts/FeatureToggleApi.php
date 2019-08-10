@@ -7,6 +7,9 @@ namespace FeatureToggle\Contacts;
 use Illuminate\Support\Collection;
 use FeatureToggle\Contacts\Toggle as ToggleContract;
 
+/**
+ * @codeCoverageIgnore
+ */
 interface FeatureToggleApi
 {
     /**

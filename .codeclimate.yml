@@ -14,6 +14,8 @@ exclude_patterns:
   - "phpunit.php"
   - "phpunit.xml"
   - "readme.md"
+  - "config/feature-toggle.php"
   - "src/ServiceProvider.php"
+  - "helpers.php"
   - "tests/**/*"
   - "vendor/**/*"
