@@ -9,6 +9,18 @@
 [![Latest Unstable Version](https://poser.pugx.org/ericdowell/feature-toggle/v/unstable?format=flat-square)](https://packagist.org/packages/ericdowell/feature-toggle)
 [![Total Downloads](https://poser.pugx.org/ericdowell/feature-toggle/downloads?format=flat-square)](https://packagist.org/packages/ericdowell/feature-toggle)
 
+A simple feature toggle api.
+
+This package is written to work with Laravel. The code can still be used with non-Laravel applications.
+
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Helper Functions](#helper-functions)
+    - [Add Feature Toggles](#add-feature-toggles)
+    - [Frontend Feature Toggle Api](#frontend-feature-toggle-api)
+- [Road Map](#road-map)
+
 ## Installation
 Install using composer by running:
 ```bash
@@ -19,6 +31,39 @@ Publish the `feature-toggle.php` config file by running:
 ```bash
 php artisan vendor:publish --tag=feature-toggle
 ```
+
+## Usage
+### Helper Functions
+`feature_toggle_api`:
+```php
+if (feature_toggle_api()->isActive('Example')) {
+    // do something
+}
+```
+Or a shorter function that does the same as above called `feature_toggle`:
+```php
+if (feature_toggle('Example')) {
+    // do something
+}
+```
+
+### Add Feature Toggles
+To add new toggle(s) you will need to update the published `config/feature-toggles.php` file:
+```php
+<?php
+
+return [
+    // ...
+    'toggles' => [
+        'Example' => env('FEATURE_EXAMPLE'),
+        'Show Something' => env('FEATURE_SHOW_SOMETHING'),
+    ],
+];
+```
+The value passed from the `.env` file or set directly within config file can be:
+- A `boolean`: `true`/`false`
+- An `int` version of `boolean`: `1`/`0`
+- Finally all supported values of  `filter_var($value, FILTER_VALIDATE_BOOLEAN)` [https://www.php.net/manual/en/filter.filters.validate.php](https://www.php.net/manual/en/filter.filters.validate.php)
 
 ### Frontend Feature Toggle Api
 Place the following in your main layout blade template in the `<head>` tag.
