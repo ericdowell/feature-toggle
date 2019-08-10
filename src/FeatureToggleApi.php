@@ -12,7 +12,7 @@ use FeatureToggle\Contacts\FeatureToggleApi as FeatureToggleApiContract;
 class FeatureToggleApi implements FeatureToggleApiContract
 {
     /**
-     * @var Collection $toggles
+     * @var Collection
      */
     protected $toggles;
 
@@ -124,7 +124,7 @@ class FeatureToggleApi implements FeatureToggleApiContract
     {
         $localFeatures = config('feature-toggle.toggles', []);
 
-        if (!is_array($localFeatures)) {
+        if (! is_array($localFeatures)) {
             return [];
         }
 
