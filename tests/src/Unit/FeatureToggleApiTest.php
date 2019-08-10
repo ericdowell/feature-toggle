@@ -29,6 +29,46 @@ class FeatureToggleApiTest extends TestCase
 
         $this->assertCount(0, $featureToggleApi->getToggles());
     }
+
+    /**
+     * @covers ::__construct
+     * @covers ::getToggles
+     * @covers ::getActiveToggles
+     * @covers ::activeTogglesToJson
+     * @covers ::refresh
+     * @covers ::initialize
+     * @covers ::calculateToggles
+     * @covers ::calculateLocalToggles
+     *
+     * @return void
+     */
+    public function testActiveTogglesToJsonNotEmpty(): void
+    {
+        config()->set('feature-toggle.toggles', ['foo' => true]);
+
+        $featureToggleApi = feature_toggle_api()->refresh();
+
+        $expected = json_encode(['foo' => ['name' => 'foo', 'is_active' => true]]);
+
+        $this->assertSame($expected, $featureToggleApi->activeTogglesToJson());
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::getToggles
+     * @covers ::getActiveToggles
+     * @covers ::activeTogglesToJson
+     * @covers ::initialize
+     * @covers ::calculateToggles
+     * @covers ::calculateLocalToggles
+     *
+     * @return void
+     */
+    public function testActiveTogglesToJsonEmpty(): void
+    {
+        $this->assertSame('{}', feature_toggle_api()->activeTogglesToJson());
+    }
+
     /**
      * @covers ::__construct
      * @covers ::isActive
