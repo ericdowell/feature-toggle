@@ -12,7 +12,10 @@ use FeatureToggle\Tests\TestCase;
 class FeatureToggleApiTest extends TestCase
 {
     /**
+     * @covers ::__construct
      * @covers ::isActive
+     * @covers ::getToggles
+     * @covers ::getActiveToggles
      * @covers ::refresh
      * @covers ::initialize
      * @covers ::calculateToggles
@@ -29,10 +32,14 @@ class FeatureToggleApiTest extends TestCase
         $this->assertTrue($featureToggleApi->isActive('foo'));
         $this->assertTrue($featureToggleApi->isActive('bar'));
         $this->assertCount(2, $featureToggleApi->getToggles());
+        $this->assertCount(2, $featureToggleApi->getActiveToggles());
     }
 
     /**
+     * @covers ::__construct
      * @covers ::isActive
+     * @covers ::getToggles
+     * @covers ::getActiveToggles
      * @covers ::refresh
      * @covers ::initialize
      * @covers ::calculateToggles
@@ -49,5 +56,6 @@ class FeatureToggleApiTest extends TestCase
         $this->assertFalse($featureToggleApi->isActive('foo'));
         $this->assertFalse($featureToggleApi->isActive('bar'));
         $this->assertCount(2, $featureToggleApi->getToggles());
+        $this->assertCount(0, $featureToggleApi->getActiveToggles());
     }
 }
