@@ -15,6 +15,7 @@ This package is written to work with Laravel. The code can still be used with no
 
 ## Table of Contents
 - [Installation](#installation)
+- [Testing](#testing)
 - [Usage](#usage)
     - [Helper Functions](#helper-functions)
     - [Add Feature Toggles](#add-feature-toggles)
@@ -31,6 +32,9 @@ Publish the `feature-toggle.php` config file by running:
 ```bash
 php artisan vendor:publish --tag=feature-toggle
 ```
+
+## Testing
+Run `composer test`.
 
 ## Usage
 ### Helper Functions
