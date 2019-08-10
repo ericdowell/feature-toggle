@@ -15,6 +15,63 @@ Install using composer by running:
 composer require ericdowell/feature-toggle ^1.0
 ```
 
+Publish the `feature-toggle.php` config file by running:
+```bash
+php artisan vendor:publish --tag=feature-toggle
+```
+
+### Frontend Feature Toggle Api
+Place the following in your main layout blade template in the `<head>` tag.
+```blade
+<script>
+    window.featureToggles = Object.freeze({!! feature_toggle_api()->activeTogglesToJson() !!});
+</script>
+```
+
+Then create a new js file within `resources/js` called `featureToggleApi.js`:
+```js
+class FeatureToggleApi {
+    isActive(name) {
+        return Object.keys(window.featureToggles || {}).includes(name)
+    }
+}
+
+export const Feature = new FeatureToggleApi()
+```
+
+Expose on the `window` within `app.js`:
+```js
+import { Feature } from './featureToggleApi'
+
+// ...
+
+window.feature = Feature
+```
+
+and/or simply use `Feature` within your other js files:
+```jsx
+import React, { Component, Fragment } from 'react'
+import { Feature } from './featureToggleApi'
+
+// ...
+if (Feature.isActive('Example')) {
+    // do something about it.
+}
+
+// ...
+
+class App extends Component {
+    render() {
+        return (
+            <Fragment>
+                <Navigation />
+                {Feature.isActive('Show Something') ? <Something /> : ''}
+            </Fragment>
+        )
+    }
+}
+```
+
 ## Road Map
 ### v1.x
 - [x] Local Feature Toggles via Config
