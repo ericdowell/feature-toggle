@@ -37,6 +37,8 @@ php artisan vendor:publish --tag=feature-toggle
 Run `composer test`.
 
 ## Usage
+If a feature toggle is not defined then `isActive` will return `false`.
+
 ### Helper Functions
 `feature_toggle_api`:
 ```php
@@ -115,7 +117,7 @@ class App extends Component {
         return (
             <Fragment>
                 <Navigation />
-                {Feature.isActive('Show Something') ? <Something /> : ''}
+                {Feature.isActive('Show Something') && <Something />}
             </Fragment>
         )
     }
