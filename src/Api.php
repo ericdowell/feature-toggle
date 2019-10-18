@@ -6,18 +6,24 @@ namespace FeatureToggle;
 
 use Illuminate\Support\Collection;
 use FeatureToggle\Toggle\Local as LocalToggle;
+use FeatureToggle\Contracts\Api as ApiContract;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
-use FeatureToggle\Contracts\FeatureToggleApi as FeatureToggleApiContract;
+use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
-class FeatureToggleApi implements FeatureToggleApiContract
+class Api implements ApiContract
 {
     /**
      * @var Collection
      */
-    protected $toggles;
+    protected $localToggles;
 
     /**
-     * FeatureToggleApi constructor.
+     * @var Collection
+     */
+    protected $providers;
+
+    /**
+     * ToggleProvider constructor.
      */
     public function __construct()
     {
@@ -33,7 +39,7 @@ class FeatureToggleApi implements FeatureToggleApiContract
      */
     public function isActive(string $name): bool
     {
-        $toggle = $this->getToggles()->get($name);
+        $toggle = $this->getLocalToggles()->get($name);
 
         return $toggle instanceof ToggleContract ? $toggle->isActive() : false;
     }
@@ -43,9 +49,9 @@ class FeatureToggleApi implements FeatureToggleApiContract
      *
      * @return ToggleContract[]|Collection
      */
-    public function getToggles(): Collection
+    public function getLocalToggles(): Collection
     {
-        return $this->toggles;
+        return $this->localToggles;
     }
 
     /**
@@ -55,7 +61,7 @@ class FeatureToggleApi implements FeatureToggleApiContract
      */
     public function getActiveToggles(): Collection
     {
-        return $this->getToggles()->filter(function (ToggleContract $toggle) {
+        return $this->getLocalToggles()->filter(function (ToggleContract $toggle) {
             return $toggle->isActive();
         });
     }
@@ -82,9 +88,17 @@ class FeatureToggleApi implements FeatureToggleApiContract
      *
      * @return $this
      */
-    public function refresh(): FeatureToggleApiContract
+    public function refreshToggles(): ToggleProviderContract
     {
         return $this->initialize();
+    }
+
+    /**
+     * @return $this
+     */
+    public function refreshProviderToggles(): ApiContract
+    {
+        return $this;
     }
 
     /**
@@ -94,7 +108,7 @@ class FeatureToggleApi implements FeatureToggleApiContract
      */
     protected function initialize(): self
     {
-        $this->toggles = $this->calculateToggles();
+        $this->localToggles = $this->calculateToggles();
 
         return $this;
     }

@@ -61,6 +61,6 @@ class Local implements ToggleContract, Arrayable
      */
     public function toArray(): array
     {
-        return ['name' => $this->name, 'is_active' => $this->is_active];
+        return ['name' => $this->getName(), 'is_active' => $this->isActive()];
     }
 }

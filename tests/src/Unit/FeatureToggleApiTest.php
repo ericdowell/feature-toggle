@@ -7,14 +7,14 @@ namespace FeatureToggle\Tests\Unit;
 use FeatureToggle\Tests\TestCase;
 
 /**
- * @coversDefaultClass \FeatureToggle\FeatureToggleApi
+ * @coversDefaultClass \FeatureToggle\Api
  */
 class FeatureToggleApiTest extends TestCase
 {
     /**
      * @covers ::__construct
-     * @covers ::getToggles
-     * @covers ::refresh
+     * @covers ::getLocalToggles
+     * @covers ::refreshToggles
      * @covers ::initialize
      * @covers ::calculateToggles
      * @covers ::calculateLocalToggles
@@ -25,17 +25,17 @@ class FeatureToggleApiTest extends TestCase
     {
         config()->set('feature-toggle.toggles', null);
 
-        $featureToggleApi = feature_toggle_api()->refresh();
+        $featureToggleApi = feature_toggle_api()->refreshToggles();
 
-        $this->assertCount(0, $featureToggleApi->getToggles());
+        $this->assertCount(0, $featureToggleApi->getLocalToggles());
     }
 
     /**
      * @covers ::__construct
-     * @covers ::getToggles
+     * @covers ::getLocalToggles
      * @covers ::getActiveToggles
      * @covers ::activeTogglesToJson
-     * @covers ::refresh
+     * @covers ::refreshToggles
      * @covers ::initialize
      * @covers ::calculateToggles
      * @covers ::calculateLocalToggles
@@ -46,7 +46,7 @@ class FeatureToggleApiTest extends TestCase
     {
         config()->set('feature-toggle.toggles', ['foo' => true]);
 
-        $featureToggleApi = feature_toggle_api()->refresh();
+        $featureToggleApi = feature_toggle_api()->refreshToggles();
 
         $expected = json_encode(['foo' => ['name' => 'foo', 'is_active' => true]]);
 
@@ -55,7 +55,7 @@ class FeatureToggleApiTest extends TestCase
 
     /**
      * @covers ::__construct
-     * @covers ::getToggles
+     * @covers ::getLocalToggles
      * @covers ::getActiveToggles
      * @covers ::activeTogglesToJson
      * @covers ::initialize
@@ -72,9 +72,9 @@ class FeatureToggleApiTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::isActive
-     * @covers ::getToggles
+     * @covers ::getLocalToggles
      * @covers ::getActiveToggles
-     * @covers ::refresh
+     * @covers ::refreshToggles
      * @covers ::initialize
      * @covers ::calculateToggles
      * @covers ::calculateLocalToggles
@@ -85,20 +85,20 @@ class FeatureToggleApiTest extends TestCase
     {
         config()->set('feature-toggle.toggles', ['foo' => true, 'bar' => 'on']);
 
-        $featureToggleApi = feature_toggle_api()->refresh();
+        $featureToggleApi = feature_toggle_api()->refreshToggles();
 
         $this->assertTrue($featureToggleApi->isActive('foo'));
         $this->assertTrue($featureToggleApi->isActive('bar'));
-        $this->assertCount(2, $featureToggleApi->getToggles());
+        $this->assertCount(2, $featureToggleApi->getLocalToggles());
         $this->assertCount(2, $featureToggleApi->getActiveToggles());
     }
 
     /**
      * @covers ::__construct
      * @covers ::isActive
-     * @covers ::getToggles
+     * @covers ::getLocalToggles
      * @covers ::getActiveToggles
-     * @covers ::refresh
+     * @covers ::refreshToggles
      * @covers ::initialize
      * @covers ::calculateToggles
      * @covers ::calculateLocalToggles
@@ -109,11 +109,11 @@ class FeatureToggleApiTest extends TestCase
     {
         config()->set('feature-toggle.toggles', ['foo' => false, 'bar' => 'off']);
 
-        $featureToggleApi = feature_toggle_api()->refresh();
+        $featureToggleApi = feature_toggle_api()->refreshToggles();
 
         $this->assertFalse($featureToggleApi->isActive('foo'));
         $this->assertFalse($featureToggleApi->isActive('bar'));
-        $this->assertCount(2, $featureToggleApi->getToggles());
+        $this->assertCount(2, $featureToggleApi->getLocalToggles());
         $this->assertCount(0, $featureToggleApi->getActiveToggles());
     }
 }
