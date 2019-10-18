@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FeatureToggle\Contacts;
+namespace FeatureToggle\Contracts;
 
 /**
  * @codeCoverageIgnore

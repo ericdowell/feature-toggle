@@ -6,8 +6,8 @@ namespace FeatureToggle;
 
 use Illuminate\Support\Collection;
 use FeatureToggle\Toggle\Local as LocalToggle;
-use FeatureToggle\Contacts\Toggle as ToggleContract;
-use FeatureToggle\Contacts\FeatureToggleApi as FeatureToggleApiContract;
+use FeatureToggle\Contracts\Toggle as ToggleContract;
+use FeatureToggle\Contracts\FeatureToggleApi as FeatureToggleApiContract;
 
 class FeatureToggleApi implements FeatureToggleApiContract
 {

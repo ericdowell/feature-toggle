@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FeatureToggle\Toggle;
 
 use Illuminate\Contracts\Support\Arrayable;
-use FeatureToggle\Contacts\Toggle as ToggleContract;
+use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 class Local implements ToggleContract, Arrayable
 {

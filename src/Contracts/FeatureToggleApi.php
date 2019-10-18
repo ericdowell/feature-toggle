@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FeatureToggle\Contacts;
+namespace FeatureToggle\Contracts;
 
 use Illuminate\Support\Collection;
-use FeatureToggle\Contacts\Toggle as ToggleContract;
+use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 /**
  * @codeCoverageIgnore

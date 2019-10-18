@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FeatureToggle;
 
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
-use FeatureToggle\Contacts\FeatureToggleApi as FeatureToggleApiContract;
+use FeatureToggle\Contracts\FeatureToggleApi as FeatureToggleApiContract;
 
 class ServiceProvider extends SupportServiceProvider
 {
