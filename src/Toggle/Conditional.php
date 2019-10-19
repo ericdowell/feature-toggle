@@ -7,11 +7,6 @@ namespace FeatureToggle\Toggle;
 class Conditional extends Local
 {
     /**
-     * @var callable
-     */
-    protected $condition;
-
-    /**
      * Conditional constructor.
      *
      * @param  string  $name
@@ -19,16 +14,6 @@ class Conditional extends Local
      */
     public function __construct(string $name, callable $condition)
     {
-        parent::__construct($name, null);
-
-        $this->condition = $condition;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return call_user_func($this->condition);
+        parent::__construct($name, call_user_func($condition));
     }
 }
