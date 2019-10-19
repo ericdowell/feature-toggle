@@ -10,8 +10,13 @@ use FeatureToggle\Contracts\Toggle as ToggleContract;
 /**
  * @codeCoverageIgnore
  */
-interface FeatureToggleApi
+interface ToggleProvider
 {
+    /**
+     * @return string
+     */
+    public function getName(): string;
+
     /**
      * Check if feature toggle is active.
      *
@@ -48,5 +53,5 @@ interface FeatureToggleApi
      *
      * @return $this
      */
-    public function refresh(): self;
+    public function refreshToggles(): self;
 }

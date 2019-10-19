@@ -1,15 +1,15 @@
 <?php
 
-use FeatureToggle\FeatureToggleApi;
-use FeatureToggle\Contracts\FeatureToggleApi as FeatureToggleApiContract;
+use FeatureToggle\Api;
+use FeatureToggle\Contracts\Api as ApiContract;
 
 if (! function_exists('feature_toggle_api')) {
     /**
-     * @return FeatureToggleApiContract|FeatureToggleApi
+     * @return ApiContract|Api
      */
     function feature_toggle_api()
     {
-        return app(FeatureToggleApiContract::class);
+        return app(ApiContract::class);
     }
 }
 

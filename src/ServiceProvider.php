@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
+use FeatureToggle\Contracts\Api as ApiContract;
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
-use FeatureToggle\Contracts\FeatureToggleApi as FeatureToggleApiContract;
 
 class ServiceProvider extends SupportServiceProvider
 {
@@ -16,9 +16,13 @@ class ServiceProvider extends SupportServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(FeatureToggleApiContract::class, function () {
-            return new FeatureToggleApi();
+        $this->app->singleton(ApiContract::class, function () {
+            $providers = config('feature-toggle.providers', [LocalToggleProvider::class]);
+
+            return new Api($providers);
         });
+
+        $this->mergeConfigFrom($this->packageConfigFilePath(), $this->packageName());
     }
 
     /**

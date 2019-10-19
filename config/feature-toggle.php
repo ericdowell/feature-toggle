@@ -27,4 +27,23 @@ return [
 
     'toggles' => [],
 
+    /*
+     |--------------------------------------------------------------------------
+     | Feature Toggle Providers
+     |--------------------------------------------------------------------------
+     |
+     | Classmap of which providers to load and what order to check them
+     | for a given feature toggles status. The first provider to have
+     | a feature toggle defined will be used as the status value.
+     |
+     | Supported:
+     | - FeatureToggle\ConditionalToggleProvider::class
+     | - FeatureToggle\LocalToggleProvider::class
+     |
+     */
+
+    'providers' => [
+        FeatureToggle\ConditionalToggleProvider::class,
+        FeatureToggle\LocalToggleProvider::class,
+    ],
 ];
