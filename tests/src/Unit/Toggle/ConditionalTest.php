@@ -20,7 +20,9 @@ class ConditionalTest extends TestCase
      */
     public function testGetName(): void
     {
-        $this->assertSame('foo', (new Conditional('foo', function() { return true; }))->getName());
+        $this->assertSame('foo', (new Conditional('foo', function () {
+            return true;
+        }))->getName());
     }
 
     /**
@@ -36,7 +38,9 @@ class ConditionalTest extends TestCase
         $this->assertSame([
             'name' => 'foo',
             'is_active' => true,
-        ], (new Conditional('foo', function() { return true; }))->toArray());
+        ], (new Conditional('foo', function () {
+            return true;
+        }))->toArray());
     }
 
     /**
@@ -66,21 +70,41 @@ class ConditionalTest extends TestCase
             [
                 'assertTrue',
                 [
-                    function() { return true; },
-                    function() { return 'true'; },
-                    function() { return 1; },
-                    function() { return '1'; },
-                    function() { return 'on'; },
+                    function () {
+                        return true;
+                    },
+                    function () {
+                        return 'true';
+                    },
+                    function () {
+                        return 1;
+                    },
+                    function () {
+                        return '1';
+                    },
+                    function () {
+                        return 'on';
+                    },
                 ],
             ],
             [
                 'assertFalse',
                 [
-                    function() { return false; },
-                    function() { return 0; },
-                    function() { return '0'; },
-                    function() { return 'off'; },
-                    function() { return 'bar'; },
+                    function () {
+                        return false;
+                    },
+                    function () {
+                        return 0;
+                    },
+                    function () {
+                        return '0';
+                    },
+                    function () {
+                        return 'off';
+                    },
+                    function () {
+                        return 'bar';
+                    },
                 ],
             ],
         ];
