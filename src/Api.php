@@ -69,6 +69,52 @@ class Api implements ApiContract
 
     /**
      * @param  string  $name
+     * @param  callable  $condition
+     * @return $this
+     */
+    public function setConditional(string $name, callable $condition): ApiContract
+    {
+        $this->getConditionalProvider()->setToggle($name, $condition);
+
+        return $this;
+    }
+
+    /**
+     * Returns all feature toggles.
+     *
+     * @return ToggleContract[]|Collection
+     */
+    public function getToggles(): Collection
+    {
+        $toggles = collect();
+        foreach ($this->providers as $provider) {
+            foreach ($provider->getToggles() as $toggle) {
+                if ($toggles->has($toggle->getName())) {
+                    continue;
+                }
+                $toggles->put($toggle->getName(), $toggle);
+            }
+        }
+
+        return $toggles;
+    }
+
+    /**
+     * Refresh all feature toggle data.
+     *
+     * @return $this
+     */
+    public function refreshToggles(): ToggleProviderContract
+    {
+        foreach ($this->providers as &$provider) {
+            $provider->refreshToggles();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  string  $name
      * @return ToggleProviderContract
      * @throws RuntimeException
      */
@@ -116,51 +162,5 @@ class Api implements ApiContract
         }
 
         return $instance;
-    }
-
-    /**
-     * @param  string  $name
-     * @param  callable  $condition
-     * @return $this
-     */
-    public function setConditional(string $name, callable $condition): ApiContract
-    {
-        $this->getConditionalProvider()->setToggle($name, $condition);
-
-        return $this;
-    }
-
-    /**
-     * Returns all feature toggles.
-     *
-     * @return ToggleContract[]|Collection
-     */
-    public function getToggles(): Collection
-    {
-        $toggles = collect();
-        foreach ($this->providers as $provider) {
-            foreach ($provider->getToggles() as $toggle) {
-                if ($toggles->has($toggle->getName())) {
-                    continue;
-                }
-                $toggles->put($toggle->getName(), $toggle);
-            }
-        }
-
-        return $toggles;
-    }
-
-    /**
-     * Refresh all feature toggle data.
-     *
-     * @return $this
-     */
-    public function refreshToggles(): ToggleProviderContract
-    {
-        foreach ($this->providers as &$provider) {
-            $provider->refreshToggles();
-        }
-
-        return $this;
     }
 }
