@@ -81,9 +81,11 @@ Place the following in your main layout blade template in the `<head>` tag.
 
 Then create a new js file within `resources/js` called `featureToggleApi.js`:
 ```js
+const toggles = Object.keys(window.featureToggles || {})
+
 class FeatureToggleApi {
     isActive(name) {
-        return Object.keys(window.featureToggles || {}).includes(name)
+        return toggles.includes(name)
     }
 }
 

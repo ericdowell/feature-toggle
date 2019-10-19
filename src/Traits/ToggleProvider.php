@@ -19,7 +19,6 @@ trait ToggleProvider
      * Check if feature toggle is active.
      *
      * @param  string  $name
-     *
      * @return bool
      */
     public function isActive(string $name): bool
@@ -36,7 +35,21 @@ trait ToggleProvider
      */
     public function getToggles(): Collection
     {
-        return $this->toggles ?? collect();
+        return $this->toggles ?? $this->toggles = collect();
+    }
+
+    /**
+     * @param string $name
+     * @param  ToggleContract  $toggle
+     * @return $this
+     */
+    protected function putToggle(string $name, ToggleContract $toggle): self
+    {
+        $this->toggles = $this->toggles ?? collect();
+
+        $this->toggles->put($name, $toggle);
+
+        return $this;
     }
 
     /**

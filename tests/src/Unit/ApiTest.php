@@ -9,7 +9,7 @@ use FeatureToggle\Tests\TestCase;
 /**
  * @coversDefaultClass \FeatureToggle\Api
  */
-class FeatureToggleApiTest extends TestCase
+class ApiTest extends TestCase
 {
     /**
      * @covers ::__construct

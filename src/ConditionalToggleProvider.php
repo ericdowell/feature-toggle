@@ -22,7 +22,7 @@ class ConditionalToggleProvider implements ToggleProviderContract
     /**
      * @var callable[]
      */
-    protected static $conditions = [];
+    protected $conditions = [];
 
     /**
      * @return string
@@ -39,9 +39,9 @@ class ConditionalToggleProvider implements ToggleProviderContract
      */
     public function setToggle(string $name, callable $condition): self
     {
-        self::$conditions[$name] = $condition;
+        $this->conditions[$name] = $condition;
 
-        return $this->refreshToggles();
+        return $this->putToggle($name, new ConditionalToggle($name, $condition));
     }
 
     /**
@@ -65,7 +65,7 @@ class ConditionalToggleProvider implements ToggleProviderContract
     {
         $toggles = collect();
 
-        foreach (self::$conditions as $name => $condition) {
+        foreach ($this->conditions as $name => $condition) {
             $toggles->put($name, new ConditionalToggle($name, $condition));
         }
 

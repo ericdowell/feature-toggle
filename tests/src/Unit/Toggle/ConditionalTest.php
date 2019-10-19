@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit\Toggle;
 
-use FeatureToggle\Toggle\Local;
 use FeatureToggle\Tests\TestCase;
+use FeatureToggle\Toggle\Conditional;
 
 /**
- * @coversDefaultClass \FeatureToggle\Toggle\Local
+ * @coversDefaultClass \FeatureToggle\Toggle\Conditional
  */
-class LocalTest extends TestCase
+class ConditionalTest extends TestCase
 {
     /**
      * @covers ::__construct
@@ -20,7 +20,7 @@ class LocalTest extends TestCase
      */
     public function testGetName(): void
     {
-        $this->assertSame('foo', (new Local('foo', true))->getName());
+        $this->assertSame('foo', (new Conditional('foo', function() { return true; }))->getName());
     }
 
     /**
@@ -36,7 +36,7 @@ class LocalTest extends TestCase
         $this->assertSame([
             'name' => 'foo',
             'is_active' => true,
-        ], (new Local('foo', true))->toArray());
+        ], (new Conditional('foo', function() { return true; }))->toArray());
     }
 
     /**
@@ -53,7 +53,7 @@ class LocalTest extends TestCase
     public function testIsActiveTrueOFalse(string $assertMethod, array $values): void
     {
         foreach ($values as $isActive) {
-            $this->{$assertMethod}((new Local('foo', $isActive))->isActive());
+            $this->{$assertMethod}((new Conditional('foo', $isActive))->isActive());
         }
     }
 
@@ -66,22 +66,21 @@ class LocalTest extends TestCase
             [
                 'assertTrue',
                 [
-                    true,
-                    'true',
-                    1,
-                    '1',
-                    'on',
+                    function() { return true; },
+                    function() { return 'true'; },
+                    function() { return 1; },
+                    function() { return '1'; },
+                    function() { return 'on'; },
                 ],
             ],
             [
                 'assertFalse',
                 [
-                    false,
-                    'false',
-                    0,
-                    '0',
-                    'off',
-                    'bar',
+                    function() { return false; },
+                    function() { return 0; },
+                    function() { return '0'; },
+                    function() { return 'off'; },
+                    function() { return 'bar'; },
                 ],
             ],
         ];
