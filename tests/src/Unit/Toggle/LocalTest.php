@@ -31,35 +31,55 @@ class LocalTest extends TestCase
      */
     public function testToArray(): void
     {
-        $this->assertSame(['name' => 'foo', 'is_active' => true], (new Local('foo', true))->toArray());
+        $this->assertSame([
+            'name' => 'foo',
+            'is_active' => true,
+        ], (new Local('foo', true))->toArray());
     }
 
     /**
+     * @dataProvider isActiveDataProvider
+     *
      * @covers ::__construct
      * @covers ::isActive
      *
+     * @param  string  $assertMethod
+     * @param  array  $values
+     *
      * @return void
      */
-    public function testIsActiveTrue(): void
+    public function testIsActiveTrueOFalse(string $assertMethod, array $values): void
     {
-        $this->assertTrue((new Local('foo', true))->isActive());
-        $this->assertTrue((new Local('foo', 1))->isActive());
-        $this->assertTrue((new Local('foo', '1'))->isActive());
-        $this->assertTrue((new Local('foo', 'on'))->isActive());
+        foreach ($values as $isActive) {
+            $this->{$assertMethod}((new Local('foo', $isActive))->isActive());
+        }
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::isActive
-     *
-     * @return void
+     * @return array
      */
-    public function testIsActiveFalse(): void
+    public function isActiveDataProvider(): array
     {
-        $this->assertFalse((new Local('foo', false))->isActive());
-        $this->assertFalse((new Local('foo', 0))->isActive());
-        $this->assertFalse((new Local('foo', '0'))->isActive());
-        $this->assertFalse((new Local('foo', 'off'))->isActive());
-        $this->assertFalse((new Local('foo', 'bar'))->isActive());
+        return [
+            [
+                'assertTrue',
+                [
+                    true,
+                    1,
+                    '1',
+                    'on',
+                ],
+            ],
+            [
+                'assertFalse',
+                [
+                    false,
+                    0,
+                    '0',
+                    'off',
+                    'bar',
+                ],
+            ],
+        ];
     }
 }
