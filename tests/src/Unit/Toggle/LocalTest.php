@@ -25,6 +25,8 @@ class LocalTest extends TestCase
 
     /**
      * @covers ::__construct
+     * @covers ::getName
+     * @covers ::isActive
      * @covers ::toArray
      *
      * @return void
