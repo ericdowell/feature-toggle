@@ -7,7 +7,8 @@ namespace FeatureToggle\Contracts;
 interface Api extends ToggleProvider
 {
     /**
-     * @return $this
+     * @param  string  $name
+     * @return \FeatureToggle\Contracts\ToggleProvider
      */
-    public function refreshProviderToggles(): self;
+    public function getProvider(string $name): ToggleProvider;
 }

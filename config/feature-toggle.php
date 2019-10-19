@@ -36,5 +36,8 @@ return [
      |
      */
 
-    'providers' => [],
+    'providers' => [
+        FeatureToggle\ConditionalToggleProvider::class,
+        FeatureToggle\LocalToggleProvider::class
+    ],
 ];

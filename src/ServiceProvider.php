@@ -17,7 +17,9 @@ class ServiceProvider extends SupportServiceProvider
     public function register()
     {
         $this->app->singleton(ApiContract::class, function () {
-            return new Api();
+            $providers = config('feature-toggle.providers', [LocalToggleProvider::class]);
+
+            return new Api($providers);
         });
     }
 

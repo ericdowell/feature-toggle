@@ -13,6 +13,11 @@ use FeatureToggle\Contracts\Toggle as ToggleContract;
 interface ToggleProvider
 {
     /**
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
      * Check if feature toggle is active.
      *
      * @param  string  $name
@@ -26,7 +31,7 @@ interface ToggleProvider
      *
      * @return ToggleContract[]|Collection
      */
-    public function getLocalToggles(): Collection;
+    public function getToggles(): Collection;
 
     /**
      * Returns all active feature toggles.

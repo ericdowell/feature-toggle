@@ -9,19 +9,19 @@ class Conditional extends Local
     /**
      * @var callable
      */
-    protected $callback;
+    protected $condition;
 
     /**
      * Conditional constructor.
      *
      * @param  string  $name
-     * @param  callable  $callback
+     * @param  callable  $condition
      */
-    public function __construct(string $name, callable $callback)
+    public function __construct(string $name, callable $condition)
     {
         parent::__construct($name, null);
 
-        $this->callback = $callback;
+        $this->condition = $condition;
     }
 
     /**
@@ -29,6 +29,6 @@ class Conditional extends Local
      */
     public function isActive(): bool
     {
-        return call_user_func($this->callback);
+        return call_user_func($this->condition);
     }
 }
