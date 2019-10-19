@@ -142,7 +142,7 @@ class Api implements ApiContract
         }
         $message = 'Could not load toggle provider, ';
         if (is_object($provider)) {
-            $message .= 'object: '. get_class($provider).'.';
+            $message .= 'object: '.get_class($provider).'.';
         } elseif (is_string($provider) && class_exists($provider)) {
             $message .= 'class: '.$provider.'.';
         } else {
