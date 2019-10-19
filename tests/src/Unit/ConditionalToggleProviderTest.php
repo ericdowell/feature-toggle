@@ -30,10 +30,11 @@ class ConditionalToggleProviderTest extends TestCase
      */
     protected function setToggles(array $toggles = null): ToggleProviderContract
     {
-        if (! is_array($toggles)) {
-            return $this->getToggleProvider();
-        }
         $provider = $this->getToggleProvider();
+        if (! is_array($toggles)) {
+            return $provider;
+        }
+
         foreach ($toggles as $name => $toggle) {
             $provider->setToggle($name, $toggle);
         }
@@ -45,7 +46,7 @@ class ConditionalToggleProviderTest extends TestCase
      * @param  mixed  $value
      * @return mixed
      */
-    public function toggleActive($value)
+    public function toggleActive($value): callable
     {
         return function () use ($value) {
             return $value;

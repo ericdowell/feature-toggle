@@ -4,64 +4,40 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit;
 
+use FeatureToggle\Api;
 use FeatureToggle\Tests\TestCase;
+use FeatureToggle\Tests\Traits\TestToggleProvider;
+use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
 /**
  * @coversDefaultClass \FeatureToggle\Api
  */
 class ApiTest extends TestCase
 {
+    use TestToggleProvider;
+
     /**
-     * @covers ::__construct
-     * @covers ::getToggles
-     * @covers ::refreshToggles
-     *
-     * @return void
+     * @return Api
      */
-    public function testNotArrayConfigToggles(): void
+    protected function getToggleProvider(): Api
     {
-        config()->set('feature-toggle.toggles', null);
+        return feature_toggle_api()->refreshToggles();
+    }
 
-        $featureToggleApi = feature_toggle_api()->refreshToggles();
+    /**
+     * @param  array|null  $toggles
+     * @return Api|ToggleProviderContract
+     */
+    protected function setToggles(array $toggles = null): ToggleProviderContract
+    {
+        config()->set('feature-toggle.toggles', $toggles);
 
-        $this->assertCount(0, $featureToggleApi->getToggles());
+        return $this->getToggleProvider();
     }
 
     /**
      * @covers ::__construct
-     * @covers ::getToggles
-     * @covers ::getActiveToggles
-     * @covers ::activeTogglesToJson
-     * @covers ::refreshToggles
-     *
-     * @return void
-     */
-    public function testActiveTogglesToJsonNotEmpty(): void
-    {
-        config()->set('feature-toggle.toggles', ['foo' => true]);
-
-        $featureToggleApi = feature_toggle_api()->refreshToggles();
-
-        $expected = json_encode(['foo' => ['name' => 'foo', 'is_active' => true]]);
-
-        $this->assertSame($expected, $featureToggleApi->activeTogglesToJson());
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::getToggles
-     * @covers ::getActiveToggles
-     * @covers ::activeTogglesToJson
-     *
-     * @return void
-     */
-    public function testActiveTogglesToJsonEmpty(): void
-    {
-        $this->assertSame('{}', feature_toggle_api()->activeTogglesToJson());
-    }
-
-    /**
-     * @covers ::__construct
+     * @covers ::setConditional
      * @covers ::isActive
      * @covers ::getToggles
      * @covers ::getActiveToggles
@@ -69,36 +45,21 @@ class ApiTest extends TestCase
      *
      * @return void
      */
-    public function testActiveToggle(): void
+    public function testLocalAndConditionalToggleProviders(): void
     {
-        config()->set('feature-toggle.toggles', ['foo' => true, 'bar' => 'on']);
+        $featureToggleApi = $this->setToggles([
+            'foo' => false,
+            'bar' => 'on',
+        ]);
 
-        $featureToggleApi = feature_toggle_api()->refreshToggles();
-
-        $this->assertTrue($featureToggleApi->isActive('foo'));
-        $this->assertTrue($featureToggleApi->isActive('bar'));
-        $this->assertCount(2, $featureToggleApi->getToggles());
-        $this->assertCount(2, $featureToggleApi->getActiveToggles());
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::isActive
-     * @covers ::getToggles
-     * @covers ::getActiveToggles
-     * @covers ::refreshToggles
-     *
-     * @return void
-     */
-    public function testInActiveToggle(): void
-    {
-        config()->set('feature-toggle.toggles', ['foo' => false, 'bar' => 'off']);
-
-        $featureToggleApi = feature_toggle_api()->refreshToggles();
+        feature_toggle_api()->setConditional('baz', function () {
+            return true;
+        });
 
         $this->assertFalse($featureToggleApi->isActive('foo'));
-        $this->assertFalse($featureToggleApi->isActive('bar'));
-        $this->assertCount(2, $featureToggleApi->getToggles());
-        $this->assertCount(0, $featureToggleApi->getActiveToggles());
+        $this->assertTrue($featureToggleApi->isActive('bar'));
+        $this->assertTrue($featureToggleApi->isActive('baz'));
+        $this->assertCount(3, $featureToggleApi->getToggles());
+        $this->assertCount(2, $featureToggleApi->getActiveToggles());
     }
 }

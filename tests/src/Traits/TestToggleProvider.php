@@ -41,7 +41,6 @@ trait TestToggleProvider
     }
 
     /**
-     * @covers ::__construct
      * @covers ::getToggles
      * @covers ::refreshToggles
      *
@@ -53,7 +52,6 @@ trait TestToggleProvider
     }
 
     /**
-     * @covers ::__construct
      * @covers ::getToggles
      * @covers ::getActiveToggles
      * @covers ::activeTogglesToJson
@@ -74,7 +72,6 @@ trait TestToggleProvider
     }
 
     /**
-     * @covers ::__construct
      * @covers ::getToggles
      * @covers ::getActiveToggles
      * @covers ::activeTogglesToJson
@@ -87,7 +84,6 @@ trait TestToggleProvider
     }
 
     /**
-     * @covers ::__construct
      * @covers ::isActive
      * @covers ::getToggles
      * @covers ::getActiveToggles
@@ -109,7 +105,6 @@ trait TestToggleProvider
     }
 
     /**
-     * @covers ::__construct
      * @covers ::isActive
      * @covers ::getToggles
      * @covers ::getActiveToggles
