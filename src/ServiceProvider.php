@@ -21,6 +21,8 @@ class ServiceProvider extends SupportServiceProvider
 
             return new Api($providers);
         });
+
+        $this->mergeConfigFrom($this->packageConfigFilePath(), $this->packageName());
     }
 
     /**
