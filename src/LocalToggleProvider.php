@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
+use Illuminate\Support\Collection;
+use FeatureToggle\Traits\ToggleProvider;
+use FeatureToggle\Toggle\Local as LocalToggle;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
-use FeatureToggle\Toggle\Local as LocalToggle;
-use FeatureToggle\Traits\ToggleProvider;
-use Illuminate\Support\Collection;
 
 class LocalToggleProvider implements ToggleProviderContract
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
-use Illuminate\Support\Str;
 use RuntimeException;
 use OutOfBoundsException;
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use FeatureToggle\Traits\ToggleProvider;
 use FeatureToggle\Contracts\Api as ApiContract;
@@ -38,7 +38,7 @@ class Api implements ApiContract
 
         foreach ($providers as $provider) {
             $this->loadProvider($provider);
-        };
+        }
 
         $this->refreshToggles();
     }

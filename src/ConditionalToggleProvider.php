@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
-use FeatureToggle\Contracts\Toggle as ToggleContract;
-use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
-use FeatureToggle\Toggle\Conditional as ConditionalToggle;
-use FeatureToggle\Traits\ToggleProvider;
 use Illuminate\Support\Collection;
+use FeatureToggle\Traits\ToggleProvider;
+use FeatureToggle\Contracts\Toggle as ToggleContract;
+use FeatureToggle\Toggle\Conditional as ConditionalToggle;
+use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
 class ConditionalToggleProvider implements ToggleProviderContract
 {
