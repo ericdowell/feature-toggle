@@ -56,32 +56,15 @@ class Api implements ApiContract
      */
     public function getLocalProvider(): LocalToggleProvider
     {
-        if (! $this->hasProvider(LocalToggleProvider::NAME)) {
-            $this->loadProvider(LocalToggleProvider::class);
-        }
-
         return $this->getProvider(LocalToggleProvider::NAME);
     }
 
     /**
      * @return ToggleProviderContract|ConditionalToggleProvider
      */
-    public function getConditionalProvider(): ConditionalToggleProvider
+    public function &getConditionalProvider(): ConditionalToggleProvider
     {
-        if (! $this->hasProvider(ConditionalToggleProvider::NAME)) {
-            $this->loadProvider(ConditionalToggleProvider::class);
-        }
-
         return $this->getProvider(ConditionalToggleProvider::NAME);
-    }
-
-    /**
-     * @param  string  $name
-     * @return bool
-     */
-    public function hasProvider(string $name): bool
-    {
-        return isset($this->providers[$name]) && $this->providers[$name] instanceof ToggleProviderContract;
     }
 
     /**
@@ -89,9 +72,9 @@ class Api implements ApiContract
      * @return ToggleProviderContract
      * @throws RuntimeException
      */
-    public function getProvider(string $name): ToggleProviderContract
+    protected function &getProvider(string $name): ToggleProviderContract
     {
-        if (! $this->hasProvider($name)) {
+        if (! $this->providers[$name]) {
             throw new RuntimeException("Toggle provider '{$name}' is not loaded.");
         }
 
@@ -103,7 +86,7 @@ class Api implements ApiContract
      * @return $this
      * @throws OutOfBoundsException
      */
-    public function loadProvider($provider): self
+    protected function loadProvider($provider): self
     {
         $instance = $this->getProviderInstance($provider);
         if ($instance instanceof ToggleProviderContract) {
@@ -111,9 +94,14 @@ class Api implements ApiContract
 
             return $this;
         }
-        throw new OutOfBoundsException('Could not load toggle provider.');
+        // @todo: Add better messaging if $provider is a class, but doesn't implement ToggleProviderContract.
+        throw new OutOfBoundsException('Could not load toggle provider: '.print_r($provider, true));
     }
 
+    /**
+     * @param  string|ToggleProviderContract  $provider
+     * @return ToggleProviderContract|null
+     */
     protected function getProviderInstance($provider): ?ToggleProviderContract
     {
         if ($provider instanceof ToggleProviderContract) {
@@ -130,9 +118,16 @@ class Api implements ApiContract
         return $instance;
     }
 
-    public function setConditional(string $name, callable $condition)
+    /**
+     * @param  string  $name
+     * @param  callable  $condition
+     * @return $this
+     */
+    public function setConditional(string $name, callable $condition): ApiContract
     {
-        $this->getProvider('conditional');
+        $this->getConditionalProvider()->setToggle($name, $condition);
+
+        return $this;
     }
 
     /**
@@ -162,7 +157,7 @@ class Api implements ApiContract
      */
     public function refreshToggles(): ToggleProviderContract
     {
-        foreach ($this->providers as $provider) {
+        foreach ($this->providers as &$provider) {
             $provider->refreshToggles();
         }
 

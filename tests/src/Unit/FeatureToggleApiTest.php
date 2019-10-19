@@ -15,7 +15,6 @@ class FeatureToggleApiTest extends TestCase
      * @covers ::__construct
      * @covers ::getToggles
      * @covers ::refreshToggles
-     * @covers ::calculateToggles
      *
      * @return void
      */
@@ -34,7 +33,6 @@ class FeatureToggleApiTest extends TestCase
      * @covers ::getActiveToggles
      * @covers ::activeTogglesToJson
      * @covers ::refreshToggles
-     * @covers ::calculateToggles
      *
      * @return void
      */
@@ -54,7 +52,6 @@ class FeatureToggleApiTest extends TestCase
      * @covers ::getToggles
      * @covers ::getActiveToggles
      * @covers ::activeTogglesToJson
-     * @covers ::calculateToggles
      *
      * @return void
      */
@@ -69,7 +66,6 @@ class FeatureToggleApiTest extends TestCase
      * @covers ::getToggles
      * @covers ::getActiveToggles
      * @covers ::refreshToggles
-     * @covers ::calculateToggles
      *
      * @return void
      */
@@ -91,7 +87,6 @@ class FeatureToggleApiTest extends TestCase
      * @covers ::getToggles
      * @covers ::getActiveToggles
      * @covers ::refreshToggles
-     * @covers ::calculateToggles
      *
      * @return void
      */

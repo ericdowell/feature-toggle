@@ -8,7 +8,8 @@ interface Api extends ToggleProvider
 {
     /**
      * @param  string  $name
-     * @return \FeatureToggle\Contracts\ToggleProvider
+     * @param  callable  $condition
+     * @return $this
      */
-    public function getProvider(string $name): ToggleProvider;
+    public function setConditional(string $name, callable $condition): self;
 }
