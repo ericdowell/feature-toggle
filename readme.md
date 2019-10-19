@@ -53,7 +53,25 @@ if (feature_toggle('Example')) {
 }
 ```
 
-### Add Feature Toggles
+### Toggle Providers
+Currently there're are only two feature toggle providers:
+- Local
+- Conditional
+
+You can access these directly via:
+```php
+$localProvider = feature_toggle_api()->getLocalProvider();
+
+$localProvider->isActive('Example'); // false
+
+// Returns by reference.
+$conditionalProvider = feature_toggle_api()->getConditionalProvider();
+$conditionalProvider->setToggle('Example', function() { return true; });
+
+$conditionalProvider->isActive('Example'); // true
+```
+
+### Add Local Feature Toggles
 To add new toggle(s) you will need to update the published `config/feature-toggles.php` file:
 ```php
 <?php
@@ -70,6 +88,17 @@ The value passed from the `.env` file or set directly within config file can be:
 - A `boolean`: `true`/`false`
 - An `int` version of `boolean`: `1`/`0`
 - Finally all supported values of  `filter_var($value, FILTER_VALIDATE_BOOLEAN)` [https://www.php.net/manual/en/filter.filters.validate.php](https://www.php.net/manual/en/filter.filters.validate.php)
+
+#### Conditional Feature Toggles
+To add new conditional toggle(s) you will need to call `feature_toggle_api()->setConditional` method:
+```php
+feature_toggle_api()->setConditional('Example' function () {
+    return true;
+});
+```
+
+The function passed to `setConditional` is executed right away to prevent expensive operations from be recalculated
+so it would be best to define these in `AppServiceProvider@boot` or it's own `ServiceProvider` `boot` method.
 
 ### Frontend Feature Toggle Api
 Place the following in your main layout blade template in the `<head>` tag.
@@ -128,9 +157,9 @@ class App extends Component {
 
 ## Road Map
 ### v1.x
-- [x] Local Feature Toggles via Config
-- [ ] Feature Toggle Facade (Similar to Gate, defined on the fly)
-- [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies)
-- [ ] Database Feature Toggles
-- [ ] Conditionally Enable/Disable Feature Toggles e.g. Authorization
-- [ ] Query String Feature Toggles
+- [x] Local Feature Toggles via Config.
+- [x] Conditionally Enable/Disable Feature Toggles e.g. Authorization.
+- [ ] Database Feature Toggles.
+- [ ] Query String Feature Toggles.
+- [ ] Integrate toggles into: Blade, Middleware, Task Scheduling, and Validation Rule.
+- [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).
