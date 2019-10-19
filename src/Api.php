@@ -140,8 +140,15 @@ class Api implements ApiContract
 
             return $this;
         }
-        // @todo: Add better messaging if $provider is a class, but doesn't implement ToggleProviderContract.
-        throw new OutOfBoundsException('Could not load toggle provider: '.print_r($provider, true));
+        $message = 'Could not load toggle provider, ';
+        if (is_object($provider)) {
+            $message .= 'object: '. get_class($provider).'.';
+        } elseif (is_string($provider) && class_exists($provider)) {
+            $message .= 'class: '.$provider.'.';
+        } else {
+            $message .= 'unknown type: '.print_r($provider, true);
+        }
+        throw new OutOfBoundsException($message);
     }
 
     /**
