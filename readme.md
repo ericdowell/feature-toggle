@@ -101,6 +101,7 @@ The value passed from the `.env` file or set directly within config file can be:
 - An `int` version of `boolean`: `1`/`0`
 - Finally all supported values of  `filter_var($value, FILTER_VALIDATE_BOOLEAN)` [https://www.php.net/manual/en/filter.filters.validate.php](https://www.php.net/manual/en/filter.filters.validate.php)
 
+### Other Feature Toggles Types
 #### Conditional Feature Toggles
 To add new conditional toggle(s) you will need to call `feature_toggle_api()->setConditional` method:
 ```php
