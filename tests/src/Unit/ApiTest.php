@@ -54,12 +54,14 @@ class ApiTest extends TestCase
 
         feature_toggle_api()->setConditional('baz', function () {
             return true;
+        })->setConditional('bar', function () {
+            return false;
         });
 
         $this->assertFalse($featureToggleApi->isActive('foo'));
-        $this->assertTrue($featureToggleApi->isActive('bar'));
+        $this->assertFalse($featureToggleApi->isActive('bar'));
         $this->assertTrue($featureToggleApi->isActive('baz'));
         $this->assertCount(3, $featureToggleApi->getToggles());
-        $this->assertCount(2, $featureToggleApi->getActiveToggles());
+        $this->assertCount(1, $featureToggleApi->getActiveToggles());
     }
 }
