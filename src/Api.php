@@ -8,6 +8,7 @@ use RuntimeException;
 use OutOfBoundsException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use FeatureToggle\Traits\Options;
 use Illuminate\Support\Collection;
 use FeatureToggle\Traits\ToggleProvider;
 use FeatureToggle\Contracts\Api as ApiContract;
@@ -16,7 +17,7 @@ use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
 class Api implements ApiContract
 {
-    use ToggleProvider;
+    use Options, ToggleProvider;
 
     /**
      * @var ToggleProviderContract[]
@@ -32,11 +33,21 @@ class Api implements ApiContract
      * Api constructor.
      *
      * @param  array  $providers
+     * @param  array  $options
      */
-    public function __construct(array $providers)
+    public function __construct(array $providers, array $options = [])
     {
         $this->name = 'primary-'.Str::random(5);
+        $this->options = $options;
+        $this->setProviders($providers);
+    }
 
+    /**
+     * @param  array  $providers
+     * @return $this
+     */
+    public function setProviders(array $providers): self
+    {
         foreach ($providers as $provider) {
             $driver = Arr::get($provider, 'driver');
             $parameters = Arr::except($provider, 'driver');
@@ -44,6 +55,32 @@ class Api implements ApiContract
         }
 
         $this->refreshToggles();
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMigrationsEnabled(): bool
+    {
+        return filter_var($this->getOption('useMigrations', false), FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
+     * @return $this
+     */
+    public function useMigrations(): self
+    {
+        return $this->setOption('useMigrations', true);
+    }
+
+    /**
+     * @return $this
+     */
+    public function noMigrations(): self
+    {
+        return $this->setOption('useMigrations', false);
     }
 
     /**
@@ -55,19 +92,27 @@ class Api implements ApiContract
     }
 
     /**
-     * @return ToggleProviderContract|LocalToggleProvider
-     */
-    public function getLocalProvider(): LocalToggleProvider
-    {
-        return $this->getProvider(LocalToggleProvider::NAME);
-    }
-
-    /**
      * @return ToggleProviderContract|ConditionalToggleProvider
      */
     public function &getConditionalProvider(): ConditionalToggleProvider
     {
         return $this->getProvider(ConditionalToggleProvider::NAME);
+    }
+
+    /**
+     * @return ToggleProviderContract|EloquentToggleProvider
+     */
+    public function getEloquentProvider(): EloquentToggleProvider
+    {
+        return $this->getProvider(EloquentToggleProvider::NAME);
+    }
+
+    /**
+     * @return ToggleProviderContract|LocalToggleProvider
+     */
+    public function getLocalProvider(): LocalToggleProvider
+    {
+        return $this->getProvider(LocalToggleProvider::NAME);
     }
 
     /**
@@ -89,17 +134,12 @@ class Api implements ApiContract
      */
     public function getToggles(): Collection
     {
-        $toggles = collect();
+        $toggles = [];
         foreach ($this->providers as $provider) {
-            foreach ($provider->getToggles() as $toggle) {
-                if ($toggles->has($toggle->getName())) {
-                    continue;
-                }
-                $toggles->put($toggle->getName(), $toggle);
-            }
+            $toggles = $toggles + $provider->getToggles()->all();
         }
 
-        return $toggles;
+        return collect($toggles);
     }
 
     /**

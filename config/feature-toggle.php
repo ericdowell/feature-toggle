@@ -48,4 +48,21 @@ return [
             'driver' => 'local',
         ],
     ],
+
+    /*
+     |--------------------------------------------------------------------------
+     | Feature Toggle Options
+     |--------------------------------------------------------------------------
+     |
+     | Options to enable/disable behavior.
+     |
+     | [
+     |      'useMigrations' => true/false,
+     | ]
+     |
+     */
+
+    'options' => [
+        'useMigrations' => false,
+    ],
 ];

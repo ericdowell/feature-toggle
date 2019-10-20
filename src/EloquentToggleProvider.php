@@ -7,6 +7,7 @@ namespace FeatureToggle;
 use Throwable;
 use Illuminate\Support\Collection;
 use FeatureToggle\Toggle\FeatureToggle;
+use Illuminate\Database\Eloquent\Model;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 class EloquentToggleProvider extends LocalToggleProvider
@@ -21,9 +22,22 @@ class EloquentToggleProvider extends LocalToggleProvider
      */
     protected $model;
 
+    /**
+     * EloquentToggleProvider constructor.
+     *
+     * @param  null|string  $model
+     */
     public function __construct($model = null)
     {
         $this->model = $model ?? FeatureToggle::class;
+    }
+
+    /**
+     * @return FeatureToggle|Model
+     */
+    public function newModel(): Model
+    {
+        return app($this->model);
     }
 
     /**
@@ -34,7 +48,7 @@ class EloquentToggleProvider extends LocalToggleProvider
     protected function calculateToggles(): Collection
     {
         try {
-            return app($this->model)->all()->keyBy('name');
+            return $this->newModel()->all()->keyBy('name');
         } catch (Throwable $exception) {
             return collect();
         }

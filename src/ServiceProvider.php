@@ -38,8 +38,11 @@ class ServiceProvider extends SupportServiceProvider
                     'driver' => 'local',
                 ],
             ]);
+            $options = config('feature-toggle.options', [
+                'useMigrations' => false,
+            ]);
 
-            return new Api($providers);
+            return new Api($providers, $options);
         });
         $this->app->alias(ApiContract::class, 'feature-toggle.api');
     }
@@ -51,9 +54,7 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerConditionalToggleProviders(): void
     {
-        $this->app->singleton('feature-toggle.conditional', function () {
-            return new ConditionalToggleProvider();
-        });
+        $this->app->singleton('feature-toggle.conditional', ConditionalToggleProvider::class);
     }
 
     /**
@@ -63,9 +64,7 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerEloquentToggleProviders(): void
     {
-        $this->app->singleton('feature-toggle.eloquent', function () {
-            return new EloquentToggleProvider();
-        });
+        $this->app->singleton('feature-toggle.eloquent', EloquentToggleProvider::class);
     }
 
     /**
@@ -75,9 +74,7 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerLocalToggleProviders(): void
     {
-        $this->app->singleton('feature-toggle.local', function () {
-            return new LocalToggleProvider();
-        });
+        $this->app->singleton('feature-toggle.local', LocalToggleProvider::class);
     }
 
     /**
@@ -90,6 +87,10 @@ class ServiceProvider extends SupportServiceProvider
         $this->publishes([
             $this->packageConfigFilePath() => config_path($this->packageConfigFilename()),
         ], $this->packageName());
+
+        if ($this->app['feature-toggle.api']->isMigrationsEnabled()) {
+            $this->loadMigrationsFrom(dirname(__DIR__).'/migrations');
+        }
     }
 
     /**

@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit;
 
+use FeatureToggle\Traits\Toggle;
 use FeatureToggle\Tests\TestCase;
+use Illuminate\Support\Collection;
 use FeatureToggle\Toggle\FeatureToggle;
+use Illuminate\Database\Eloquent\Model;
 use FeatureToggle\EloquentToggleProvider;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
 /**
@@ -17,6 +21,28 @@ use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 class EloquentToggleProviderTest extends TestCase
 {
     use RefreshDatabase, TestToggleProvider;
+
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $migrations = realpath(dirname(dirname(dirname(__DIR__))).'/migrations');
+
+        $this->loadMigrationsFrom($migrations);
+    }
+
+    /**
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function testPassingModelParameterToAppMake()
+    {
+        $provider = app()->make('feature-toggle.eloquent', ['model' => TestFeatureToggle::class]);
+
+        $this->assertInstanceOf(TestFeatureToggle::class, $provider->newModel());
+    }
 
     /**
      * @return \FeatureToggle\EloquentToggleProvider
@@ -42,5 +68,37 @@ class EloquentToggleProviderTest extends TestCase
         }
 
         return $this->getToggleProvider();
+    }
+}
+
+class TestFeatureToggle extends Model implements ToggleContract
+{
+    use Toggle;
+
+    /**
+     * The model's attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'name' => 'testing',
+        'is_active' => 1,
+    ];
+
+    /**
+     * @param  array  $columns
+     * @return $this
+     */
+    public static function all($columns = ['*'])
+    {
+        return new static();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function keyBy(): Collection
+    {
+        return collect([new static()]);
     }
 }
