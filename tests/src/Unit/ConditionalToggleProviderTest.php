@@ -46,7 +46,7 @@ class ConditionalToggleProviderTest extends TestCase
      * @param  mixed  $value
      * @return mixed
      */
-    public function toggleActive($value): callable
+    public function getIsActiveAttribute($value): callable
     {
         return function () use ($value) {
             return $value;

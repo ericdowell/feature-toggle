@@ -10,6 +10,18 @@ use Orchestra\Testbench\TestCase as SupportTestCase;
 class TestCase extends SupportTestCase
 {
     /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $migrations = realpath(dirname(dirname(__DIR__)).'/migrations');
+
+        $this->loadMigrationsFrom($migrations);
+    }
+
+    /**
      * Get package providers.
      *
      * @param  \Illuminate\Foundation\Application  $app

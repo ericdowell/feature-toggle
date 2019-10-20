@@ -6,107 +6,35 @@ namespace FeatureToggle\Tests\Unit\Toggle;
 
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Toggle\Conditional;
+use FeatureToggle\Toggle\FeatureToggle;
+use FeatureToggle\Tests\Traits\TestToggle;
+use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 /**
  * @coversDefaultClass \FeatureToggle\Toggle\Conditional
  */
 class ConditionalTest extends TestCase
 {
+    use TestToggle;
+
     /**
-     * @covers ::__construct
-     * @covers ::getName
-     *
-     * @return void
+     * @param  string  $name
+     * @param  mixed  $is_active
+     * @return ToggleContract|FeatureToggle
      */
-    public function testGetName(): void
+    protected function getInstance(string $name, $is_active): ToggleContract
     {
-        $this->assertSame('foo', (new Conditional('foo', function () {
-            return true;
-        }))->getName());
+        return new Conditional($name, $is_active);
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::getName
-     * @covers ::isActive
-     * @covers ::toArray
-     *
-     * @return void
+     * @param  mixed  $value
+     * @return mixed
      */
-    public function testToArray(): void
+    public function getIsActiveAttribute($value): callable
     {
-        $this->assertSame([
-            'name' => 'foo',
-            'is_active' => true,
-        ], (new Conditional('foo', function () {
-            return true;
-        }))->toArray());
-    }
-
-    /**
-     * @dataProvider isActiveDataProvider
-     *
-     * @covers ::__construct
-     * @covers ::isActive
-     *
-     * @param  string  $assertMethod
-     * @param  array  $values
-     *
-     * @return void
-     */
-    public function testIsActiveTrueOFalse(string $assertMethod, array $values): void
-    {
-        foreach ($values as $isActive) {
-            $this->{$assertMethod}((new Conditional('foo', $isActive))->isActive());
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function isActiveDataProvider(): array
-    {
-        return [
-            [
-                'assertTrue',
-                [
-                    function () {
-                        return true;
-                    },
-                    function () {
-                        return 'true';
-                    },
-                    function () {
-                        return 1;
-                    },
-                    function () {
-                        return '1';
-                    },
-                    function () {
-                        return 'on';
-                    },
-                ],
-            ],
-            [
-                'assertFalse',
-                [
-                    function () {
-                        return false;
-                    },
-                    function () {
-                        return 0;
-                    },
-                    function () {
-                        return '0';
-                    },
-                    function () {
-                        return 'off';
-                    },
-                    function () {
-                        return 'bar';
-                    },
-                ],
-            ],
-        ];
+        return function () use ($value) {
+            return $value;
+        };
     }
 }

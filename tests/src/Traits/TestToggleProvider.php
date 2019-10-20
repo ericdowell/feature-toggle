@@ -26,18 +26,9 @@ trait TestToggleProvider
      * @param mixed $value
      * @return mixed
      */
-    public function toggleActive($value)
+    public function getIsActiveAttribute($value)
     {
         return $value;
-    }
-
-    /**
-     * @param mixed $value
-     * @return mixed
-     */
-    public function toggleInactive($value)
-    {
-        return $this->toggleActive($value);
     }
 
     /**
@@ -68,7 +59,7 @@ trait TestToggleProvider
             ],
         ]);
 
-        $this->assertSame($expected, $this->setToggles(['foo' => $this->toggleActive(true)])->activeTogglesToJson());
+        $this->assertSame($expected, $this->setToggles(['foo' => $this->getIsActiveAttribute(true)])->activeTogglesToJson());
     }
 
     /**
@@ -94,8 +85,8 @@ trait TestToggleProvider
     public function testActiveToggle(): void
     {
         $toggleProvider = $this->setToggles([
-            'foo' => $this->toggleActive(true),
-            'bar' => $this->toggleActive('on'),
+            'foo' => $this->getIsActiveAttribute(true),
+            'bar' => $this->getIsActiveAttribute('on'),
         ]);
 
         $this->assertTrue($toggleProvider->isActive('foo'));
@@ -115,8 +106,8 @@ trait TestToggleProvider
     public function testInActiveToggle(): void
     {
         $toggleProvider = $this->setToggles([
-            'foo' => $this->toggleInactive(false),
-            'bar' => $this->toggleInactive('off'),
+            'foo' => $this->getIsActiveAttribute(false),
+            'bar' => $this->getIsActiveAttribute('off'),
         ]);
 
         $this->assertFalse($toggleProvider->isActive('foo'));
