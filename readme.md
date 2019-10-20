@@ -239,5 +239,5 @@ class App extends Component {
 - [x] Conditionally Enable/Disable Feature Toggles e.g. Authorization.
 - [x] Eloquent Feature Toggles.
 - [ ] Query String Feature Toggles.
-- [ ] Integrate toggles into: Blade, Middleware, Task Scheduling, and Validation Rule.
+- [ ] Integrate toggles into: Blade, Middleware, Task Scheduling, and Validation.
 - [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).
