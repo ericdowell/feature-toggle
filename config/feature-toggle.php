@@ -36,7 +36,7 @@ return [
      | for a given feature toggles status. The first provider to have
      | a feature toggle defined will be used as the status value.
      |
-     | Supported Drivers: "local", "conditional"
+     | Supported Drivers: "local", "conditional", "eloquent"
      |
      */
 
