@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
-use Illuminate\Support\Arr;
 use RuntimeException;
 use OutOfBoundsException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use FeatureToggle\Traits\ToggleProvider;
