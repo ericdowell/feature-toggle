@@ -136,6 +136,14 @@ class Api implements ApiContract
      */
     public function getToggles(): Collection
     {
+        return $this->calculateToggles();
+    }
+
+    /**
+     * @return ToggleContract[]|Collection
+     */
+    protected function calculateToggles(): Collection
+    {
         $toggles = [];
         foreach ($this->providers as $provider) {
             $toggles = $toggles + $provider->getToggles()->all();

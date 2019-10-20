@@ -10,7 +10,7 @@ use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Toggle\Conditional as ConditionalToggle;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
-class ConditionalToggleProvider implements ToggleProviderContract
+class ConditionalToggleProvider extends LocalToggleProvider
 {
     use ToggleProvider;
 
@@ -42,18 +42,6 @@ class ConditionalToggleProvider implements ToggleProviderContract
         $this->conditions[$name] = $condition;
 
         return $this->putToggle($name, new ConditionalToggle($name, $condition));
-    }
-
-    /**
-     * Initialize all feature toggles.
-     *
-     * @return $this
-     */
-    public function refreshToggles(): ToggleProviderContract
-    {
-        $this->toggles = $this->calculateToggles();
-
-        return $this;
     }
 
     /**

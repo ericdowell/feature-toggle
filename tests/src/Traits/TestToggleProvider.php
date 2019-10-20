@@ -47,6 +47,7 @@ trait TestToggleProvider
      * @covers ::getActiveToggles
      * @covers ::activeTogglesToJson
      * @covers ::refreshToggles
+     * @covers ::calculateToggles
      *
      * @return void
      */
@@ -79,6 +80,7 @@ trait TestToggleProvider
      * @covers ::getToggles
      * @covers ::getActiveToggles
      * @covers ::refreshToggles
+     * @covers ::calculateToggles
      *
      * @return void
      */
@@ -100,6 +102,7 @@ trait TestToggleProvider
      * @covers ::getToggles
      * @covers ::getActiveToggles
      * @covers ::refreshToggles
+     * @covers ::calculateToggles
      *
      * @return void
      */
