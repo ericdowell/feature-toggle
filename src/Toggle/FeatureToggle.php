@@ -50,7 +50,7 @@ class FeatureToggle extends Model implements ToggleContract
     ];
 
     /**
-     * Set the feature_toggle's is_active value.
+     * Set the feature toggle's is_active value.
      *
      * @param  string  $value
      * @return void
