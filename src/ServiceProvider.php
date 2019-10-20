@@ -14,11 +14,13 @@ class ServiceProvider extends SupportServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->registerPrimaryToggleProvider();
 
-        $this->registerToggleProviders();
+        $this->registerConditionalToggleProviders();
+        $this->registerEloquentToggleProviders();
+        $this->registerLocalToggleProviders();
 
         $this->mergeConfigFrom($this->packageConfigFilePath(), $this->packageName());
     }
@@ -28,7 +30,7 @@ class ServiceProvider extends SupportServiceProvider
      *
      * @return void
      */
-    protected function registerPrimaryToggleProvider()
+    protected function registerPrimaryToggleProvider(): void
     {
         $this->app->singleton(ApiContract::class, function () {
             $providers = config('feature-toggle.providers', [
@@ -36,26 +38,43 @@ class ServiceProvider extends SupportServiceProvider
                     'driver' => 'local',
                 ],
             ]);
+            $options = config('feature-toggle.options', [
+                'useMigrations' => false,
+            ]);
 
-            return new Api($providers);
+            return new Api($providers, $options);
         });
         $this->app->alias(ApiContract::class, 'feature-toggle.api');
     }
 
     /**
-     * Register the primary feature toggle provider implementation.
+     * Register the "conditional" feature toggle provider..
      *
      * @return void
      */
-    protected function registerToggleProviders()
+    protected function registerConditionalToggleProviders(): void
     {
-        $this->app->singleton('feature-toggle.local', function () {
-            return new LocalToggleProvider();
-        });
+        $this->app->singleton('feature-toggle.conditional', ConditionalToggleProvider::class);
+    }
 
-        $this->app->singleton('feature-toggle.conditional', function () {
-            return new ConditionalToggleProvider();
-        });
+    /**
+     * Register the "eloquent" feature toggle provider.
+     *
+     * @return void
+     */
+    protected function registerEloquentToggleProviders(): void
+    {
+        $this->app->singleton('feature-toggle.eloquent', EloquentToggleProvider::class);
+    }
+
+    /**
+     * Register the "local" feature toggle provider.
+     *
+     * @return void
+     */
+    protected function registerLocalToggleProviders(): void
+    {
+        $this->app->singleton('feature-toggle.local', LocalToggleProvider::class);
     }
 
     /**
@@ -63,11 +82,40 @@ class ServiceProvider extends SupportServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        $this->publishes([
-            $this->packageConfigFilePath() => config_path($this->packageConfigFilename()),
-        ], $this->packageName());
+        $this->registerMigrations();
+        $this->registerPublishing();
+    }
+
+    /**
+     * Register the package migrations.
+     *
+     * @return void
+     */
+    protected function registerMigrations(): void
+    {
+        if ($this->app->runningInConsole() && $this->app['feature-toggle.api']->isMigrationsEnabled()) {
+            $this->loadMigrationsFrom(dirname(__DIR__).'/database/migrations');
+        }
+    }
+
+    /**
+     * Register the package's publishable resources.
+     *
+     * @return void
+     */
+    protected function registerPublishing(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                $this->packageConfigFilePath() => $this->app->configPath($this->packageConfigFilename()),
+            ], $this->packageName().'-config');
+
+            $this->publishes([
+                dirname(__DIR__).'/database/migrations' => $this->app->databasePath('migrations'),
+            ], $this->packageName().'-migrations');
+        }
     }
 
     /**
@@ -75,7 +123,7 @@ class ServiceProvider extends SupportServiceProvider
      *
      * @return string
      */
-    protected function packageName()
+    protected function packageName(): string
     {
         return 'feature-toggle';
     }
@@ -87,7 +135,7 @@ class ServiceProvider extends SupportServiceProvider
      *
      * @return string
      */
-    protected function packageBasePath(string $path)
+    protected function packageBasePath(string $path): string
     {
         return dirname(__DIR__).DIRECTORY_SEPARATOR.$path;
     }
@@ -97,7 +145,7 @@ class ServiceProvider extends SupportServiceProvider
      *
      * @return string
      */
-    protected function packageConfigFilename()
+    protected function packageConfigFilename(): string
     {
         return $this->packageName().'.php';
     }
@@ -107,7 +155,7 @@ class ServiceProvider extends SupportServiceProvider
      *
      * @return string
      */
-    protected function packageConfigFilePath()
+    protected function packageConfigFilePath(): string
     {
         return $this->packageBasePath('config'.DIRECTORY_SEPARATOR.$this->packageConfigFilename());
     }

@@ -36,7 +36,7 @@ return [
      | for a given feature toggles status. The first provider to have
      | a feature toggle defined will be used as the status value.
      |
-     | Supported Drivers: "local", "conditional"
+     | Supported Drivers: "local", "conditional", "eloquent"
      |
      */
 
@@ -47,5 +47,22 @@ return [
         [
             'driver' => 'local',
         ],
+    ],
+
+    /*
+     |--------------------------------------------------------------------------
+     | Feature Toggle Options
+     |--------------------------------------------------------------------------
+     |
+     | Options to enable/disable behavior.
+     |
+     | [
+     |      'useMigrations' => true/false,
+     | ]
+     |
+     */
+
+    'options' => [
+        'useMigrations' => false,
     ],
 ];

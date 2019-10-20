@@ -18,4 +18,9 @@ interface Toggle
      * @return bool
      */
     public function isActive(): bool;
+
+    /**
+     * @return array
+     */
+    public function toArray();
 }

@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit\Toggle;
 
-use FeatureToggle\Toggle\Local;
 use FeatureToggle\Tests\TestCase;
+use FeatureToggle\Toggle\FeatureToggle;
 use FeatureToggle\Tests\Traits\TestToggle;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 /**
- * @coversDefaultClass \FeatureToggle\Toggle\Local
+ * @coversDefaultClass \FeatureToggle\Toggle\FeatureToggle
  */
-class LocalTest extends TestCase
+class FeatureToggleTest extends TestCase
 {
     use TestToggle;
 
     /**
      * @param  string  $name
      * @param  mixed  $is_active
-     * @return ToggleContract|Local
+     * @return ToggleContract|FeatureToggle
      */
     protected function getInstance(string $name, $is_active): ToggleContract
     {
-        return new Local($name, $is_active);
+        return new FeatureToggle(compact('name', 'is_active'));
     }
 }
