@@ -9,9 +9,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/ericdowell/feature-toggle/v/unstable?format=flat-square)](https://packagist.org/packages/ericdowell/feature-toggle)
 [![Total Downloads](https://poser.pugx.org/ericdowell/feature-toggle/downloads?format=flat-square)](https://packagist.org/packages/ericdowell/feature-toggle)
 
-A simple feature toggle api.
-
-This package is written to work with Laravel. The code can still be used with non-Laravel applications.
+A simple feature toggle api for Laravel applications.
 
 ## Table of Contents
 - [Installation](#installation)
