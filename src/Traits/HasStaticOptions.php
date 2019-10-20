@@ -6,12 +6,12 @@ namespace FeatureToggle\Traits;
 
 use Illuminate\Support\Arr;
 
-trait Options
+trait HasStaticOptions
 {
     /**
      * @var array
      */
-    protected $options = [];
+    protected static $options = [];
 
     /**
      * @param  string  $name
@@ -20,18 +20,16 @@ trait Options
      */
     protected function getOption(string $name, $default = null)
     {
-        return Arr::get($this->options, $name, $default);
+        return Arr::get(static::$options, $name, $default);
     }
 
     /**
      * @param  string  $name
      * @param  mixed  $value
-     * @return $this
+     * @return void
      */
-    protected function setOption(string $name, $value): self
+    protected static function setOption(string $name, $value): void
     {
-        $this->options[$name] = $value;
-
-        return $this;
+        static::$options[$name] = $value;
     }
 }

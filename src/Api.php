@@ -8,26 +8,26 @@ use RuntimeException;
 use OutOfBoundsException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use FeatureToggle\Traits\Options;
 use Illuminate\Support\Collection;
 use FeatureToggle\Traits\ToggleProvider;
+use FeatureToggle\Traits\HasStaticOptions;
 use FeatureToggle\Contracts\Api as ApiContract;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
 class Api implements ApiContract
 {
-    use Options, ToggleProvider;
-
-    /**
-     * @var ToggleProviderContract[]
-     */
-    protected $providers;
+    use HasStaticOptions, ToggleProvider;
 
     /**
      * @var string
      */
     protected $name;
+
+    /**
+     * @var ToggleProviderContract[]
+     */
+    protected $providers;
 
     /**
      * Api constructor.
@@ -38,7 +38,9 @@ class Api implements ApiContract
     public function __construct(array $providers, array $options = [])
     {
         $this->name = 'primary-'.Str::random(5);
-        $this->options = $options;
+
+        static::$options = static::$options + $options;
+
         $this->setProviders($providers);
     }
 
@@ -68,19 +70,19 @@ class Api implements ApiContract
     }
 
     /**
-     * @return $this
+     * @return void
      */
-    public function useMigrations(): self
+    public static function useMigrations(): void
     {
-        return $this->setOption('useMigrations', true);
+        static::setOption('useMigrations', true);
     }
 
     /**
-     * @return $this
+     * @return void
      */
-    public function noMigrations(): self
+    public static function ignoreMigrations(): void
     {
-        return $this->setOption('useMigrations', false);
+        static::setOption('useMigrations', false);
     }
 
     /**

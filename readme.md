@@ -30,7 +30,7 @@ composer require ericdowell/feature-toggle ^1.0
 
 Publish the `feature-toggle.php` config file by running:
 ```bash
-php artisan vendor:publish --tag=feature-toggle
+php artisan vendor:publish --tag="feature-toggle-config"
 ```
 
 ## Testing
@@ -55,8 +55,9 @@ if (feature_toggle('Example')) {
 
 ### Toggle Providers
 Currently there're are only two feature toggle providers:
-- Local
-- Conditional
+- `local`
+- `conditional`
+- `eloquent`
 
 You can access these directly via:
 ```php
@@ -69,6 +70,19 @@ $conditionalProvider = feature_toggle_api()->getConditionalProvider();
 $conditionalProvider->setToggle('Example', function() { return true; });
 
 $conditionalProvider->isActive('Example'); // true
+```
+
+If you would like to set the `providers` in code you may call the following in the `boot` method of your
+`AppServiceProvider`:
+```php
+feature_toggle_api()->setProviders([
+    [
+        'driver' => 'conditional',
+    ],
+    [
+        'driver' => 'eloquent',
+    ],
+]);
 ```
 
 ### Add Local Feature Toggles
@@ -97,8 +111,58 @@ feature_toggle_api()->setConditional('Example' function () {
 });
 ```
 
-The function passed to `setConditional` is executed right away to prevent expensive operations from be recalculated
-so it would be best to define these in `AppServiceProvider@boot` or it's own `ServiceProvider` `boot` method.
+The function passed to `setConditional` is executed right away to prevent expensive operations from be recalculated.
+Because of this design it is best to define these in `AppServiceProvider@boot` or it's own `ServiceProvider` `boot` method.
+
+#### Eloquent Feature Toggles
+To use the `eloquent` driver you will need to update the `feature-toggle` config, place the following within the `providers`
+key:
+```php
+'providers' => [
+    [
+        'driver' => 'eloquent',
+    ],
+],
+```
+**NOTE:** Be sure to place this value in the order you would like it to be prioritized by the feature toggle api.
+
+##### Database Migration
+By default the migration for `feature_toggles` is not loaded, to load this you can update the `options` key
+within `feature-toggle` config setting the `useMigrations` value to `true`:
+```php
+'options' => [
+    'useMigrations' => true,
+],
+```
+
+If you would like to set the `useMigrations` in code you may call the following in the `register` method of your
+`AppServiceProvider`:
+```php
+use FeatureToggle\Api;
+
+Api::useMigrations();
+```
+
+You may also publish the `migrations` to your application by running the following:
+```php
+php artisan vendor:publish --tag="feature-toggles-migrations"
+```
+
+Once you've used one of the methods above to setup the `feature_toggles` migrations run the following to update your database:
+```php
+php artisan migrate
+```
+
+##### Eloquent Model
+If you would like to use a different eloquent model you may do so by adding `model` to the config file:
+```php
+'providers' => [
+    [
+        'driver' => 'eloquent',
+        'model' => App\CustomFeatureToggle::class
+    ],
+],
+```
 
 ### Frontend Feature Toggle Api
 Place the following in your main layout blade template in the `<head>` tag.
@@ -159,7 +223,7 @@ class App extends Component {
 ### v1.x
 - [x] Local Feature Toggles via Config.
 - [x] Conditionally Enable/Disable Feature Toggles e.g. Authorization.
-- [ ] Database Feature Toggles.
+- [x] Eloquent Feature Toggles.
 - [ ] Query String Feature Toggles.
 - [ ] Integrate toggles into: Blade, Middleware, Task Scheduling, and Validation Rule.
 - [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit;
 
+use FeatureToggle\Api;
 use FeatureToggle\Traits\Toggle;
 use FeatureToggle\Tests\TestCase;
 use Illuminate\Support\Collection;
@@ -27,11 +28,21 @@ class EloquentToggleProviderTest extends TestCase
      */
     protected function setUp(): void
     {
+        Api::useMigrations();
+
         parent::setUp();
+    }
 
-        $migrations = realpath(dirname(dirname(dirname(__DIR__))).'/migrations');
+    /**
+     * Clean up the testing environment before the next test.
+     *
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
 
-        $this->loadMigrationsFrom($migrations);
+        Api::ignoreMigrations();
     }
 
     /**

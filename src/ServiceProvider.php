@@ -84,12 +84,37 @@ class ServiceProvider extends SupportServiceProvider
      */
     public function boot(): void
     {
-        $this->publishes([
-            $this->packageConfigFilePath() => config_path($this->packageConfigFilename()),
-        ], $this->packageName());
+        $this->registerMigrations();
+        $this->registerPublishing();
+    }
 
-        if ($this->app['feature-toggle.api']->isMigrationsEnabled()) {
-            $this->loadMigrationsFrom(dirname(__DIR__).'/migrations');
+    /**
+     * Register the package migrations.
+     *
+     * @return void
+     */
+    protected function registerMigrations(): void
+    {
+        if ($this->app->runningInConsole() && $this->app['feature-toggle.api']->isMigrationsEnabled()) {
+            $this->loadMigrationsFrom(dirname(__DIR__).'/database/migrations');
+        }
+    }
+
+    /**
+     * Register the package's publishable resources.
+     *
+     * @return void
+     */
+    protected function registerPublishing(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                $this->packageConfigFilePath() => $this->app->configPath($this->packageConfigFilename()),
+            ], $this->packageName().'-config');
+
+            $this->publishes([
+                dirname(__DIR__).'/database/migrations' => $this->app->databasePath('migrations'),
+            ], $this->packageName().'-migrations');
         }
     }
 
