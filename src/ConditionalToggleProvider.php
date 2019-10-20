@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace FeatureToggle;
 
 use Illuminate\Support\Collection;
-use FeatureToggle\Traits\ToggleProvider;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Toggle\Conditional as ConditionalToggle;
-use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
 class ConditionalToggleProvider extends LocalToggleProvider
 {
-    use ToggleProvider;
-
     /**
      * @var string
      */
