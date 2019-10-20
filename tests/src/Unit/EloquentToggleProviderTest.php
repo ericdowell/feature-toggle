@@ -7,8 +7,8 @@ namespace FeatureToggle\Tests\Unit;
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Toggle\FeatureToggle;
 use FeatureToggle\EloquentToggleProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
 class EloquentToggleProviderTest extends TestCase

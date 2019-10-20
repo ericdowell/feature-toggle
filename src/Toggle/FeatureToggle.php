@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 /**
- * FeatureToggle\FeatureToggle
+ * FeatureToggle\FeatureToggle.
  *
  * @property int $id
  * @property string $name
