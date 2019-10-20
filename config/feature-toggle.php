@@ -36,14 +36,16 @@ return [
      | for a given feature toggles status. The first provider to have
      | a feature toggle defined will be used as the status value.
      |
-     | Supported:
-     | - FeatureToggle\ConditionalToggleProvider::class
-     | - FeatureToggle\LocalToggleProvider::class
+     | Supported Drivers: "local", "conditional"
      |
      */
 
     'providers' => [
-        FeatureToggle\ConditionalToggleProvider::class,
-        FeatureToggle\LocalToggleProvider::class,
+        [
+            'driver' => 'conditional',
+        ],
+        [
+            'driver' => 'local',
+        ],
     ],
 ];

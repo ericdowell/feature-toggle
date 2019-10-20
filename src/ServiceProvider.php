@@ -16,13 +16,46 @@ class ServiceProvider extends SupportServiceProvider
      */
     public function register()
     {
+        $this->registerPrimaryToggleProvider();
+
+        $this->registerToggleProviders();
+
+        $this->mergeConfigFrom($this->packageConfigFilePath(), $this->packageName());
+    }
+
+    /**
+     * Register the primary feature toggle provider implementation.
+     *
+     * @return void
+     */
+    protected function registerPrimaryToggleProvider()
+    {
         $this->app->singleton(ApiContract::class, function () {
-            $providers = config('feature-toggle.providers', [LocalToggleProvider::class]);
+            $providers = config('feature-toggle.providers', [
+                [
+                    'driver' => 'local',
+                ],
+            ]);
 
             return new Api($providers);
         });
+        $this->app->alias(ApiContract::class, 'feature-toggle.api');
+    }
 
-        $this->mergeConfigFrom($this->packageConfigFilePath(), $this->packageName());
+    /**
+     * Register the primary feature toggle provider implementation.
+     *
+     * @return void
+     */
+    protected function registerToggleProviders()
+    {
+        $this->app->singleton('feature-toggle.local', function () {
+            return new LocalToggleProvider();
+        });
+
+        $this->app->singleton('feature-toggle.conditional', function () {
+            return new ConditionalToggleProvider();
+        });
     }
 
     /**

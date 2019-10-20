@@ -6,6 +6,7 @@ namespace FeatureToggle;
 
 use RuntimeException;
 use OutOfBoundsException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use FeatureToggle\Traits\ToggleProvider;
@@ -37,7 +38,9 @@ class Api implements ApiContract
         $this->name = 'primary-'.Str::random(5);
 
         foreach ($providers as $provider) {
-            $this->loadProvider($provider);
+            $driver = Arr::get($provider, 'driver');
+            $parameters = Arr::except($provider, 'driver');
+            $this->loadProvider($driver, $parameters);
         }
 
         $this->refreshToggles();
@@ -128,46 +131,19 @@ class Api implements ApiContract
     }
 
     /**
-     * @param  string|ToggleProviderContract  $provider
+     * @param  string  $driver
+     * @param  array  $parameters
      * @return $this
      * @throws OutOfBoundsException
      */
-    protected function loadProvider($provider): self
+    protected function loadProvider(string $driver, array $parameters): self
     {
-        $instance = $this->getProviderInstance($provider);
-        if ($instance instanceof ToggleProviderContract) {
-            $this->providers[$instance->getName()] = $instance;
+        $provider = app("feature-toggle.{$driver}", $parameters);
+        if ($provider instanceof ToggleProviderContract) {
+            $this->providers[$provider->getName()] = $provider;
 
             return $this;
         }
-        $message = 'Could not load toggle provider, ';
-        if (is_object($provider)) {
-            $message .= 'object: '.get_class($provider).'.';
-        } elseif (is_string($provider) && class_exists($provider)) {
-            $message .= 'class: '.$provider.'.';
-        } else {
-            $message .= 'unknown type: '.print_r($provider, true);
-        }
-        throw new OutOfBoundsException($message);
-    }
-
-    /**
-     * @param  string|ToggleProviderContract  $provider
-     * @return ToggleProviderContract|null
-     */
-    protected function getProviderInstance($provider): ?ToggleProviderContract
-    {
-        if ($provider instanceof ToggleProviderContract) {
-            return $provider;
-        }
-        if (! is_string($provider) || ! class_exists($provider)) {
-            return null;
-        }
-        $instance = new $provider();
-        if ($instance instanceof ToggleProviderContract) {
-            return $instance;
-        }
-
-        return $instance;
+        throw new OutOfBoundsException("Could not load toggle provider: '{$driver}'");
     }
 }
