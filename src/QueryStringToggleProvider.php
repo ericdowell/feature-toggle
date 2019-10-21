@@ -38,7 +38,7 @@ class QueryStringToggleProvider extends LocalToggleProvider
      */
     protected function calculateToggles(): Collection
     {
-        $toggles = $this->calculateTogglesFromRequest(true) + $this->calculateTogglesFromRequest(false);
+        $toggles = $this->calculateTogglesFromRequest('feature') + $this->calculateTogglesFromRequest('featureOff');
 
         return collect($toggles);
     }
@@ -46,13 +46,14 @@ class QueryStringToggleProvider extends LocalToggleProvider
     /**
      * Get toggles 'feature' or 'featureOff' query string.
      *
-     * @param  bool  $isActive
+     * @param  string  $key
      * @return array
      */
-    protected function calculateTogglesFromRequest(bool $isActive): array
+    protected function calculateTogglesFromRequest(string $key): array
     {
         $toggles = [];
-        $features = $this->request->get($isActive ? 'feature' : 'featureOff');
+        $features = $this->request->get($key);
+        $isActive = $key === 'feature' ? true : false;
         if (is_array($features)) {
             foreach ($features as $name) {
                 $toggles[$name] = new QueryString($name, $isActive);
