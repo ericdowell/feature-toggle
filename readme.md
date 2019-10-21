@@ -23,7 +23,7 @@ A simple feature toggle api for Laravel applications.
 ## Installation
 Install using composer by running:
 ```bash
-composer require ericdowell/feature-toggle ^1.0
+composer require ericdowell/feature-toggle ^1.3
 ```
 
 Publish the `feature-toggle.php` config file by running:
@@ -52,7 +52,7 @@ if (feature_toggle('Example')) {
 ```
 
 ### Toggle Providers
-Currently there're are only two feature toggle providers:
+Currently there're are only four feature toggle providers:
 - `conditional`
 - `eloquent`
 - `local` (config)
@@ -110,9 +110,9 @@ feature_toggle_api()->setConditional('Example' function () {
     return true;
 });
 ```
-**NOTE:** The function passed to `setConditional` is executed right away to prevent expensive operations from be recalculated
+**NOTE:** The function passed to `setConditional` is executed right away to prevent expensive operations from being recalculated
 when adding additional conditional toggles. Because of this design it is best to define these in `AppServiceProvider@boot`
-or it's own `ServiceProvider` `boot` method.
+or in a `FeatureToggleServiceProvider@boot` that you create.
 
 #### Eloquent Feature Toggles
 To use the `eloquent` driver you will need to update the `feature-toggle` config/`setProviders` method call,
@@ -193,7 +193,7 @@ When making a request to your application you may now use the following query st
 - `feature`
 - `featureOff`
 
-e.g. http://localhost/?feature=Example&featureOff[]=Example%20Off&featureOff[]=Example%20Query%20String
+e.g. `http://localhost/?feature=Example&featureOff[]=Example%20Off&featureOff[]=Example%20Query%20String`
 
 The following example will result in `Example` as active and `Example Off`/`Example Query String` as inactive. **NOTE:**
 This is only true if the `querystring` provider if placed above other toggle providers that haven't already defined
