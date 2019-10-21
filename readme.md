@@ -110,9 +110,9 @@ feature_toggle_api()->setConditional('Example' function () {
     return true;
 });
 ```
-**NOTE:** The function passed to `setConditional` is executed right away to prevent expensive operations from be recalculated
+**NOTE:** The function passed to `setConditional` is executed right away to prevent expensive operations from being recalculated
 when adding additional conditional toggles. Because of this design it is best to define these in `AppServiceProvider@boot`
-or it's own `ServiceProvider` `boot` method.
+or in a `FeatureToggleServiceProvider@boot` that you create.
 
 #### Eloquent Feature Toggles
 To use the `eloquent` driver you will need to update the `feature-toggle` config/`setProviders` method call,
