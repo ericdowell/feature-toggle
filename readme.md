@@ -53,9 +53,10 @@ if (feature_toggle('Example')) {
 
 ### Toggle Providers
 Currently there're are only two feature toggle providers:
-- `local`
 - `conditional`
 - `eloquent`
+- `local` (config)
+- `querystring`
 
 You can access these directly via:
 ```php
@@ -177,6 +178,9 @@ If you would like to use a different eloquent model you may do so by adding `mod
 ],
 ```
 
+#### QueryString Toggle Provider
+
+
 ### Frontend Feature Toggle Api
 Place the following in your main layout blade template in the `<head>` tag.
 ```blade
@@ -237,6 +241,6 @@ class App extends Component {
 - [x] Local Feature Toggles via Config.
 - [x] Conditionally Enable/Disable Feature Toggles e.g. Authorization.
 - [x] Eloquent Feature Toggles.
-- [ ] Query String Feature Toggles.
+- [x] Query String Feature Toggles.
 - [ ] Integrate toggles into: Blade, Middleware, Task Scheduling, and Validation.
 - [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).

@@ -118,6 +118,14 @@ class Api implements ApiContract
     }
 
     /**
+     * @return ToggleProviderContract|QueryStringToggleProvider
+     */
+    public function getQueryStringProvider(): QueryStringToggleProvider
+    {
+        return $this->getProvider(QueryStringToggleProvider::NAME);
+    }
+
+    /**
      * @param  string  $name
      * @param  callable  $condition
      * @return $this
@@ -171,7 +179,7 @@ class Api implements ApiContract
      * @return ToggleProviderContract
      * @throws RuntimeException
      */
-    protected function &getProvider(string $name): ToggleProviderContract
+    public function &getProvider(string $name): ToggleProviderContract
     {
         if (! $this->providers[$name]) {
             throw new RuntimeException("Toggle provider '{$name}' is not loaded.");
