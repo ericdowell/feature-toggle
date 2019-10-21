@@ -21,6 +21,7 @@ class ServiceProvider extends SupportServiceProvider
         $this->registerConditionalToggleProviders();
         $this->registerEloquentToggleProviders();
         $this->registerLocalToggleProviders();
+        $this->registerQueryStringToggleProviders();
 
         $this->mergeConfigFrom($this->packageConfigFilePath(), $this->packageName());
     }
@@ -75,6 +76,16 @@ class ServiceProvider extends SupportServiceProvider
     protected function registerLocalToggleProviders(): void
     {
         $this->app->singleton('feature-toggle.local', LocalToggleProvider::class);
+    }
+
+    /**
+     * Register the "querystring" feature toggle provider.
+     *
+     * @return void
+     */
+    protected function registerQueryStringToggleProviders(): void
+    {
+        $this->app->singleton('feature-toggle.querystring', QueryStringToggleProvider::class);
     }
 
     /**

@@ -91,10 +91,10 @@ trait TestToggleProvider
             'bar' => $this->getIsActiveAttribute('on'),
         ]);
 
-        $this->assertTrue($toggleProvider->isActive('foo'));
-        $this->assertTrue($toggleProvider->isActive('bar'));
-        $this->assertCount(2, $toggleProvider->getToggles());
-        $this->assertCount(2, $toggleProvider->getActiveToggles());
+        $this->assertTrue($toggleProvider->isActive('foo'), '"foo" toggle check, should BE true.');
+        $this->assertTrue($toggleProvider->isActive('bar'), '"bar" toggle check, should BE true.');
+        $this->assertCount(2, $toggleProvider->getToggles(), 'Checking "getToggles" count.');
+        $this->assertCount(2, $toggleProvider->getActiveToggles(), 'Checking "getActiveToggles" count.');
     }
 
     /**
@@ -113,9 +113,9 @@ trait TestToggleProvider
             'bar' => $this->getIsActiveAttribute('off'),
         ]);
 
-        $this->assertFalse($toggleProvider->isActive('foo'));
-        $this->assertFalse($toggleProvider->isActive('bar'));
-        $this->assertCount(2, $toggleProvider->getToggles());
-        $this->assertCount(0, $toggleProvider->getActiveToggles());
+        $this->assertFalse($toggleProvider->isActive('foo'), '"foo" toggle check, should BE false.');
+        $this->assertFalse($toggleProvider->isActive('bar'), '"bar" toggle check, should BE false.');
+        $this->assertCount(2, $toggleProvider->getToggles(), 'Checking "getToggles" count.');
+        $this->assertCount(0, $toggleProvider->getActiveToggles(), 'Checking "getActiveToggles" count.');
     }
 }

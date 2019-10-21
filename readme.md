@@ -53,9 +53,10 @@ if (feature_toggle('Example')) {
 
 ### Toggle Providers
 Currently there're are only two feature toggle providers:
-- `local`
 - `conditional`
 - `eloquent`
+- `local` (config)
+- `querystring`
 
 You can access these directly via:
 ```php
@@ -177,6 +178,27 @@ If you would like to use a different eloquent model you may do so by adding `mod
 ],
 ```
 
+#### QueryString Toggle Provider
+To use the `querystring` driver you will need to update the `feature-toggle` config/`setProviders` method call,
+place the following within the `providers` key:
+```php
+'providers' => [
+    [
+        'driver' => 'querystring',
+    ],
+],
+```
+
+When making a request to your application you may now use the following query strings to make feature toggles active/inactive:
+- `feature`
+- `featureOff`
+
+e.g. http://localhost/?feature=Example&featureOff[]=Example%20Off&featureOff[]=Example%20Query%20String
+
+The following example will result in `Example` as active and `Example Off`/`Example Query String` as inactive. **NOTE:**
+This is only true if the `querystring` provider if placed above other toggle providers that haven't already defined
+these feature toggles.
+
 ### Frontend Feature Toggle Api
 Place the following in your main layout blade template in the `<head>` tag.
 ```blade
@@ -237,6 +259,6 @@ class App extends Component {
 - [x] Local Feature Toggles via Config.
 - [x] Conditionally Enable/Disable Feature Toggles e.g. Authorization.
 - [x] Eloquent Feature Toggles.
-- [ ] Query String Feature Toggles.
+- [x] Query String Feature Toggles.
 - [ ] Integrate toggles into: Blade, Middleware, Task Scheduling, and Validation.
 - [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).
