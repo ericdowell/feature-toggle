@@ -11,7 +11,7 @@ use FeatureToggle\Tests\Traits\TestToggleProvider;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
 /**
- * @coversDefaultClass \FeatureToggle\LocalToggleProvider
+ * @coversDefaultClass \FeatureToggle\QueryStringToggleProvider
  */
 class QueryStringToggleProviderTest extends TestCase
 {

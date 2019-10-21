@@ -8,9 +8,9 @@ use FeatureToggle\Toggle\QueryString;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 /**
- * @coversDefaultClass \FeatureToggle\Toggle\Local
+ * @coversDefaultClass \FeatureToggle\Toggle\QueryString
  */
-class QueryTest extends LocalTest
+class QueryStringTest extends LocalTest
 {
     /**
      * @param  string  $name
