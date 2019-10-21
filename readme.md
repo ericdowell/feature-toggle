@@ -52,7 +52,7 @@ if (feature_toggle('Example')) {
 ```
 
 ### Toggle Providers
-Currently there're are only two feature toggle providers:
+Currently there're are only four feature toggle providers:
 - `conditional`
 - `eloquent`
 - `local` (config)
