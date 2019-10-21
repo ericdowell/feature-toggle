@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit;
 
+use Illuminate\Http\Request;
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\QueryStringToggleProvider;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
-use Illuminate\Http\Request;
 
 /**
  * @coversDefaultClass \FeatureToggle\LocalToggleProvider
