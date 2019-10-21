@@ -43,8 +43,7 @@ class QueryStringToggleProviderTest extends TestCase
             ];
             foreach ($toggles as $name => $value) {
                 $isActive = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-                $key = $isActive ? 'feature' : 'featureOff';
-                $queryStrings[$key][] = $name;
+                $queryStrings[$isActive ? 'feature' : 'featureOff'][] = $name;
             }
             $request->request->add($queryStrings);
         }
