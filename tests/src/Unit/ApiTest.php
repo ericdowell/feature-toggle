@@ -84,6 +84,7 @@ class ApiTest extends TestCase
      * @covers ::isActive
      * @covers ::getToggles
      * @covers ::getActiveToggles
+     * @covers ::getLazyLoadedToggles
      * @covers ::refreshToggles
      *
      * @return void
@@ -102,10 +103,16 @@ class ApiTest extends TestCase
         });
 
         $this->assertFalse($featureToggleApi->isActive('foo'), '"foo" toggle check, should BE false.');
+        $this->assertCount(1, $featureToggleApi->getLazyLoadedToggles(), 'Expected only 1 toggle lazy loaded.');
+
         $this->assertFalse($featureToggleApi->isActive('bar'), '"bar" toggle check, should BE false.');
+        $this->assertCount(2, $featureToggleApi->getLazyLoadedToggles(), 'Expected only 2 toggle lazy loaded.');
+
         $this->assertTrue($featureToggleApi->isActive('baz'), '"baz" toggle check, should BE true.');
-        $this->assertCount(3, $featureToggleApi->getToggles());
-        $this->assertCount(1, $featureToggleApi->getActiveToggles());
+        $this->assertCount(3, $featureToggleApi->getLazyLoadedToggles(), 'Expected only 3 toggle lazy loaded.');
+
+        $this->assertCount(3, $featureToggleApi->getToggles(), 'Expected a total of 3 toggle available.');
+        $this->assertCount(1, $featureToggleApi->getActiveToggles(), 'Expected a total of 1 active toggle.');
     }
 
     /**

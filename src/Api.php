@@ -182,6 +182,14 @@ class Api implements ApiContract
     }
 
     /**
+     * @return Collection
+     */
+    public function getLazyLoadedToggles(): Collection
+    {
+        return collect($this->toggles);
+    }
+
+    /**
      * @param  string|null  $intended
      * @return ToggleContract[]|Collection
      */
@@ -193,8 +201,7 @@ class Api implements ApiContract
                 $toggles = $toggles + $provider->getToggles()->all();
                 continue;
             }
-            $toggle = $provider->findToggle($intended);
-            if (! is_null($toggle)) {
+            if (! is_null($toggle = $provider->findToggle($intended))) {
                 $toggles[$toggle->getName()] = $this->toggles[$toggle->getName()] = $toggle;
                 break;
             }

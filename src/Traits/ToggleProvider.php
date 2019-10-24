@@ -11,7 +11,7 @@ use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 trait ToggleProvider
 {
     /**
-     * @var Collection
+     * @var Collection|array
      */
     protected $toggles;
 
