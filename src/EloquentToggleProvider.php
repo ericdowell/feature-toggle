@@ -41,6 +41,17 @@ class EloquentToggleProvider extends LocalToggleProvider
     }
 
     /**
+     * Returns a feature toggle.
+     *
+     * @param  string  $name
+     * @return FeatureToggle|Model|null
+     */
+    public function findToggle(string $name): ?ToggleContract
+    {
+        return $this->newModel()->whereName($name)->first();
+    }
+
+    /**
      * Get from all sources of toggles and normalize.
      *
      * @return ToggleContract[]|Collection

@@ -23,7 +23,7 @@ trait ToggleProvider
      */
     public function isActive(string $name): bool
     {
-        $toggle = $this->getToggles()->get($name);
+        $toggle = $this->getToggles($name)->get($name);
 
         return $toggle instanceof ToggleContract ? $toggle->isActive() : false;
     }
@@ -31,9 +31,10 @@ trait ToggleProvider
     /**
      * Returns all feature toggles.
      *
+     * @param  string|null  $intended
      * @return ToggleContract[]|Collection
      */
-    public function getToggles(): Collection
+    public function getToggles(string $intended = null): Collection
     {
         return $this->toggles ?? $this->toggles = collect();
     }

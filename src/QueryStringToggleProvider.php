@@ -44,6 +44,17 @@ class QueryStringToggleProvider extends LocalToggleProvider
     }
 
     /**
+     * Returns a feature toggle.
+     *
+     * @param  string  $name
+     * @return QueryString|null
+     */
+    public function findToggle(string $name): ?ToggleContract
+    {
+        return $this->getToggles()->get($name);
+    }
+
+    /**
      * Get toggles 'feature' or 'featureOff' query string.
      *
      * @param  string  $key

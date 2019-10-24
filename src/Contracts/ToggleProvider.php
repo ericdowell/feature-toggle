@@ -34,6 +34,14 @@ interface ToggleProvider
     public function getToggles(): Collection;
 
     /**
+     * Returns a feature toggle.
+     *
+     * @param  string  $name
+     * @return ToggleContract|null
+     */
+    public function findToggle(string $name): ?ToggleContract;
+
+    /**
      * Returns all active feature toggles.
      *
      * @return ToggleContract[]|Collection

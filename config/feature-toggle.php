@@ -57,12 +57,14 @@ return [
      | Options to enable/disable behavior.
      |
      | [
+     |      'mode' => 'lazy'/'full',
      |      'useMigrations' => true/false,
      | ]
      |
      */
 
     'options' => [
+        'mode' => 'lazy',
         'useMigrations' => false,
     ],
 ];

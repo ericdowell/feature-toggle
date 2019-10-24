@@ -40,6 +40,22 @@ class LocalToggleProvider implements ToggleProviderContract
     }
 
     /**
+     * Returns a feature toggle.
+     *
+     * @param  string  $name
+     * @return LocalToggle|null
+     */
+    public function findToggle(string $name): ?ToggleContract
+    {
+        $key = "feature-toggle.toggles.{$name}";
+        if (! config()->has($key)) {
+            return null;
+        }
+
+        return new LocalToggle($name, config($key));
+    }
+
+    /**
      * Get from all sources of toggles and normalize.
      *
      * @return ToggleContract[]|Collection

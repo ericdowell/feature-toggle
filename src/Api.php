@@ -56,7 +56,14 @@ class Api implements ApiContract
             $this->loadProvider($driver, $parameters);
         }
 
-        $this->refreshToggles();
+        $mode = $this->getOption('mode');
+        switch ($mode) {
+            case 'lazy':
+                break;
+            default:
+                $this->refreshToggles();
+                break;
+        }
 
         return $this;
     }
@@ -140,21 +147,57 @@ class Api implements ApiContract
     /**
      * Returns all feature toggles.
      *
+     * @param  string|null  $intended
      * @return ToggleContract[]|Collection
      */
-    public function getToggles(): Collection
+    public function getToggles(string $intended = null): Collection
     {
-        return $this->calculateToggles();
+        $mode = $this->getOption('mode');
+        switch ($mode) {
+            case 'lazy':
+                if ($intended && ! is_null($toggle = $this->findToggle($intended))) {
+                    return collect([$toggle->getName() => $toggle]);
+                }
+
+                return $this->calculateToggles($intended);
+            default:
+                return $this->calculateToggles();
+        }
     }
 
     /**
+     * Returns a feature toggle.
+     *
+     * @param  string  $name
+     * @return ToggleContract|null
+     */
+    public function findToggle(string $name): ?ToggleContract
+    {
+        $toggle = Arr::get($this->toggles, $name);
+        if (! $toggle instanceof ToggleContract) {
+            return null;
+        }
+
+        return $toggle;
+    }
+
+    /**
+     * @param  string|null  $intended
      * @return ToggleContract[]|Collection
      */
-    protected function calculateToggles(): Collection
+    protected function calculateToggles(string $intended = null): Collection
     {
         $toggles = [];
         foreach ($this->providers as $provider) {
-            $toggles = $toggles + $provider->getToggles()->all();
+            if (! $intended) {
+                $toggles = $toggles + $provider->getToggles()->all();
+                continue;
+            }
+            $toggle = $provider->findToggle($intended);
+            if (! is_null($toggle)) {
+                $toggles[$toggle->getName()] = $this->toggles[$toggle->getName()] = $toggle;
+                break;
+            }
         }
 
         return collect($toggles);

@@ -41,6 +41,17 @@ class ConditionalToggleProvider extends LocalToggleProvider
     }
 
     /**
+     * Returns a feature toggle.
+     *
+     * @param  string  $name
+     * @return ConditionalToggle|null
+     */
+    public function findToggle(string $name): ?ToggleContract
+    {
+        return $this->getToggles()->get($name);
+    }
+
+    /**
      * Get from all sources of toggles and normalize.
      *
      * @return ToggleContract[]|Collection
