@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\QueryStringToggleProvider;
@@ -40,6 +41,11 @@ class QueryStringToggleProviderTest extends TestCase
             foreach ($toggles as $name => $value) {
                 $isActive = filter_var($value, FILTER_VALIDATE_BOOLEAN);
                 $queryStrings[$isActive ? 'feature' : 'featureOff'][] = $name;
+            }
+            foreach (array_keys($queryStrings) as $type) {
+                if (count($queryStrings[$type]) === 1) {
+                    $queryStrings[$type] = Arr::first($queryStrings['feature']);
+                }
             }
             $request->request->add($queryStrings);
         }
