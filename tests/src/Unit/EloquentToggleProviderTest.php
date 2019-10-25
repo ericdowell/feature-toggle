@@ -8,7 +8,7 @@ use FeatureToggle\Api;
 use FeatureToggle\Traits\Toggle;
 use FeatureToggle\Tests\TestCase;
 use Illuminate\Support\Collection;
-use FeatureToggle\Toggle\FeatureToggle;
+use FeatureToggle\Toggle\Database;
 use Illuminate\Database\Eloquent\Model;
 use FeatureToggle\EloquentToggleProvider;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
@@ -47,9 +47,9 @@ class EloquentToggleProviderTest extends TestCase
      */
     public function testPassingModelParameterToAppMake()
     {
-        $provider = app()->make('feature-toggle.eloquent', ['model' => TestFeatureToggle::class]);
+        $provider = app()->make('feature-toggle.eloquent', ['model' => TestToggle::class]);
 
-        $this->assertInstanceOf(TestFeatureToggle::class, $provider->newModel());
+        $this->assertInstanceOf(TestToggle::class, $provider->newModel());
     }
 
     /**
@@ -70,7 +70,7 @@ class EloquentToggleProviderTest extends TestCase
             return $this->getToggleProvider();
         }
         foreach ($toggles as $name => $is_active) {
-            tap(new FeatureToggle(compact('name', 'is_active')), function (FeatureToggle $toggle) {
+            tap(new Database(compact('name', 'is_active')), function (Database $toggle) {
                 $toggle->save();
             });
         }
@@ -79,7 +79,7 @@ class EloquentToggleProviderTest extends TestCase
     }
 }
 
-class TestFeatureToggle extends Model implements ToggleContract
+class TestToggle extends Model implements ToggleContract
 {
     use Toggle;
 
