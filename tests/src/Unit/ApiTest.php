@@ -115,7 +115,7 @@ class ApiTest extends TestCase
      * @covers ::getToggles
      * @covers ::getActiveToggles
      * @covers ::refreshToggles
-     * @covers \FeatureToggle\ConditionalToggleProvider::setConditional
+     * @covers \FeatureToggle\ConditionalToggleProvider::setToggle
      * @covers \FeatureToggle\ConditionalToggleProvider::calculateToggles
      *
      * @return void
