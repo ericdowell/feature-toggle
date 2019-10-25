@@ -17,9 +17,6 @@ use FeatureToggle\Tests\Traits\TestToggleProvider;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
-/**
- * @coversDefaultClass \FeatureToggle\Api
- */
 class ApiTest extends TestCase
 {
     use TestToggleProvider;
@@ -44,10 +41,6 @@ class ApiTest extends TestCase
     }
 
     /**
-     * @covers ::useMigrations
-     * @covers ::ignoreMigrations
-     * @covers ::isMigrationsEnabled
-     *
      * @return void
      */
     public function testUseOrIgnoreMigrationsMethods(): void
@@ -66,8 +59,6 @@ class ApiTest extends TestCase
     }
 
     /**
-     * @covers ::getName
-     *
      * @return void
      */
     public function testGetName(): void
@@ -78,13 +69,6 @@ class ApiTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::setConditional
-     * @covers ::isActive
-     * @covers ::getToggles
-     * @covers ::getActiveToggles
-     * @covers ::refreshToggles
-     *
      * @return void
      */
     public function testLocalAndConditionalToggleProviders(): void
@@ -108,16 +92,6 @@ class ApiTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::setProviders
-     * @covers ::setConditional
-     * @covers ::isActive
-     * @covers ::getToggles
-     * @covers ::getActiveToggles
-     * @covers ::refreshToggles
-     * @covers \FeatureToggle\ConditionalToggleProvider::setToggle
-     * @covers \FeatureToggle\ConditionalToggleProvider::calculateToggles
-     *
      * @return void
      */
     public function testSetProvidersEloquentAndConditionalToggleProviders(): void
@@ -157,13 +131,6 @@ class ApiTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::getProvider
-     * @covers ::getConditionalProvider
-     * @covers ::getEloquentProvider
-     * @covers ::getLocalProvider
-     * @covers ::getQueryStringProvider
-     *
      * @return void
      */
     public function testGetProviderAndHelperMethods(): void
@@ -200,9 +167,6 @@ class ApiTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::getProvider
-     *
      * @return void
      */
     public function testGetProviderWithProviderNameNotLoadedThrowsError(): void
@@ -214,10 +178,6 @@ class ApiTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::setProviders
-     * @covers ::loadProvider
-     *
      * @return void
      */
     public function testSetProvidersWithUnregisterProviderDriverThrowsError(): void
@@ -232,10 +192,6 @@ class ApiTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::setProviders
-     * @covers ::loadProvider
-     *
      * @return void
      */
     public function testSetProvidersWithNonProviderContractClassThrowsError(): void

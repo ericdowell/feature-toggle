@@ -28,9 +28,6 @@ trait TestToggle
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::getName
-     *
      * @return void
      */
     public function testGetName(): void
@@ -39,11 +36,6 @@ trait TestToggle
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::getName
-     * @covers ::isActive
-     * @covers ::toArray
-     *
      * @return void
      */
     public function testToArray(): void
@@ -56,9 +48,6 @@ trait TestToggle
 
     /**
      * @dataProvider isActiveDataProvider
-     *
-     * @covers ::__construct
-     * @covers ::isActive
      *
      * @param  string  $assertMethod
      * @param  array  $values

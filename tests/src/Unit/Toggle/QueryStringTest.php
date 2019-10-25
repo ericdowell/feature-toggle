@@ -7,9 +7,6 @@ namespace FeatureToggle\Tests\Unit\Toggle;
 use FeatureToggle\Toggle\QueryString;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 
-/**
- * @coversDefaultClass \FeatureToggle\Toggle\QueryString
- */
 class QueryStringTest extends LocalTest
 {
     /**

@@ -10,9 +10,6 @@ use FeatureToggle\Toggle\FeatureToggle;
 use FeatureToggle\Tests\Traits\TestToggle;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 
-/**
- * @coversDefaultClass \FeatureToggle\Toggle\Conditional
- */
 class ConditionalTest extends TestCase
 {
     use TestToggle;

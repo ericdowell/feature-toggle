@@ -32,9 +32,6 @@ trait TestToggleProvider
     }
 
     /**
-     * @covers ::getToggles
-     * @covers ::refreshToggles
-     *
      * @return void
      */
     public function testNotArrayConfigToggles(): void
@@ -43,12 +40,6 @@ trait TestToggleProvider
     }
 
     /**
-     * @covers ::getToggles
-     * @covers ::getActiveToggles
-     * @covers ::activeTogglesToJson
-     * @covers ::refreshToggles
-     * @covers ::calculateToggles
-     *
      * @return void
      */
     public function testActiveTogglesToJsonNotEmpty(): void
@@ -64,10 +55,6 @@ trait TestToggleProvider
     }
 
     /**
-     * @covers ::getToggles
-     * @covers ::getActiveToggles
-     * @covers ::activeTogglesToJson
-     *
      * @return void
      */
     public function testActiveTogglesToJsonEmpty(): void
@@ -76,12 +63,6 @@ trait TestToggleProvider
     }
 
     /**
-     * @covers ::isActive
-     * @covers ::getToggles
-     * @covers ::getActiveToggles
-     * @covers ::refreshToggles
-     * @covers ::calculateToggles
-     *
      * @return void
      */
     public function testActiveToggle(): void
@@ -98,12 +79,6 @@ trait TestToggleProvider
     }
 
     /**
-     * @covers ::isActive
-     * @covers ::getToggles
-     * @covers ::getActiveToggles
-     * @covers ::refreshToggles
-     * @covers ::calculateToggles
-     *
      * @return void
      */
     public function testInActiveToggle(): void
