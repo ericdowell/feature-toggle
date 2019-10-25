@@ -24,7 +24,7 @@ class LocalToggleProvider implements ToggleProviderContract
      */
     public function getName(): string
     {
-        return self::NAME;
+        return static::NAME;
     }
 
     /**

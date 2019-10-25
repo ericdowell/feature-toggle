@@ -196,7 +196,7 @@ When making a request to your application you may now use the following query st
 e.g. `http://localhost/?feature=Example&featureOff[]=Example%20Off&featureOff[]=Example%20Query%20String`
 
 The following example will result in `Example` as active and `Example Off`/`Example Query String` as inactive. **NOTE:**
-This is only true if the `querystring` provider if placed above other toggle providers that haven't already defined
+This will only true if the `querystring` provider is placed above other toggle providers that haven't already defined
 these feature toggles.
 
 ### Frontend Feature Toggle Api

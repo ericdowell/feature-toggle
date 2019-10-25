@@ -42,7 +42,10 @@
         "laravel": {
             "providers": [
                 "FeatureToggle\\ServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "FeatureToggleApi": "FeatureToggle\\Facade"
+            }
         },
         "branch-alias": {
             "dev-master": "1.3-dev"
