@@ -17,6 +17,7 @@ exclude_patterns:
   - "readme.md"
   - "config/feature-toggle.php"
   - "src/Contracts/**/*"
+  - "src/Facade.php"
   - "src/ServiceProvider.php"
   - "tests/**/*"
   - "vendor/**/*"

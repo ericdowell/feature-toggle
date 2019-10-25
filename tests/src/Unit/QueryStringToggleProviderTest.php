@@ -29,13 +29,12 @@ class QueryStringToggleProviderTest extends TestCase
     }
 
     /**
-     * @param  array|null  $toggles
-     * @return \FeatureToggle\QueryStringToggleProvider|ToggleProviderContract
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $toggles
+     * @returns void
      */
-    protected function setToggles(array $toggles = null): ToggleProviderContract
+    public static function setupQueryToggles(Request &$request, array $toggles): void
     {
-        /** @var Request $request */
-        $request = $this->app['request'];
         if (! empty($toggles)) {
             $queryStrings = [
                 'feature' => [],
@@ -46,6 +45,19 @@ class QueryStringToggleProviderTest extends TestCase
                 $queryStrings[$isActive ? 'feature' : 'featureOff'][] = $name;
             }
             $request->request->add($queryStrings);
+        }
+    }
+
+    /**
+     * @param  array|null  $toggles
+     * @return \FeatureToggle\QueryStringToggleProvider|ToggleProviderContract
+     */
+    protected function setToggles(array $toggles = null): ToggleProviderContract
+    {
+        /** @var Request $request */
+        $request = $this->app['request'];
+        if (! empty($toggles)) {
+            $this->setupQueryToggles($request, $toggles);
         }
 
         return $this->getToggleProvider($request);

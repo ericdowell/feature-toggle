@@ -27,7 +27,7 @@ class Api implements ApiContract
     /**
      * @var ToggleProviderContract[]
      */
-    protected $providers;
+    protected $providers = [];
 
     /**
      * Api constructor.
@@ -50,6 +50,8 @@ class Api implements ApiContract
      */
     public function setProviders(array $providers): self
     {
+        $this->providers = [];
+
         foreach ($providers as $provider) {
             $driver = Arr::get($provider, 'driver');
             $parameters = Arr::except($provider, 'driver');
@@ -59,6 +61,14 @@ class Api implements ApiContract
         $this->refreshToggles();
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProviders(): array
+    {
+        return $this->providers;
     }
 
     /**
@@ -153,7 +163,7 @@ class Api implements ApiContract
     protected function calculateToggles(): Collection
     {
         $toggles = [];
-        foreach ($this->providers as $provider) {
+        foreach ($this->getProviders() as $provider) {
             $toggles = $toggles + $provider->getToggles()->all();
         }
 
@@ -181,7 +191,7 @@ class Api implements ApiContract
      */
     public function &getProvider(string $name): ToggleProviderContract
     {
-        if (! $this->providers[$name]) {
+        if (! isset($this->providers[$name])) {
             throw new RuntimeException("Toggle provider '{$name}' is not loaded.");
         }
 
@@ -194,7 +204,7 @@ class Api implements ApiContract
      * @return $this
      * @throws OutOfBoundsException
      */
-    protected function loadProvider(string $driver, array $parameters): self
+    public function loadProvider(string $driver, array $parameters): self
     {
         $provider = app("feature-toggle.{$driver}", $parameters);
         if ($provider instanceof ToggleProviderContract) {
