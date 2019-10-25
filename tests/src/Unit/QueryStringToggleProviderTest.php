@@ -44,7 +44,7 @@ class QueryStringToggleProviderTest extends TestCase
             }
             foreach (array_keys($queryStrings) as $type) {
                 if (count($queryStrings[$type]) === 1) {
-                    $queryStrings[$type] = Arr::first($queryStrings['feature']);
+                    $queryStrings[$type] = Arr::first($queryStrings[$type]);
                 }
             }
             $request->request->add($queryStrings);
