@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FeatureToggle;
 
 use Throwable;
-use Illuminate\Support\Collection;
 use FeatureToggle\Toggle\Database;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 

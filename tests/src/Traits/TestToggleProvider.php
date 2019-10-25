@@ -23,7 +23,7 @@ trait TestToggleProvider
     abstract protected function setToggles(array $toggles = null): ToggleProviderContract;
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      * @return mixed
      */
     public function getIsActiveAttribute($value)
@@ -51,7 +51,8 @@ trait TestToggleProvider
             ],
         ]);
 
-        $this->assertSame($expected, $this->setToggles(['foo' => $this->getIsActiveAttribute(true)])->activeTogglesToJson());
+        $this->assertSame($expected,
+            $this->setToggles(['foo' => $this->getIsActiveAttribute(true)])->activeTogglesToJson());
     }
 
     /**
@@ -65,7 +66,21 @@ trait TestToggleProvider
     /**
      * @return void
      */
-    public function testActiveToggle(): void
+    public function testOneActiveToggle(): void
+    {
+        $toggleProvider = $this->setToggles([
+            'foo' => $this->getIsActiveAttribute(true),
+        ]);
+
+        $this->assertTrue($toggleProvider->isActive('foo'), '"foo" toggle check, should BE true.');
+        $this->assertCount(1, $toggleProvider->getToggles(), 'Checking "getToggles" count.');
+        $this->assertCount(1, $toggleProvider->getActiveToggles(), 'Checking "getActiveToggles" count.');
+    }
+
+    /**
+     * @return void
+     */
+    public function testManyActiveToggle(): void
     {
         $toggleProvider = $this->setToggles([
             'foo' => $this->getIsActiveAttribute(true),
@@ -81,7 +96,21 @@ trait TestToggleProvider
     /**
      * @return void
      */
-    public function testInActiveToggle(): void
+    public function testOneInActiveToggle(): void
+    {
+        $toggleProvider = $this->setToggles([
+            'bar' => $this->getIsActiveAttribute('off'),
+        ]);
+
+        $this->assertFalse($toggleProvider->isActive('bar'), '"bar" toggle check, should BE false.');
+        $this->assertCount(1, $toggleProvider->getToggles(), 'Checking "getToggles" count.');
+        $this->assertCount(0, $toggleProvider->getActiveToggles(), 'Checking "getActiveToggles" count.');
+    }
+
+    /**
+     * @return void
+     */
+    public function testManyInActiveToggle(): void
     {
         $toggleProvider = $this->setToggles([
             'foo' => $this->getIsActiveAttribute(false),

@@ -6,7 +6,6 @@ namespace FeatureToggle\Tests\Unit\Toggle;
 
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Toggle\Conditional;
-use FeatureToggle\Toggle\Database;
 use FeatureToggle\Tests\Traits\TestToggle;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 
@@ -17,7 +16,7 @@ class ConditionalTest extends TestCase
     /**
      * @param  string  $name
      * @param  mixed  $is_active
-     * @return ToggleContract|Database
+     * @return ToggleContract|Conditional
      */
     protected function getInstance(string $name, $is_active): ToggleContract
     {
