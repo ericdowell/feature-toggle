@@ -16,9 +16,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
-/**
- * @coversDefaultClass \FeatureToggle\EloquentToggleProvider
- */
 class EloquentToggleProviderTest extends TestCase
 {
     use RefreshDatabase, TestToggleProvider;

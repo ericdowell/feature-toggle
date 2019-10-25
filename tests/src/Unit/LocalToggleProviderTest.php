@@ -9,9 +9,6 @@ use FeatureToggle\LocalToggleProvider;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
-/**
- * @coversDefaultClass \FeatureToggle\LocalToggleProvider
- */
 class LocalToggleProviderTest extends TestCase
 {
     use TestToggleProvider;

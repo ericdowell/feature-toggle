@@ -10,9 +10,6 @@ use FeatureToggle\QueryStringToggleProvider;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
-/**
- * @coversDefaultClass \FeatureToggle\QueryStringToggleProvider
- */
 class QueryStringToggleProviderTest extends TestCase
 {
     use TestToggleProvider;
