@@ -8,7 +8,7 @@ use FeatureToggle\Contracts\Api as ApiContract;
 use Illuminate\Support\Facades\Facade as SupportFacade;
 
 /**
- * Database\Facade.
+ * FeatureToggle\Facade.
  *
  * @codeCoverageIgnore
  *

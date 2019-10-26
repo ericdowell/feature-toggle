@@ -9,24 +9,24 @@ use Illuminate\Database\Eloquent\Model;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 /**
- * FeatureToggle\Toggle\Database.
+ * FeatureToggle\Toggle\Eloquent.
  *
  * @property int $id
  * @property string $name
  * @property int $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Database newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Database newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Database query()
- * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Database whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Database whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Database whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Database whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Database whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Database extends Model implements ToggleContract
+class Eloquent extends Model implements ToggleContract
 {
     use Toggle;
 

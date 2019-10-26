@@ -7,7 +7,7 @@ namespace FeatureToggle\Tests\Unit;
 use FeatureToggle\Api;
 use FeatureToggle\Traits\Toggle;
 use FeatureToggle\Tests\TestCase;
-use FeatureToggle\Toggle\Database;
+use FeatureToggle\Toggle\Eloquent;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use FeatureToggle\EloquentToggleProvider;
@@ -70,7 +70,7 @@ class EloquentToggleProviderTest extends TestCase
             return $this->getToggleProvider();
         }
         foreach ($toggles as $name => $is_active) {
-            tap(new Database(compact('name', 'is_active')), function (Database $toggle) {
+            tap(new Eloquent(compact('name', 'is_active')), function (Eloquent $toggle) {
                 $toggle->save();
             });
         }
