@@ -49,4 +49,21 @@ class ConditionalToggleProviderTest extends TestCase
             return $value;
         };
     }
+
+    /**
+     * @returns void
+     */
+    public function testCalculateTogglesViaRefreshToggles(): void
+    {
+        $provider = $this->getToggleProvider();
+        $provider->setToggle('baz', function () {
+            return true;
+        })->setToggle('bar', function () {
+            return false;
+        });
+
+        $provider->refreshToggles();
+
+        $this->assertCount(2, $provider->getToggles());
+    }
 }

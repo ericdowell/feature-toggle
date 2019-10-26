@@ -7,6 +7,9 @@ namespace FeatureToggle;
 use FeatureToggle\Contracts\Api as ApiContract;
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ServiceProvider extends SupportServiceProvider
 {
     /**

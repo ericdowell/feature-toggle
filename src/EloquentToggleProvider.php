@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FeatureToggle;
 
 use Throwable;
+use FeatureToggle\Toggle\Database;
 use Illuminate\Support\Collection;
-use FeatureToggle\Toggle\FeatureToggle;
 use Illuminate\Database\Eloquent\Model;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 
@@ -29,11 +29,11 @@ class EloquentToggleProvider extends LocalToggleProvider
      */
     public function __construct($model = null)
     {
-        $this->model = $model ?? FeatureToggle::class;
+        $this->model = $model ?? Database::class;
     }
 
     /**
-     * @return FeatureToggle|Model
+     * @return Database|Model
      */
     public function newModel(): Model
     {

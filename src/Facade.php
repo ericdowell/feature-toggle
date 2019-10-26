@@ -8,7 +8,9 @@ use FeatureToggle\Contracts\Api as ApiContract;
 use Illuminate\Support\Facades\Facade as SupportFacade;
 
 /**
- * FeatureToggle\Facade.
+ * Database\Facade.
+ *
+ * @codeCoverageIgnore
  *
  * @method static \FeatureToggle\Contracts\Api|\FeatureToggle\Api setProviders(array $providers)
  * @method static array getProviders()
