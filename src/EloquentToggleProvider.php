@@ -9,6 +9,7 @@ use FeatureToggle\Toggle\Eloquent;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class EloquentToggleProvider extends LocalToggleProvider
 {
@@ -34,10 +35,11 @@ class EloquentToggleProvider extends LocalToggleProvider
 
     /**
      * @return Eloquent|Model
+     * @throws BindingResolutionException
      */
     public function newModel(): Model
     {
-        return app($this->model);
+        return app()->make($this->model);
     }
 
     /**

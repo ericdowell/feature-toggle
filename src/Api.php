@@ -13,6 +13,7 @@ use FeatureToggle\Traits\ToggleProvider;
 use FeatureToggle\Traits\HasStaticOptions;
 use FeatureToggle\Contracts\Api as ApiContract;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
 class Api implements ApiContract
@@ -203,10 +204,11 @@ class Api implements ApiContract
      * @param  array  $parameters
      * @return $this
      * @throws OutOfBoundsException
+     * @throws BindingResolutionException
      */
     public function loadProvider(string $driver, array $parameters): self
     {
-        $provider = app("feature-toggle.{$driver}", $parameters);
+        $provider = app()->make("feature-toggle.{$driver}", $parameters);
         if ($provider instanceof ToggleProviderContract) {
             $this->providers[$provider->getName()] = $provider;
 
