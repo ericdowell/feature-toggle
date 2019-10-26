@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Facade as SupportFacade;
 /**
  * Database\Facade.
  *
+ * @codeCoverageIgnore
+ *
  * @method static \FeatureToggle\Contracts\Api|\FeatureToggle\Api setProviders(array $providers)
  * @method static array getProviders()
  * @method static bool isMigrationsEnabled()

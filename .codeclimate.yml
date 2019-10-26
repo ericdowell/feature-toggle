@@ -7,6 +7,7 @@ plugins:
 exclude_patterns:
   - ".circleci"
   - ".codeclimate.yml"
+  - ".github"
   - ".gitignore"
   - ".styleci.yml"
   - "composer.json"
@@ -16,6 +17,7 @@ exclude_patterns:
   - "phpunit.xml"
   - "readme.md"
   - "config/feature-toggle.php"
+  - "database/**/*"
   - "src/Contracts/**/*"
   - "src/Facade.php"
   - "src/ServiceProvider.php"

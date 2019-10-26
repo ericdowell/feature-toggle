@@ -27,6 +27,7 @@
             <directory suffix=".php">./src</directory>
             <exclude>
                 <directory>./src/Contracts</directory>
+                <file>./src/Facade.php</file>
                 <file>./src/ServiceProvider.php</file>
             </exclude>
         </whitelist>
