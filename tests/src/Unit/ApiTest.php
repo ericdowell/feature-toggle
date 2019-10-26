@@ -11,6 +11,7 @@ use OutOfBoundsException;
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\LocalToggleProvider;
 use FeatureToggle\EloquentToggleProvider;
+use FeatureToggle\Facades\FeatureToggleApi;
 use FeatureToggle\ConditionalToggleProvider;
 use FeatureToggle\QueryStringToggleProvider;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
@@ -45,15 +46,15 @@ class ApiTest extends TestCase
      */
     public function testUseOrIgnoreMigrationsMethods(): void
     {
-        Api::ignoreMigrations();
+        FeatureToggleApi::ignoreMigrations();
         $this->assertFalse(feature_toggle_api()->isMigrationsEnabled(),
             '"isMigrationsEnabled" should BE false after calling "Api::ignoreMigrations()"');
 
-        Api::useMigrations();
+        FeatureToggleApi::useMigrations();
         $this->assertTrue(feature_toggle_api()->isMigrationsEnabled(),
             '"isMigrationsEnabled" should BE true after calling "Api::useMigrations()"');
 
-        Api::ignoreMigrations();
+        FeatureToggleApi::ignoreMigrations();
         $this->assertFalse(feature_toggle_api()->isMigrationsEnabled(),
             '"isMigrationsEnabled" should BE false after calling "Api::ignoreMigrations()"');
     }

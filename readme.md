@@ -16,7 +16,14 @@ A simple feature toggle api for Laravel applications.
 - [Testing](#testing)
 - [Usage](#usage)
     - [Helper Functions](#helper-functions)
-    - [Add Feature Toggles](#add-feature-toggles)
+    - [Toggle Providers](#toggle-providers)
+    - [Add Local Feature Toggles](#add-local-feature-toggles)
+    - [Other Feature Toggles Types](#other-feature-toggles-types)
+        - [Conditional Feature Toggles](#conditional-feature-toggles)
+        - [Eloquent Feature Toggles](#eloquent-feature-toggles)
+            - [Database Migration](#database-migration)
+            - [Eloquent Model](#eloquent-model)
+        - [QueryString Toggle Provider](#querystring-toggle-provider)
     - [Frontend Feature Toggle Api](#frontend-feature-toggle-api)
 - [Road Map](#road-map)
 
@@ -36,6 +43,14 @@ Run `composer test`.
 
 ## Usage
 If a feature toggle is not defined then `isActive` will return `false`.
+
+## Toggle Booting
+The Feature Toggle Api will pull all possible toggles at the boot of the application. This design allows there to
+be one database/cache/redis query instead of possibly many calls. This only becomes a problem if
+there're 100s of feature toggles.
+
+Be mindful of how many database toggles are setup at given time, instead setup or move toggles to the local provider
+in `config/feature-toggle.php` or as conditional toggles.
 
 ### Helper Functions
 `feature_toggle_api`:

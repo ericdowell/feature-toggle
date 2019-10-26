@@ -35,6 +35,8 @@ class Api implements ApiContract
      *
      * @param  array  $providers
      * @param  array  $options
+     * @throws OutOfBoundsException
+     * @throws BindingResolutionException
      */
     public function __construct(array $providers, array $options = [])
     {
@@ -48,6 +50,8 @@ class Api implements ApiContract
     /**
      * @param  array  $providers
      * @return $this
+     * @throws OutOfBoundsException
+     * @throws BindingResolutionException
      */
     public function setProviders(array $providers): self
     {

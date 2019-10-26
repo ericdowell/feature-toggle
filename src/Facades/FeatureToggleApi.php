@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FeatureToggle;
+namespace FeatureToggle\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use FeatureToggle\Contracts\Api as ApiContract;
