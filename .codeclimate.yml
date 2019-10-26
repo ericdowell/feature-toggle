@@ -19,7 +19,7 @@ exclude_patterns:
   - "config/feature-toggle.php"
   - "database/**/*"
   - "src/Contracts/**/*"
-  - "src/Facade.php"
+  - "src/Facades/FeatureToggleApi.php"
   - "src/ServiceProvider.php"
   - "tests/**/*"
   - "vendor/**/*"

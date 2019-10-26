@@ -44,7 +44,7 @@
                 "FeatureToggle\\ServiceProvider"
             ],
             "aliases": {
-                "FeatureToggleApi": "FeatureToggle\\Facade"
+                "FeatureToggleApi": "FeatureToggle\\Facades\\FeatureToggleApi"
             }
         },
         "branch-alias": {

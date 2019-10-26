@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
+use Illuminate\Support\Facades\Facade;
 use FeatureToggle\Contracts\Api as ApiContract;
-use Illuminate\Support\Facades\Facade as SupportFacade;
 
 /**
- * FeatureToggle\Facade.
+ * FeatureToggle\Facades\FeatureToggleApi.
  *
  * @codeCoverageIgnore
  *
@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Facade as SupportFacade;
  * @method static \FeatureToggle\Contracts\ToggleProvider getProvider(string $name)
  * @method static \FeatureToggle\Api loadProvider(string $driver, array $parameters)
  */
-class Facade extends SupportFacade
+class FeatureToggleApi extends Facade
 {
     /**
      * Get the registered name of the component.
