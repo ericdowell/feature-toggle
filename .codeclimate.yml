@@ -21,5 +21,6 @@ exclude_patterns:
   - "src/Contracts/**/*"
   - "src/Facades/FeatureToggleApi.php"
   - "src/ServiceProvider.php"
+  - "src/Toggle/QueryString.php"
   - "tests/**/*"
   - "vendor/**/*"
