@@ -163,6 +163,18 @@ class Api implements ApiContract
     }
 
     /**
+     * Returns all feature toggles for a specific provider.
+     *
+     * @param  string  $name
+     * @return ToggleContract[]|Collection
+     * @throws RuntimeException
+     */
+    public function getProviderToggles(string $name): Collection
+    {
+        return $this->getProvider($name)->getToggles();
+    }
+
+    /**
      * @return ToggleContract[]|Collection
      */
     protected function calculateToggles(): Collection

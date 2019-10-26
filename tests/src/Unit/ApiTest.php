@@ -89,6 +89,8 @@ class ApiTest extends TestCase
         $this->assertFalse($featureToggleApi->isActive('bar'), '"bar" toggle check, should BE false.');
         $this->assertTrue($featureToggleApi->isActive('baz'), '"baz" toggle check, should BE true.');
         $this->assertCount(3, $featureToggleApi->getToggles());
+        $this->assertCount(2, $featureToggleApi->getProviderToggles(LocalToggleProvider::NAME));
+        $this->assertCount(2, $featureToggleApi->getProviderToggles(ConditionalToggleProvider::NAME));
         $this->assertCount(1, $featureToggleApi->getActiveToggles());
     }
 
