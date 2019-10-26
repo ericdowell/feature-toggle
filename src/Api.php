@@ -186,6 +186,19 @@ class Api implements ApiContract
     }
 
     /**
+     * Refresh all feature toggle data for a specific provider.
+     *
+     * @param  string  $name
+     * @return $this
+     */
+    public function refreshProvider(string $name): self
+    {
+        $this->getProvider($name)->refreshToggles();
+
+        return $this;
+    }
+
+    /**
      * @param  string  $name
      * @return ToggleProviderContract
      * @throws RuntimeException
@@ -206,7 +219,7 @@ class Api implements ApiContract
      * @throws OutOfBoundsException
      * @throws BindingResolutionException
      */
-    public function loadProvider(string $driver, array $parameters): self
+    public function loadProvider(string $driver, array $parameters = []): self
     {
         $provider = app()->make("feature-toggle.{$driver}", $parameters);
         if ($provider instanceof ToggleProviderContract) {

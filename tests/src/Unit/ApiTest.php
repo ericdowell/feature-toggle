@@ -167,6 +167,25 @@ class ApiTest extends TestCase
     }
 
     /**
+     * @returns void
+     */
+    public function testLoadProviderAndRefreshProvider(): void
+    {
+        $driver = LocalToggleProvider::NAME;
+        feature_toggle_api()->setProviders([]);
+        $this->assertCount(0, feature_toggle_api()->getProviders());
+
+        config()->set('feature-toggle.toggles', ['foo' => true]);
+        feature_toggle_api()->loadProvider($driver);
+        $this->assertCount(1, feature_toggle_api()->getProviders());
+
+        $this->assertCount(0, feature_toggle_api()->getLocalProvider()->getToggles());
+
+        $provider = feature_toggle_api()->refreshProvider($driver)->getLocalProvider();
+        $this->assertCount(1, $provider->getToggles());
+    }
+
+    /**
      * @return void
      */
     public function testGetProviderWithProviderNameNotLoadedThrowsError(): void
