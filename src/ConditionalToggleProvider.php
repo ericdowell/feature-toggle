@@ -21,14 +21,6 @@ class ConditionalToggleProvider extends LocalToggleProvider
     protected $conditions = [];
 
     /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    /**
      * @param  string  $name
      * @param  callable  $condition
      * @return \FeatureToggle\ConditionalToggleProvider
