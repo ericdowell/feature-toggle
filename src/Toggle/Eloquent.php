@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Toggle;
 
+use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Traits\Toggle;
 use Illuminate\Database\Eloquent\Model;
-use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 /**
  * FeatureToggle\Toggle\Eloquent.

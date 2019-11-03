@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
-use RuntimeException;
-use OutOfBoundsException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
-use FeatureToggle\Traits\ToggleProvider;
-use FeatureToggle\Traits\HasStaticOptions;
 use FeatureToggle\Contracts\Api as ApiContract;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
+use FeatureToggle\Traits\HasStaticOptions;
+use FeatureToggle\Traits\ToggleProvider;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use OutOfBoundsException;
+use RuntimeException;
 
 class Api implements ApiContract
 {

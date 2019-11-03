@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace FeatureToggle\Tests\Unit;
 
 use FeatureToggle\Api;
-use FeatureToggle\Traits\Toggle;
-use FeatureToggle\Tests\TestCase;
-use FeatureToggle\Toggle\Eloquent;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
-use FeatureToggle\EloquentToggleProvider;
-use FeatureToggle\Tests\Traits\TestToggleProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
+use FeatureToggle\EloquentToggleProvider;
+use FeatureToggle\Tests\TestCase;
+use FeatureToggle\Tests\Traits\TestToggleProvider;
+use FeatureToggle\Toggle\Eloquent;
+use FeatureToggle\Traits\Toggle;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 
 class EloquentToggleProviderTest extends TestCase
 {

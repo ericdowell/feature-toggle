@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit\Toggle;
 
-use FeatureToggle\Toggle\QueryString;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
+use FeatureToggle\Toggle\QueryString;
 
 class QueryStringTest extends LocalTest
 {

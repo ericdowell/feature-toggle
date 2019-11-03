@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit;
 
-use stdClass;
-use RuntimeException;
 use FeatureToggle\Api;
-use OutOfBoundsException;
-use FeatureToggle\Tests\TestCase;
-use FeatureToggle\LocalToggleProvider;
+use FeatureToggle\ConditionalToggleProvider;
+use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\EloquentToggleProvider;
 use FeatureToggle\Facades\FeatureToggleApi;
-use FeatureToggle\ConditionalToggleProvider;
+use FeatureToggle\LocalToggleProvider;
 use FeatureToggle\QueryStringToggleProvider;
+use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
+use OutOfBoundsException;
+use RuntimeException;
+use stdClass;
 
 class ApiTest extends TestCase
 {

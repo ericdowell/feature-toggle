@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Facades;
 
-use Illuminate\Support\Facades\Facade;
 use FeatureToggle\Contracts\Api as ApiContract;
+use Illuminate\Support\Facades\Facade;
 
 /**
  * FeatureToggle\Facades\FeatureToggleApi.

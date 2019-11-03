@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
-use Throwable;
-use FeatureToggle\Toggle\Eloquent;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
+use FeatureToggle\Toggle\Eloquent;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Throwable;
 
 class EloquentToggleProvider extends LocalToggleProvider
 {

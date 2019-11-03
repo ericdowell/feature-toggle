@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
+use FeatureToggle\Contracts\Toggle as ToggleContract;
+use FeatureToggle\Toggle\QueryString;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use FeatureToggle\Toggle\QueryString;
-use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 class QueryStringToggleProvider extends LocalToggleProvider
 {
