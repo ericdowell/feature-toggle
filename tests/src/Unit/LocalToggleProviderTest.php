@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit;
 
-use FeatureToggle\Tests\TestCase;
-use FeatureToggle\LocalToggleProvider;
-use FeatureToggle\Tests\Traits\TestToggleProvider;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
+use FeatureToggle\LocalToggleProvider;
+use FeatureToggle\Tests\TestCase;
+use FeatureToggle\Tests\Traits\TestToggleProvider;
 
 class LocalToggleProviderTest extends TestCase
 {

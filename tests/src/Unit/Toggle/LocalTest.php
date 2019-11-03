@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit\Toggle;
 
-use FeatureToggle\Toggle\Local;
+use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Tests\Traits\TestToggle;
-use FeatureToggle\Contracts\Toggle as ToggleContract;
+use FeatureToggle\Toggle\Local;
 
 class LocalTest extends TestCase
 {

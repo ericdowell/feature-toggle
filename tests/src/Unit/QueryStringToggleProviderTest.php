@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit;
 
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use FeatureToggle\Tests\TestCase;
-use FeatureToggle\QueryStringToggleProvider;
-use FeatureToggle\Tests\Traits\TestToggleProvider;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
+use FeatureToggle\QueryStringToggleProvider;
+use FeatureToggle\Tests\TestCase;
+use FeatureToggle\Tests\Traits\TestToggleProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class QueryStringToggleProviderTest extends TestCase
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
-use Illuminate\Support\Collection;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Toggle\Conditional as ConditionalToggle;
+use Illuminate\Support\Collection;
 
 class ConditionalToggleProvider extends LocalToggleProvider
 {

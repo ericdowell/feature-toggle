@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests;
 
-use FeatureToggle\ServiceProvider;
 use FeatureToggle\Facades\FeatureToggleApi;
+use FeatureToggle\ServiceProvider;
 use Orchestra\Testbench\TestCase as SupportTestCase;
 
 class TestCase extends SupportTestCase

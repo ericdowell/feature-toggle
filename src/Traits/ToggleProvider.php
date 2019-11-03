@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Traits;
 
-use Illuminate\Support\Collection;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
+use Illuminate\Support\Collection;
 
 trait ToggleProvider
 {
