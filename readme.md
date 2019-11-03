@@ -50,7 +50,7 @@ be one database/cache/redis query instead of possibly many calls. This only beco
 there're 100s of feature toggles.
 
 Be mindful of how many database toggles are setup at given time, instead setup or move toggles to the local provider
-in `config/feature-toggle.php` or as conditional toggles.
+in `config/feature-toggle.php`.
 
 ### Helper Functions
 `feature_toggle_api`:
