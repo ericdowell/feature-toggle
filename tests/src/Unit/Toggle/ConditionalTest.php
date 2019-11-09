@@ -39,7 +39,7 @@ class ConditionalTest extends TestCase
     /**
      * @return void
      */
-    public function testCalledPropertyIsRespected(): void
+    public function testCalledPropertyIsRespectedWhenDeferIsTrue(): void
     {
         /* @var Conditional|MockInterface $toggle */
         $toggle = Mockery::mock(Conditional::class, ['foo', function () {

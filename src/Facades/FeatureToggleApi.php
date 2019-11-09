@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Facade;
 /**
  * FeatureToggle\Facades\FeatureToggleApi.
  *
+ * @see \FeatureToggle\Api
+ *
  * @codeCoverageIgnore
  *
  * @method static \FeatureToggle\Contracts\Api|\FeatureToggle\Api setProviders(array $providers)
