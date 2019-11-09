@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit;
 
+use Exception;
 use FeatureToggle\Api;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
@@ -40,6 +41,32 @@ class EloquentToggleProviderTest extends TestCase
         parent::tearDown();
 
         Api::ignoreMigrations();
+    }
+
+    /**
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function testCalculateTogglesCatchesErrorAndReturnEmptyCollection()
+    {
+        tap(new Eloquent([
+            'name' => 'foo',
+            'is_active' => true,
+        ]), function (Eloquent $toggle) {
+            $toggle->save();
+        });
+        $this->mock(EloquentToggleProvider::class, function ($mock) {
+            /* @var \Mockery\MockInterface $mock */
+            $mock->shouldReceive('refreshToggles')->passthru();
+            $mock->shouldReceive('getToggles')->passthru();
+            $mock->shouldReceive('isActive')->passthru();
+            $mock->shouldReceive('newModel')->once()->andThrow(Exception::class, 'Something went wrong.');
+        });
+        /* @var EloquentToggleProvider $provider */
+        $provider = app()->make(EloquentToggleProvider::class);
+        $provider->refreshToggles();
+
+        $this->assertCount(0, $provider->getToggles());
+        $this->assertFalse($provider->isActive('foo'), '"foo" toggle check, should BE false.');
     }
 
     /**

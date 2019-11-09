@@ -121,13 +121,20 @@ The value passed from the `.env` file or set directly within config file can be:
 #### Conditional Feature Toggles
 To add new conditional toggle(s) you will need to call `feature_toggle_api()->setConditional` method:
 ```php
+// is delayed by default
 feature_toggle_api()->setConditional('Example' function () {
     return true;
 });
+// OR call right away by passing false as $delay parameter
+feature_toggle_api()->setConditional('Example' function () {
+    return true;
+}, false);
 ```
-**NOTE:** The function passed to `setConditional` is executed right away to prevent expensive operations from being recalculated
-when adding additional conditional toggles. Because of this design it is best to define these in `AppServiceProvider@boot`
-or in a `FeatureToggleServiceProvider@boot` that you create.
+**NOTE:** The function passed to `setConditional` does not get called right by default, it is delayed to allow
+the Laravel app to bootstrap User/Request information. The conditional function is only called once and the value
+is cached to help prevent expensive operations from being recalculated when adding additional conditional toggles.
+Because of this design it is best to define these in `AppServiceProvider@boot` or in a
+`FeatureToggleServiceProvider@boot` that you create.
 
 #### Eloquent Feature Toggles
 To use the `eloquent` driver you will need to update the `feature-toggle` config/`setProviders` method call,

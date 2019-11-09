@@ -32,7 +32,7 @@ class Conditional extends Local
     {
         $this->condition = $condition;
         $this->delay = $delay ?? $this->delay;
-        $isActive = !$this->delay ? $this->call() : false;
+        $isActive = ! $this->delay ? $this->call() : false;
         parent::__construct($name, $isActive);
     }
 
@@ -55,7 +55,7 @@ class Conditional extends Local
      */
     public function isActive(): bool
     {
-        if (!$this->delay || $this->called) {
+        if (! $this->delay || $this->called) {
             return $this->is_active;
         }
 
