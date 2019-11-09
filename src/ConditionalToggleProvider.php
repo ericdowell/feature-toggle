@@ -16,7 +16,7 @@ class ConditionalToggleProvider extends LocalToggleProvider
     const NAME = 'conditional';
 
     /**
-     * @var callable[]
+     * @var array
      */
     protected $conditions = [];
 
@@ -28,7 +28,7 @@ class ConditionalToggleProvider extends LocalToggleProvider
      */
     public function setToggle(string $name, callable $condition, bool $defer = null): self
     {
-        $this->conditions[$name] = $condition;
+        $this->conditions[$name] = compact('condition', 'defer');
 
         return $this->putToggle($name, new ConditionalToggle($name, $condition, $defer));
     }
@@ -42,8 +42,8 @@ class ConditionalToggleProvider extends LocalToggleProvider
     {
         $toggles = collect();
 
-        foreach ($this->conditions as $name => $condition) {
-            $toggles->put($name, new ConditionalToggle($name, $condition));
+        foreach ($this->conditions as $name => ['condition' => $condition, 'defer' => $defer]) {
+            $toggles->put($name, new ConditionalToggle($name, $condition, $defer));
         }
 
         return $toggles;
