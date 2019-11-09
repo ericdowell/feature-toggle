@@ -8,6 +8,8 @@ use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Tests\Traits\TestToggle;
 use FeatureToggle\Toggle\Conditional;
+use Mockery;
+use Mockery\MockInterface;
 
 class ConditionalTest extends TestCase
 {
@@ -32,5 +34,20 @@ class ConditionalTest extends TestCase
         return function () use ($value) {
             return $value;
         };
+    }
+
+    /**
+     * @return void
+     */
+    public function testCalledPropertyIsRespected(): void
+    {
+        /* @var Conditional|MockInterface $toggle */
+        $toggle = Mockery::mock(Conditional::class, ['foo', function() { return true; }, true])
+                         ->makePartial()
+                         ->shouldAllowMockingProtectedMethods();
+        $toggle->shouldReceive('call')->once()->passthru();
+
+        $this->assertTrue($toggle->isActive(), 'toggle calling isActive should return true.');
+        $this->assertTrue($toggle->isActive(), 'toggle calling isActive should return true.');
     }
 }

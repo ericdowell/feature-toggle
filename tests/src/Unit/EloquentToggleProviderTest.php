@@ -44,9 +44,10 @@ class EloquentToggleProviderTest extends TestCase
     }
 
     /**
+     * @return void
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function testCalculateTogglesCatchesErrorAndReturnEmptyCollection()
+    public function testCalculateTogglesCatchesErrorAndReturnEmptyCollection(): void
     {
         tap(new Eloquent([
             'name' => 'foo',
@@ -70,9 +71,10 @@ class EloquentToggleProviderTest extends TestCase
     }
 
     /**
+     * @return void
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function testPassingModelParameterToAppMake()
+    public function testPassingModelParameterToAppMake(): void
     {
         $provider = app()->make('feature-toggle.eloquent', ['model' => TestToggle::class]);
 
