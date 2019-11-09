@@ -14,7 +14,7 @@ class Conditional extends Local
     /**
      * @var bool
      */
-    protected $delay = true;
+    protected $defer = true;
 
     /**
      * @var bool
@@ -26,13 +26,13 @@ class Conditional extends Local
      *
      * @param  string  $name
      * @param  callable  $condition
-     * @param  bool|null  $delay
+     * @param  bool|null  $defer
      */
-    public function __construct(string $name, callable $condition, bool $delay = null)
+    public function __construct(string $name, callable $condition, bool $defer = null)
     {
         $this->condition = $condition;
-        $this->delay = $delay ?? $this->delay;
-        $isActive = ! $this->delay ? $this->call() : false;
+        $this->defer = $defer ?? $this->defer;
+        $isActive = ! $this->defer ? $this->call() : false;
         parent::__construct($name, $isActive);
     }
 
@@ -55,7 +55,7 @@ class Conditional extends Local
      */
     public function isActive(): bool
     {
-        if (! $this->delay || $this->called) {
+        if (! $this->defer || $this->called) {
             return $this->is_active;
         }
 

@@ -121,16 +121,18 @@ The value passed from the `.env` file or set directly within config file can be:
 #### Conditional Feature Toggles
 To add new conditional toggle(s) you will need to call `feature_toggle_api()->setConditional` method:
 ```php
-// is delayed by default
-feature_toggle_api()->setConditional('Example' function () {
-    return true;
+// calling conditional function is deferred by default
+feature_toggle_api()->setConditional('Example' function (Request $request) {
+    $user = $request->user();
+    return $user instanceof \App\User && $user->email === 'johndoe@example.com';
 });
-// OR call right away by passing false as $delay parameter
+
+// OR call right away by passing false as $defer parameter
 feature_toggle_api()->setConditional('Example' function () {
-    return true;
+    return cache()->get('feature:example');
 }, false);
 ```
-**NOTE:** The function passed to `setConditional` does not get called right by default, it is delayed to allow
+**NOTE:** The function passed to `setConditional` does not get called right by default, it is deferred to allow
 the Laravel app to bootstrap User/Request information. The conditional function is only called once and the value
 is cached to help prevent expensive operations from being recalculated when adding additional conditional toggles.
 Because of this design it is best to define these in `AppServiceProvider@boot` or in a
