@@ -76,14 +76,23 @@ Currently there're are only four feature toggle providers:
 You can access these directly via:
 ```php
 $localProvider = feature_toggle_api()->getLocalProvider();
-
-$localProvider->isActive('Example'); // false
+// return false
+$localProvider->isActive('Example');
 
 // Returns by reference.
 $conditionalProvider = feature_toggle_api()->getConditionalProvider();
 $conditionalProvider->setToggle('Example', function() { return true; });
+// return true
+$conditionalProvider->isActive('Example');
 
-$conditionalProvider->isActive('Example'); // true
+// Request ?feature=Example
+$queryStringProvider = feature_toggle_api()->getQueryStringProvider();
+// return true
+$queryStringProvider->isActive('Example');
+
+$eloquentProvider = feature_toggle_api()->getEloquentProvider();
+// return false
+$eloquentProvider->isActive('Example');
 ```
 
 If you would like to set the `providers` in code you may call the following in the `boot` method of your
