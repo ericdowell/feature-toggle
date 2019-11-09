@@ -84,6 +84,7 @@ trait TestToggle
                     false,
                     'false',
                     0,
+                    [],
                     '0',
                     'off',
                     'bar',

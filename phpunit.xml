@@ -33,6 +33,7 @@
         </whitelist>
     </filter>
     <logging>
+        <log type="coverage-html" target="coverage"/>
         <log type="coverage-clover" target="clover.xml"/>
         <log type="junit" target="build/junit/junit.xml"/>
     </logging>

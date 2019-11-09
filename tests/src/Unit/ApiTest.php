@@ -96,6 +96,7 @@ class ApiTest extends TestCase
 
     /**
      * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testSetProvidersEloquentAndConditionalToggleProviders(): void
     {
@@ -135,6 +136,7 @@ class ApiTest extends TestCase
 
     /**
      * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testGetProviderAndHelperMethods(): void
     {
@@ -171,6 +173,7 @@ class ApiTest extends TestCase
 
     /**
      * @returns void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testLoadProviderAndRefreshProvider(): void
     {
@@ -201,6 +204,7 @@ class ApiTest extends TestCase
 
     /**
      * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testSetProvidersWithUnregisterProviderDriverThrowsError(): void
     {
@@ -215,6 +219,7 @@ class ApiTest extends TestCase
 
     /**
      * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testSetProvidersWithNonProviderContractClassThrowsError(): void
     {
