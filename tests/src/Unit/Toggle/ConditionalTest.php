@@ -43,13 +43,14 @@ class ConditionalTest extends TestCase
     {
         $condition = function () {
             static $count = 0;
-            ++$count;
+            $count++;
+
             return $count === 1;
         };
         $args = [
             'foo',
             $condition,
-            true
+            true,
         ];
         /* @var Conditional|MockInterface $toggle */
         $toggle = Mockery::mock(Conditional::class, $args)
