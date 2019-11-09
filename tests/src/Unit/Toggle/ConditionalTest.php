@@ -42,7 +42,9 @@ class ConditionalTest extends TestCase
     public function testCalledPropertyIsRespected(): void
     {
         /* @var Conditional|MockInterface $toggle */
-        $toggle = Mockery::mock(Conditional::class, ['foo', function() { return true; }, true])
+        $toggle = Mockery::mock(Conditional::class, ['foo', function () {
+            return true;
+        }, true])
                          ->makePartial()
                          ->shouldAllowMockingProtectedMethods();
         $toggle->shouldReceive('call')->once()->passthru();
