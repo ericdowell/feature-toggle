@@ -29,6 +29,32 @@ trait Toggle
     }
 
     /**
+     * @param string|bool|int $isActive
+     * @return bool
+     */
+    protected function calculateIsActive($isActive): bool
+    {
+        if (is_bool($isActive)) {
+            return $isActive;
+        } elseif (is_string($isActive) || is_int($isActive)) {
+            return filter_var($isActive, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string|bool|int $isActive
+     * @return $this
+     */
+    protected function setIsActive($isActive): self
+    {
+        $this->is_active = $this->calculateIsActive($isActive);
+
+        return $this;
+    }
+
+    /**
      * Get the instance as an array.
      *
      * @return array

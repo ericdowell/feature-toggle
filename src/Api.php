@@ -143,11 +143,12 @@ class Api implements ApiContract
     /**
      * @param  string  $name
      * @param  callable  $condition
+     * @param  bool|null  $delay
      * @return $this
      */
-    public function setConditional(string $name, callable $condition): ApiContract
+    public function setConditional(string $name, callable $condition, bool $delay = null): ApiContract
     {
-        $this->getConditionalProvider()->setToggle($name, $condition);
+        $this->getConditionalProvider()->setToggle($name, $condition, $delay);
 
         return $this;
     }

@@ -31,11 +31,6 @@ class Local implements ToggleContract, Arrayable
     public function __construct(string $name, $isActive)
     {
         $this->name = $name;
-
-        if (is_bool($isActive)) {
-            $this->is_active = $isActive;
-        } elseif (is_string($isActive) || is_int($isActive)) {
-            $this->is_active = filter_var($isActive, FILTER_VALIDATE_BOOLEAN);
-        }
+        $this->setIsActive($isActive);
     }
 }

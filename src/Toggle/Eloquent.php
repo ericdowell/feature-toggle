@@ -64,6 +64,6 @@ class Eloquent extends Model implements ToggleContract
      */
     public function setIsActiveAttribute($value)
     {
-        $this->attributes['is_active'] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+        $this->attributes['is_active'] = $this->calculateIsActive($value);
     }
 }

@@ -23,13 +23,14 @@ class ConditionalToggleProvider extends LocalToggleProvider
     /**
      * @param  string  $name
      * @param  callable  $condition
+     * @param  bool|null  $delay
      * @return \FeatureToggle\ConditionalToggleProvider
      */
-    public function setToggle(string $name, callable $condition): self
+    public function setToggle(string $name, callable $condition, bool $delay = null): self
     {
         $this->conditions[$name] = $condition;
 
-        return $this->putToggle($name, new ConditionalToggle($name, $condition));
+        return $this->putToggle($name, new ConditionalToggle($name, $condition, $delay));
     }
 
     /**

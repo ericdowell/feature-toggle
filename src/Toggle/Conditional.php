@@ -7,13 +7,58 @@ namespace FeatureToggle\Toggle;
 class Conditional extends Local
 {
     /**
+     * @var callable
+     */
+    protected $condition;
+
+    /**
+     * @var bool
+     */
+    protected $delay = true;
+
+    /**
+     * @var bool
+     */
+    protected $called = false;
+
+    /**
      * Conditional constructor.
      *
      * @param  string  $name
      * @param  callable  $condition
+     * @param  bool|null  $delay
      */
-    public function __construct(string $name, callable $condition)
+    public function __construct(string $name, callable $condition, bool $delay = null)
     {
-        parent::__construct($name, call_user_func($condition));
+        $this->condition = $condition;
+        $this->delay = $delay ?? $this->delay;
+        $isActive = !$this->delay ? $this->call() : false;
+        parent::__construct($name, $isActive);
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function call()
+    {
+        $isActive = app()->call($this->condition);
+
+        $this->called = true;
+
+        return $isActive;
+    }
+
+    /**
+     * Check if toggle is active.
+     *
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        if (!$this->delay || $this->called) {
+            return $this->is_active;
+        }
+
+        return $this->setIsActive($this->call())->is_active;
     }
 }
