@@ -41,10 +41,18 @@ class ConditionalTest extends TestCase
      */
     public function testCalledPropertyIsRespectedWhenDeferIsTrue(): void
     {
+        $condition = function () {
+            static $count = 0;
+            ++$count;
+            return $count === 1;
+        };
+        $args = [
+            'foo',
+            $condition,
+            true
+        ];
         /* @var Conditional|MockInterface $toggle */
-        $toggle = Mockery::mock(Conditional::class, ['foo', function () {
-            return true;
-        }, true])
+        $toggle = Mockery::mock(Conditional::class, $args)
                          ->makePartial()
                          ->shouldAllowMockingProtectedMethods();
         $toggle->shouldReceive('call')->once()->passthru();
