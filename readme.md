@@ -15,8 +15,10 @@ A simple feature toggle api for Laravel applications.
 - [Installation](#installation)
 - [Testing](#testing)
 - [Usage](#usage)
+    - [Toggle Booting](#toggle-booting)
     - [Helper Functions](#helper-functions)
-    - [Toggle Providers](#toggle-providers)
+    - [Use with Laravel Task Scheduling](#use-with-laravel-task-scheduling)
+- [Toggle Providers](#toggle-providers)
     - [Add Local Feature Toggles](#add-local-feature-toggles)
     - [Other Feature Toggles Types](#other-feature-toggles-types)
         - [Conditional Feature Toggles](#conditional-feature-toggles)
@@ -24,7 +26,7 @@ A simple feature toggle api for Laravel applications.
             - [Database Migration](#database-migration)
             - [Eloquent Model](#eloquent-model)
         - [QueryString Toggle Provider](#querystring-toggle-provider)
-    - [Frontend Feature Toggle Api](#frontend-feature-toggle-api)
+- [Frontend Feature Toggle Api](#frontend-feature-toggle-api)
 - [Road Map](#road-map)
 
 ## Installation
@@ -81,7 +83,7 @@ class Kernel extends ConsoleKernel
 }
 ```
 
-### Toggle Providers
+## Toggle Providers
 Currently there're are only four feature toggle providers:
 - `conditional`
 - `eloquent`
@@ -247,7 +249,7 @@ The following example will result in `Example` as active and `Example Off`/`Exam
 This will only true if the `querystring` provider is placed above other toggle providers that haven't already defined
 these feature toggles.
 
-### Frontend Feature Toggle Api
+## Frontend Feature Toggle Api
 Place the following in your main layout blade template in the `<head>` tag.
 ```blade
 <script>
