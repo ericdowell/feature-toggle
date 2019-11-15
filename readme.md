@@ -66,6 +66,21 @@ if (feature_toggle('Example')) {
 }
 ```
 
+### Use with Laravel Task Scheduling
+You can use the built-in `when` function in combination with the `feature_toggle` helper function in the `app/Console/Kernel.php`
+`schedule` method.
+```php
+class Kernel extends ConsoleKernel
+{
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('inspire')
+                 ->hourly()
+                 ->when(feature_toggle('Inspire Command'));
+    }
+}
+```
+
 ### Toggle Providers
 Currently there're are only four feature toggle providers:
 - `conditional`
@@ -293,5 +308,5 @@ class App extends Component {
 - [x] Conditionally Enable/Disable Feature Toggles e.g. Authorization.
 - [x] Eloquent Feature Toggles.
 - [x] Query String Feature Toggles.
-- [ ] Integrate toggles into: Blade, Middleware, Task Scheduling, and Validation.
+- [ ] Integrate toggles into: Blade, Middleware, and Validation.
 - [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).
