@@ -250,8 +250,10 @@ This will only true if the `querystring` provider is placed above other toggle p
 these feature toggles.
 
 #### Configure Query String Keys
-If you'd like to configure what the `active`/`inactive` feature toggle input keys are you may pass `activeKey`
-and `inactiveKey` as part of config file:
+If you'd like to configure what the `active`/`inactive` feature toggle input keys are you may add `activeKey`
+and `inactiveKey` to config file.
+
+Below is an example of configuring the query string keys as `active` and `inactive`:
 ```php
 'providers' => [
     [
