@@ -253,13 +253,13 @@ these feature toggles.
 Place the following in your main layout blade template in the `<head>` tag.
 ```blade
 <script>
-    window.featureToggles = Object.freeze({!! feature_toggle_api()->activeTogglesToJson() !!});
+    window.activeToggles = Object.freeze({!! feature_toggle_api()->activeTogglesToJson() !!});
 </script>
 ```
 
 Then create a new js file within `resources/js` called `featureToggle.js`:
 ```js
-const toggles = Object.keys(window.featureToggles || {})
+const toggles = Object.keys(window.activeToggles || {})
 
 export const featureToggle = name => toggles.includes(name)
 ```

@@ -22,13 +22,90 @@ class QueryStringToggleProvider extends LocalToggleProvider
     protected $request;
 
     /**
+     * @var string
+     */
+    protected $activeKey;
+
+    /**
+     * @var string
+     */
+    protected $inactiveKey;
+
+    /**
+     * @var string
+     */
+    protected $apiInputKey;
+
+    /**
+     * @var string|null
+     */
+    protected $apiKey;
+
+    /**
      * QueryStringToggleProvider constructor.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  string  $activeKey
+     * @param  string  $inactiveKey
+     * @param  string  $apiInputKey
+     * @param  string|null  $apiKey
      */
-    public function __construct(Request $request)
-    {
+    public function __construct(
+        Request $request,
+        string $activeKey = 'feature',
+        string $inactiveKey = 'feature_off',
+        string $apiInputKey = 'feature_token',
+        string $apiKey = null
+    ) {
         $this->request = $request;
+        $this->activeKey = $activeKey;
+        $this->inactiveKey = $inactiveKey;
+        $this->apiInputKey = $apiInputKey;
+        $this->apiKey = $apiKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function activeKey(): string
+    {
+        return $this->activeKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function inactiveKey(): string
+    {
+        return $this->inactiveKey;
+    }
+
+    /**
+     * Determine if the current request is authorized to calculate toggles.
+     *
+     * @return bool
+     */
+    public function isAuthorized(): bool
+    {
+        return is_null($this->apiKey) || $this->apiKey === $this->getTokenForRequest();
+    }
+
+    /**
+     * Get the token for the current request.
+     *
+     * @return string|null
+     */
+    public function getTokenForRequest(): ?string
+    {
+        if (is_string($token = $this->request->get($this->apiInputKey))) {
+            return $token;
+        }
+
+        if (! is_null($bearerToken = $this->request->bearerToken())) {
+            return $bearerToken;
+        }
+
+        return $this->request->getPassword();
     }
 
     /**
@@ -38,9 +115,13 @@ class QueryStringToggleProvider extends LocalToggleProvider
      */
     protected function calculateToggles(): Collection
     {
-        $toggles = $this->calculateTogglesFromRequest('feature') + $this->calculateTogglesFromRequest('featureOff');
+        if (! $this->isAuthorized()) {
+            return collect([]);
+        }
+        $activeToggles = $this->calculateTogglesFromRequest($this->activeKey());
+        $inactiveToggles = $this->calculateTogglesFromRequest($this->inactiveKey());
 
-        return collect($toggles);
+        return collect($activeToggles + $inactiveToggles);
     }
 
     /**
@@ -53,7 +134,7 @@ class QueryStringToggleProvider extends LocalToggleProvider
     {
         $toggles = [];
         $features = $this->request->get($key);
-        $isActive = $key === 'feature' ? true : false;
+        $isActive = $key === $this->activeKey() ? true : false;
         if (is_array($features)) {
             foreach ($features as $name) {
                 $toggles[$name] = new QueryString($name, $isActive);
