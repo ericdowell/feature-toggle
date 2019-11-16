@@ -101,11 +101,7 @@ class QueryStringToggleProvider extends LocalToggleProvider
             return $token;
         }
 
-        if (! is_null($bearerToken = $this->request->bearerToken())) {
-            return $bearerToken;
-        }
-
-        return $this->request->getPassword();
+        return null;
     }
 
     /**

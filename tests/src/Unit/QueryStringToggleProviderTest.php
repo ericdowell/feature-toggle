@@ -130,43 +130,6 @@ class QueryStringToggleProviderTest extends TestCase
      * @return void
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function testPassingApiKeyParameterToAppMakeWithAuthorizationBearerOnRequestIsAuthorizedReturnsTrue(): void
-    {
-        $apiKey = Str::random();
-        /** @var Request $request */
-        $request = $this->app['request'];
-        $request->headers->set('Authorization', 'Bearer '.$apiKey);
-
-        /** @var QueryStringToggleProvider $toggleProvider */
-        $toggleProvider = app()->make('feature-toggle.querystring', compact('request', 'apiKey'));
-        $toggleProvider->refreshToggles();
-
-        $this->assertTrue($toggleProvider->isAuthorized(), '"isAuthorized" should return true.');
-    }
-
-    /**
-     * @return void
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function testPassingApiKeyParameterToAppMakeWithBasicAuthPasswordOnRequestIsAuthorizedReturnsTrue(): void
-    {
-        $apiKey = Str::random();
-
-        /** @var Request $request */
-        $request = $this->app['request'];
-        $request->headers->set('PHP_AUTH_PW', $apiKey);
-
-        /** @var QueryStringToggleProvider $toggleProvider */
-        $toggleProvider = app()->make('feature-toggle.querystring', compact('request', 'apiKey'));
-        $toggleProvider->refreshToggles();
-
-        $this->assertTrue($toggleProvider->isAuthorized(), '"isAuthorized" should return true.');
-    }
-
-    /**
-     * @return void
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function testPassingApiKeyParameterToAppMakeWithInputKeyOnRequestReturnsToggles(): void
     {
         $apiKey = Str::random();
