@@ -62,12 +62,12 @@ class EloquentToggleProviderTest extends TestCase
             $mock->shouldReceive('isActive')->passthru();
             $mock->shouldReceive('newModel')->once()->andThrow(Exception::class, 'Something went wrong.');
         });
-        /* @var EloquentToggleProvider $provider */
-        $provider = app()->make(EloquentToggleProvider::class);
-        $provider->refreshToggles();
+        /* @var EloquentToggleProvider $toggleProvider */
+        $toggleProvider = app()->make(EloquentToggleProvider::class);
+        $toggleProvider->refreshToggles();
 
-        $this->assertCount(0, $provider->getToggles());
-        $this->assertFalse($provider->isActive('foo'), '"foo" toggle check, should BE false.');
+        $this->assertCount(0, $toggleProvider->getToggles());
+        $this->assertFalse($toggleProvider->isActive('foo'), '"foo" toggle check, should BE false.');
     }
 
     /**
@@ -76,9 +76,9 @@ class EloquentToggleProviderTest extends TestCase
      */
     public function testPassingModelParameterToAppMake(): void
     {
-        $provider = app()->make('feature-toggle.eloquent', ['model' => TestToggle::class]);
+        $toggleProvider = app()->make('feature-toggle.eloquent', ['model' => TestToggle::class]);
 
-        $this->assertInstanceOf(TestToggle::class, $provider->newModel());
+        $this->assertInstanceOf(TestToggle::class, $toggleProvider->newModel());
     }
 
     /**

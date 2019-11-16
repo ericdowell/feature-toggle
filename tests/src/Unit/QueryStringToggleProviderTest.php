@@ -10,6 +10,7 @@ use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class QueryStringToggleProviderTest extends TestCase
 {
@@ -17,30 +18,41 @@ class QueryStringToggleProviderTest extends TestCase
 
     /**
      * @param  \Illuminate\Http\Request|null  $request
+     * @param  string  $activeKey
+     * @param  string  $inactiveKey
      * @return \FeatureToggle\QueryStringToggleProvider
      */
-    protected function getToggleProvider(Request $request = null): QueryStringToggleProvider
-    {
+    protected function getToggleProvider(
+        Request $request = null,
+        string $activeKey = 'feature',
+        string $inactiveKey = 'feature_off'
+    ): QueryStringToggleProvider {
         $request = $request ?? request();
 
-        return (new QueryStringToggleProvider($request))->refreshToggles();
+        return (new QueryStringToggleProvider($request, $activeKey, $inactiveKey))->refreshToggles();
     }
 
     /**
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $toggles
-     * @returns void
+     * @param  string  $activeKey
+     * @param  string  $inactiveKey
+     * @return void
      */
-    public static function setupQueryToggles(Request &$request, array $toggles): void
-    {
+    public static function setupQueryToggles(
+        Request &$request,
+        array $toggles,
+        string $activeKey = 'feature',
+        string $inactiveKey = 'feature_off'
+    ): void {
         if (! empty($toggles)) {
             $queryStrings = [
-                'feature' => [],
-                'featureOff' => [],
+                $activeKey => [],
+                $inactiveKey => [],
             ];
             foreach ($toggles as $name => $value) {
                 $isActive = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-                $queryStrings[$isActive ? 'feature' : 'featureOff'][] = $name;
+                $queryStrings[$isActive ? $activeKey : $inactiveKey][] = $name;
             }
             foreach (array_keys($queryStrings) as $type) {
                 if (count($queryStrings[$type]) === 1) {
@@ -53,16 +65,161 @@ class QueryStringToggleProviderTest extends TestCase
 
     /**
      * @param  array|null  $toggles
+     * @param  string  $activeKey
+     * @param  string  $inactiveKey
      * @return \FeatureToggle\QueryStringToggleProvider|ToggleProviderContract
      */
-    protected function setToggles(array $toggles = null): ToggleProviderContract
-    {
+    protected function setToggles(
+        array $toggles = null,
+        string $activeKey = 'feature',
+        string $inactiveKey = 'feature_off'
+    ): ToggleProviderContract {
         /** @var Request $request */
         $request = $this->app['request'];
         if (! empty($toggles)) {
-            $this->setupQueryToggles($request, $toggles);
+            $this->setupQueryToggles($request, $toggles, $activeKey, $inactiveKey);
         }
 
-        return $this->getToggleProvider($request);
+        return $this->getToggleProvider($request, $activeKey, $inactiveKey);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @returns void
+     */
+    protected function setupCommonToggles(Request $request): void
+    {
+        $toggles = [
+            'foo' => $this->getIsActiveAttribute(true),
+            'bar' => $this->getIsActiveAttribute('off'),
+            'baz' => $this->getIsActiveAttribute('on'),
+        ];
+        $this->setupQueryToggles($request, $toggles);
+    }
+
+    /**
+     * @param  \FeatureToggle\Contracts\ToggleProvider  $toggleProvider
+     * @returns void
+     */
+    protected function assertCommonToggles(ToggleProviderContract $toggleProvider): void
+    {
+        $this->assertTrue($toggleProvider->isActive('foo'), '"foo" toggle check, should BE true.');
+        $this->assertFalse($toggleProvider->isActive('bar'), '"bar" toggle check, should BE false.');
+        $this->assertTrue($toggleProvider->isActive('baz'), '"baz" toggle check, should BE true.');
+        $this->assertCount(3, $toggleProvider->getToggles(), 'Checking "getToggles" count.');
+        $this->assertCount(2, $toggleProvider->getActiveToggles(), 'Checking "getActiveToggles" count.');
+    }
+
+    /**
+     * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function testPassingActiveKeyAndInactiveKeyParameterToAppMake(): void
+    {
+        $activeKey = 'active';
+        $inactiveKey = 'inactive';
+
+        /** @var QueryStringToggleProvider $toggleProvider */
+        $toggleProvider = app()->make('feature-toggle.querystring', compact('activeKey', 'inactiveKey'));
+
+        $this->assertSame($activeKey, $toggleProvider->activeKey());
+        $this->assertSame($inactiveKey, $toggleProvider->inactiveKey());
+    }
+
+    /**
+     * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function testPassingApiKeyParameterToAppMakeWithAuthorizationBearerOnRequestIsAuthorizedReturnsTrue(): void
+    {
+        $apiKey = Str::random();
+        /** @var Request $request */
+        $request = $this->app['request'];
+        $request->headers->set('Authorization', 'Bearer '.$apiKey);
+
+        /** @var QueryStringToggleProvider $toggleProvider */
+        $toggleProvider = app()->make('feature-toggle.querystring', compact('request', 'apiKey'));
+        $toggleProvider->refreshToggles();
+
+        $this->assertTrue($toggleProvider->isAuthorized(), '"isAuthorized" should return true.');
+    }
+
+    /**
+     * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function testPassingApiKeyParameterToAppMakeWithBasicAuthPasswordOnRequestIsAuthorizedReturnsTrue(): void
+    {
+        $apiKey = Str::random();
+
+        /** @var Request $request */
+        $request = $this->app['request'];
+        $request->headers->set('PHP_AUTH_PW', $apiKey);
+
+        /** @var QueryStringToggleProvider $toggleProvider */
+        $toggleProvider = app()->make('feature-toggle.querystring', compact('request', 'apiKey'));
+        $toggleProvider->refreshToggles();
+
+        $this->assertTrue($toggleProvider->isAuthorized(), '"isAuthorized" should return true.');
+    }
+
+    /**
+     * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function testPassingApiKeyParameterToAppMakeWithInputKeyOnRequestReturnsToggles(): void
+    {
+        $apiKey = Str::random();
+        $apiInputKey = 'feature_token';
+
+        /** @var Request $request */
+        $request = $this->app['request'];
+        $request->request->set($apiInputKey, $apiKey);
+
+        $this->setupCommonToggles($request);
+
+        /** @var QueryStringToggleProvider $toggleProvider */
+        $toggleProvider = app()->make('feature-toggle.querystring', compact('request', 'apiKey', 'apiInputKey'));
+        $toggleProvider->refreshToggles();
+
+        $this->assertTrue($toggleProvider->isAuthorized(), '"isAuthorized" should return true.');
+        $this->assertCommonToggles($toggleProvider);
+    }
+
+    /**
+     * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function testPassingApiKeyParameterToAppMakeWithInputKeyNotOnRequestReturnsNoToggles(): void
+    {
+        $apiKey = Str::random();
+        $apiInputKey = 'feature_token';
+
+        /** @var Request $request */
+        $request = $this->app['request'];
+
+        $this->setupCommonToggles($request);
+
+        /** @var QueryStringToggleProvider $toggleProvider */
+        $toggleProvider = app()->make('feature-toggle.querystring', compact('request', 'apiKey', 'apiInputKey'));
+        $toggleProvider->refreshToggles();
+
+        $this->assertFalse($toggleProvider->isAuthorized(), '"isAuthorized" should return false.');
+        $this->assertCount(0, $toggleProvider->getToggles(), 'Checking "getToggles" count.');
+        $this->assertCount(0, $toggleProvider->getActiveToggles(), 'Checking "getActiveToggles" count.');
+    }
+
+    /**
+     * @return void
+     */
+    public function testManyActiveAndInactiveToggles(): void
+    {
+        $toggleProvider = $this->setToggles([
+            'foo' => $this->getIsActiveAttribute(true),
+            'bar' => $this->getIsActiveAttribute('off'),
+            'baz' => $this->getIsActiveAttribute('on'),
+        ], 'active', 'inactive');
+
+        $this->assertCommonToggles($toggleProvider);
     }
 }
