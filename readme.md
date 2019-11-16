@@ -257,47 +257,56 @@ Place the following in your main layout blade template in the `<head>` tag.
 </script>
 ```
 
-Then create a new js file within `resources/js` called `featureToggleApi.js`:
+Then create a new js file within `resources/js` called `featureToggle.js`:
 ```js
 const toggles = Object.keys(window.featureToggles || {})
 
-class FeatureToggleApi {
-    isActive(name) {
-        return toggles.includes(name)
-    }
-}
-
-export const Feature = new FeatureToggleApi()
+export const featureToggle = name => toggles.includes(name)
 ```
 
 Expose on the `window` within `app.js`:
 ```js
-import { Feature } from './featureToggleApi'
+import { featureToggle } from './featureToggle'
 
 // ...
 
-window.feature = Feature
+window.featureToggle = featureToggle
 ```
 
-and/or simply use `Feature` within your other js files:
-```jsx
-import React, { Component, Fragment } from 'react'
-import { Feature } from './featureToggleApi'
+and/or simply use `featureToggle` within your other js files:
+```js
+import { featureToggle } from './featureToggle'
 
-// ...
-
-if (Feature.isActive('Example')) {
+if (featureToggle('Example')) {
     // do something about it.
 }
+```
 
-// ...
+and/or create a `Feature` component that uses `featureToggle.js`:
+```js
+// Feature.js
+import { featureToggle } from './featureToggle'
+
+export const Feature = ({ name, active = true, children }) => {
+    if (active === true) {
+        return featureToggle(name) && children
+    }
+    return !featureToggle(name) && children
+}
+```
+```jsx
+// App.js
+import React, { Component, Fragment } from 'react'
+import { Feature } from './Feature'
 
 class App extends Component {
     render() {
         return (
             <Fragment>
                 <Navigation />
-                {Feature.isActive('Show Something') && <Something />}
+                <Feature name="Show Something">
+                   <Something />
+                </Feature>
             </Fragment>
         )
     }
