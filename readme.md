@@ -19,13 +19,14 @@ A simple feature toggle api for Laravel applications.
     - [Helper Functions](#helper-functions)
     - [Use with Laravel Task Scheduling](#use-with-laravel-task-scheduling)
 - [Toggle Providers](#toggle-providers)
-    - [Add Local Feature Toggles](#add-local-feature-toggles)
-    - [Other Feature Toggles Types](#other-feature-toggles-types)
-        - [Conditional Feature Toggles](#conditional-feature-toggles)
-        - [Eloquent Feature Toggles](#eloquent-feature-toggles)
-            - [Database Migration](#database-migration)
-            - [Eloquent Model](#eloquent-model)
-        - [QueryString Toggle Provider](#querystring-toggle-provider)
+    - [Local Feature Toggles](#local-feature-toggles)
+    - [Conditional Feature Toggles](#conditional-feature-toggles)
+    - [Eloquent Feature Toggles](#eloquent-feature-toggles)
+        - [Database Migration](#database-migration)
+        - [Eloquent Model](#eloquent-model)
+    - [QueryString Toggle Provider](#querystring-toggle-provider)
+        - [Configure Query String Keys](#configure-query-string-keys)
+        - [Add Api Key Authorization](#add-api-key-authorization)
 - [Frontend Feature Toggle Api](#frontend-feature-toggle-api)
 - [Road Map](#road-map)
 
@@ -125,7 +126,7 @@ feature_toggle_api()->setProviders([
 ]);
 ```
 
-### Add Local Feature Toggles
+### Local Feature Toggles
 To add new toggle(s) you will need to update the published `config/feature-toggles.php` file:
 ```php
 <?php
@@ -143,8 +144,7 @@ The value passed from the `.env` file or set directly within config file can be:
 - An `int` version of `boolean`: `1`/`0`
 - Finally all supported values of  `filter_var($value, FILTER_VALIDATE_BOOLEAN)` [https://www.php.net/manual/en/filter.filters.validate.php](https://www.php.net/manual/en/filter.filters.validate.php)
 
-### Other Feature Toggles Types
-#### Conditional Feature Toggles
+### Conditional Feature Toggles
 To add new conditional toggle(s) you will need to call `feature_toggle_api()->setConditional` method:
 ```php
 // calling conditional function is deferred by default
@@ -164,7 +164,7 @@ is cached to help prevent expensive operations from being recalculated when addi
 Because of this design it is best to define these in `AppServiceProvider@boot` or in a
 `FeatureToggleServiceProvider@boot` that you create.
 
-#### Eloquent Feature Toggles
+### Eloquent Feature Toggles
 To use the `eloquent` driver you will need to update the `feature-toggle` config/`setProviders` method call,
 place the following within the `providers` key:
 ```php
@@ -190,7 +190,7 @@ feature_toggle_api()->setProviders([
 ```
 **NOTE:** Be sure to place this value in the order you would like it to be prioritized by the feature toggle api.
 
-##### Database Migration
+#### Database Migration
 By default the migration for `feature_toggles` is not loaded, to load this you can update the `options` key
 within `feature-toggle` config setting the `useMigrations` value to `true`:
 ```php
@@ -217,7 +217,7 @@ Once you've used one of the methods above to setup the `feature_toggles` migrati
 php artisan migrate
 ```
 
-##### Eloquent Model
+#### Eloquent Model
 If you would like to use a different eloquent model you may do so by adding `model` to the config file:
 ```php
 'providers' => [
@@ -228,7 +228,7 @@ If you would like to use a different eloquent model you may do so by adding `mod
 ],
 ```
 
-#### QueryString Toggle Provider
+### QueryString Toggle Provider
 To use the `querystring` driver you will need to update the `feature-toggle` config/`setProviders` method call,
 place the following within the `providers` key:
 ```php
@@ -248,6 +248,34 @@ e.g. `http://localhost/?feature=Example&featureOff[]=Example%20Off&featureOff[]=
 The following example will result in `Example` as active and `Example Off`/`Example Query String` as inactive. **NOTE:**
 This will only true if the `querystring` provider is placed above other toggle providers that haven't already defined
 these feature toggles.
+
+#### Configure Query String Keys
+If you'd like to configure what the `active`/`inactive` feature toggle input keys are you may pass `activeKey`
+and `inactiveKey` as part of config file:
+```php
+'providers' => [
+    [
+        'driver' => 'querystring',
+        'activeKey' => 'active',
+        'inactiveKey' => 'inactive',
+    ],
+],
+```
+
+#### Add Api Key Authorization
+To keep users or bad actors from enabling/disabling a given feature toggle via the `querystring` toggle provider you
+may configure the driver with a `token`/api key. By default the query string input is configured as `feature_token`,
+but this can be also be configured to any value.
+```php
+'providers' => [
+    [
+        'driver' => 'querystring',
+        'apiKey' => env('FEATURE_TOGGLE_API_KEY'),
+        // Optional change to sometihing different than 'feature_token'.
+        // 'apiInputKey' => 'feature_toggle_api_token',
+    ],
+],
+```
 
 ## Frontend Feature Toggle Api
 Place the following in your main layout blade template in the `<head>` tag.
