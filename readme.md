@@ -241,9 +241,9 @@ place the following within the `providers` key:
 
 When making a request to your application you may now use the following query strings to make feature toggles active/inactive:
 - `feature`
-- `featureOff`
+- `feature_off`
 
-e.g. `http://localhost/?feature=Example&featureOff[]=Example%20Off&featureOff[]=Example%20Query%20String`
+e.g. `http://localhost/?feature=Example&feature_off[]=Example%20Off&feature_off[]=Example%20Query%20String`
 
 The following example will result in `Example` as active and `Example Off`/`Example Query String` as inactive. **NOTE:**
 This will only true if the `querystring` provider is placed above other toggle providers that haven't already defined
