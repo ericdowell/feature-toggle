@@ -6,6 +6,7 @@ namespace FeatureToggle;
 
 use FeatureToggle\Contracts\Api as ApiContract;
 use FeatureToggle\Middleware\FeatureToggle;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
 
@@ -15,6 +16,16 @@ use Illuminate\Support\ServiceProvider as SupportServiceProvider;
 class ServiceProvider extends SupportServiceProvider
 {
     /**
+     * @var array
+     */
+    protected $defaultDrivers = [
+        'conditional' => ConditionalToggleProvider::class,
+        'eloquent' => EloquentToggleProvider::class,
+        'local' => LocalToggleProvider::class,
+        'querystring' => QueryStringToggleProvider::class,
+    ];
+
+    /**
      * Register Resource Controller services.
      *
      * @return void
@@ -22,11 +33,7 @@ class ServiceProvider extends SupportServiceProvider
     public function register(): void
     {
         $this->registerPrimaryToggleProvider();
-
-        $this->registerConditionalToggleProviders();
-        $this->registerEloquentToggleProviders();
-        $this->registerLocalToggleProviders();
-        $this->registerQueryStringToggleProviders();
+        $this->registerToggleProviderDrivers();
 
         $this->mergeConfigFrom($this->packageConfigFilePath(), $this->packageName());
     }
@@ -45,6 +52,7 @@ class ServiceProvider extends SupportServiceProvider
                 ],
             ]);
             $options = config('feature-toggle.options', [
+                'registerMiddleware' => true,
                 'useMigrations' => false,
             ]);
 
@@ -54,54 +62,28 @@ class ServiceProvider extends SupportServiceProvider
     }
 
     /**
-     * Register the "conditional" feature toggle provider..
-     *
-     * @return void
-     */
-    protected function registerConditionalToggleProviders(): void
-    {
-        $this->app->singleton('feature-toggle.conditional', ConditionalToggleProvider::class);
-    }
-
-    /**
      * Register the "eloquent" feature toggle provider.
      *
      * @return void
      */
-    protected function registerEloquentToggleProviders(): void
+    protected function registerToggleProviderDrivers(): void
     {
-        $this->app->singleton('feature-toggle.eloquent', EloquentToggleProvider::class);
-    }
-
-    /**
-     * Register the "local" feature toggle provider.
-     *
-     * @return void
-     */
-    protected function registerLocalToggleProviders(): void
-    {
-        $this->app->singleton('feature-toggle.local', LocalToggleProvider::class);
-    }
-
-    /**
-     * Register the "querystring" feature toggle provider.
-     *
-     * @return void
-     */
-    protected function registerQueryStringToggleProviders(): void
-    {
-        $this->app->singleton('feature-toggle.querystring', QueryStringToggleProvider::class);
+        $drivers = config('feature-toggle.drivers', []) + $this->defaultDrivers;
+        foreach ($drivers as $name => $concrete) {
+            $this->app->singleton("feature-toggle.{$name}", $concrete);
+        }
     }
 
     /**
      * Perform post-registration booting of services.
      *
+     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function boot(): void
+    public function boot(Router $router): void
     {
         $this->registerBladeDirective();
-        $this->registerMiddleware();
+        $this->registerMiddleware($router);
         $this->registerMigrations();
         $this->registerPublishing();
     }
@@ -113,21 +95,23 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerBladeDirective(): void
     {
-        Blade::if('featureToggle', function (string $name, bool $status = true) {
-            return feature_toggle($name, $status);
+        Blade::if('featureToggle', function (string $name, $checkActive = true) {
+            return feature_toggle($name, $checkActive);
         });
     }
 
     /**
-     * Register the package migrations.
+     * Register the package middleware.
      *
+     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    protected function registerMiddleware(): void
+    protected function registerMiddleware(Router $router): void
     {
-        if ($this->app['feature-toggle.api']->isMiddlewareEnabled()) {
-            $this->app['router']->aliasMiddleware('featureToggle', FeatureToggle::class);
+        if (! feature_toggle_api()->isMiddlewareEnabled()) {
+            return;
         }
+        $router->aliasMiddleware('featureToggle', FeatureToggle::class);
     }
 
     /**
@@ -137,9 +121,10 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerMigrations(): void
     {
-        if ($this->app->runningInConsole() && $this->app['feature-toggle.api']->isMigrationsEnabled()) {
-            $this->loadMigrationsFrom(dirname(__DIR__).'/database/migrations');
+        if (! $this->app->runningInConsole() || ! feature_toggle_api()->isMigrationsEnabled()) {
+            return;
         }
+        $this->loadMigrationsFrom($this->packageDatabaseMigrationsPath());
     }
 
     /**
@@ -149,15 +134,16 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerPublishing(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                $this->packageConfigFilePath() => $this->app->configPath($this->packageConfigFilename()),
-            ], $this->packageName().'-config');
-
-            $this->publishes([
-                dirname(__DIR__).'/database/migrations' => $this->app->databasePath('migrations'),
-            ], $this->packageName().'-migrations');
+        if (! $this->app->runningInConsole()) {
+            return;
         }
+        $this->publishes([
+            $this->packageConfigFilePath() => $this->app->configPath($this->packageConfigFilename()),
+        ], $this->packageName().'-config');
+
+        $this->publishes([
+            $this->packageDatabaseMigrationsPath() => $this->app->databasePath('migrations'),
+        ], $this->packageName().'-migrations');
     }
 
     /**
@@ -173,13 +159,13 @@ class ServiceProvider extends SupportServiceProvider
     /**
      * Return the base path for this package.
      *
-     * @param  string  $path
+     * @param  array  $path
      *
      * @return string
      */
-    protected function packageBasePath(string $path): string
+    protected function packageBasePath(...$path): string
     {
-        return dirname(__DIR__).DIRECTORY_SEPARATOR.$path;
+        return realpath(dirname(__DIR__).DIRECTORY_SEPARATOR.implode($path, DIRECTORY_SEPARATOR));
     }
 
     /**
@@ -199,6 +185,16 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function packageConfigFilePath(): string
     {
-        return $this->packageBasePath('config'.DIRECTORY_SEPARATOR.$this->packageConfigFilename());
+        return $this->packageBasePath('config', $this->packageConfigFilename());
+    }
+
+    /**
+     * File path of database migrations folder for package.
+     *
+     * @return string
+     */
+    protected function packageDatabaseMigrationsPath(): string
+    {
+        return $this->packageBasePath('database', 'migrations');
     }
 }

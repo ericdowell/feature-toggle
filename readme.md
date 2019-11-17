@@ -17,9 +17,13 @@ A simple feature toggle api for Laravel applications.
 - [Usage](#usage)
     - [Toggle Booting](#toggle-booting)
     - [Helper Functions](#helper-functions)
+    - [Use with Laravel Blade Custom Directive](#use-with-laravel-blade-custom-directive)
+    - [Use with Laravel Middleware](#use-with-laravel-middleware)
     - [Use with Laravel Task Scheduling](#use-with-laravel-task-scheduling)
 - [Toggle Providers](#toggle-providers)
+    - [Add Additional Toggle Providers](#add-additional-toggle-providers)
     - [Local Feature Toggles](#local-feature-toggles)
+        - [Toggle Parsing](#toggle-parsing)
     - [Conditional Feature Toggles](#conditional-feature-toggles)
     - [Eloquent Feature Toggles](#eloquent-feature-toggles)
         - [Database Migration](#database-migration)
@@ -33,7 +37,7 @@ A simple feature toggle api for Laravel applications.
 ## Installation
 Install using composer by running:
 ```bash
-composer require ericdowell/feature-toggle ^1.6
+composer require ericdowell/feature-toggle ^1.7
 ```
 
 Publish the `feature-toggle.php` config file by running:
@@ -68,6 +72,46 @@ if (feature_toggle('Example')) {
     // do something
 }
 ```
+The `feature_toggle` function also allows a second parameter to be passed to allow for checking if the toggle is
+active (`true`) or if it is inactive (`false`):
+```php
+if (feature_toggle('Example', false)) {
+    // do something when toggle is inactive
+}
+// OR
+if (feature_toggle('Example', 'off')) {
+    // do something when toggle is inactive
+}
+```
+The second parameter will parse as the local toggle does, read me in the [Toggle Parsing](#toggle-parsing) section to
+learn more.
+
+### Use with Laravel Blade Custom Directive
+This custom directive uses the `feature_toggle` helper function directly, you can expect the same behavior:
+```php
+@feature('Example')
+    // do something
+@endfeature
+```
+Or if you'd like to check if the `Example` is inactive then you may pass a falsy value as the second parameter:
+```php
+// returns true if toggle is inactive
+@feature('Example', false)
+    // do something
+@endfeature
+// OR
+@feature('Example', 'off')
+    // do something
+@endfeature
+```
+
+### Use with Laravel Middleware
+The middleware signature is as follows:
+```
+featureToggle:{name},{status},{abort}
+```
+Where `status` and `abort` are optional parameters. `status` will default to `true` (truthy) and `abort` will default to
+`404` status code. `name` is required.
 
 ### Use with Laravel Task Scheduling
 You can use the built-in `when` function in combination with the `feature_toggle` helper function in the `app/Console/Kernel.php`
@@ -126,6 +170,34 @@ feature_toggle_api()->setProviders([
 ]);
 ```
 
+### Add Additional Toggle Providers
+You may add additional custom toggle providers or override the default toggle providers by adding them to the `drivers`
+key within `config/feature-toggle.php`:
+```php
+'drivers' => [
+    'cache' => \App\FeatureToggle\CacheToggleProvider::class,
+    'local' => \App\FeatureToggle\LocalToggleProvider::class,
+    'session' => \App\FeatureToggle\SessionToggleProvider::class,
+],
+```
+Then just add them in the order you'd like them to be checked within `providers` as you would the defaults:
+```php
+'providers' => [
+    [
+        'driver' => 'conditional',
+    ],
+    [
+        'driver' => 'cache',
+    ],
+    [
+        'driver' => 'session',
+    ],
+    [
+        'driver' => 'local',
+    ],
+],
+```
+
 ### Local Feature Toggles
 To add new toggle(s) you will need to update the published `config/feature-toggles.php` file:
 ```php
@@ -139,6 +211,7 @@ return [
     ],
 ];
 ```
+#### Toggle Parsing
 The value passed from the `.env` file or set directly within config file can be:
 - A `boolean`: `true`/`false`
 - An `int` version of `boolean`: `1`/`0`

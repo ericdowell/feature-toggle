@@ -8,10 +8,6 @@ use FeatureToggle\Contracts\Api as ApiContract;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * FeatureToggle\Facades\FeatureToggleApi.
- *
- * @see \FeatureToggle\Api
- *
  * @codeCoverageIgnore
  *
  * @method static \FeatureToggle\Contracts\Api|\FeatureToggle\Api setProviders(array $providers)
@@ -32,6 +28,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static \FeatureToggle\Contracts\ToggleProvider|\FeatureToggle\Api refreshToggles()
  * @method static \FeatureToggle\Contracts\ToggleProvider getProvider(string $name)
  * @method static \FeatureToggle\Api loadProvider(string $driver, array $parameters)
+ *
+ * @see \FeatureToggle\Api
  */
 class FeatureToggleApi extends Facade
 {

@@ -32,11 +32,12 @@ return [
      | Feature Toggle Providers
      |--------------------------------------------------------------------------
      |
-     | Classmap of which providers to load and what order to check them
-     | for a given feature toggles status. The first provider to have
-     | a feature toggle defined will be used as the status value.
+     | Ordered list of which providers to load, the order is important because
+     | it is the exact order the api will search for a toggle active/inactive
+     | status. The first provider to have a feature toggle defined, active
+     | or not, will be used as the status value.
      |
-     | Supported Drivers: "local", "conditional", "eloquent", "querystring"
+     | Default Drivers: "conditional", "eloquent", "local", "querystring"
      |
      */
 
@@ -67,4 +68,23 @@ return [
         'registerMiddleware' => true,
         'useMigrations' => false,
     ],
+
+    /*
+     |--------------------------------------------------------------------------
+     | Additional Feature Toggle Drivers
+     |--------------------------------------------------------------------------
+     |
+     | Classmap of drivers to load within the 'feature-api.*' container namespace.
+     |
+     | The driver class must implement FeatureToggle\Contracts\ToggleProvider.
+     |
+     | By default the following drivers are loaded:
+     | - 'conditional' => \FeatureToggle\ConditionalToggleProvider::class,
+     | - 'eloquent' => \FeatureToggle\EloquentToggleProvider::class,
+     | - 'local' => \FeatureToggle\LocalToggleProvider::class,
+     | - 'querystring' => \FeatureToggle\QueryStringToggleProvider::class,
+     |
+     */
+
+    'drivers' => [],
 ];

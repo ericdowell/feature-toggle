@@ -5,26 +5,40 @@ declare(strict_types=1);
 namespace FeatureToggle\Tests\Feature\Middleware;
 
 use FeatureToggle\Tests\TestCase;
+use Illuminate\Foundation\Testing\TestResponse;
 
 class FeatureToggleTest extends TestCase
 {
     /**
-     * @var string
-     */
-    const ROUTE = 'toggle.testing';
-
-    /**
      * @param  string  $name
      * @param  string|int|bool  $status
      * @param  int  $abort
+     * @returns void
      */
     public function registerRoute(string $name, $status, $abort = 404): void
     {
+        // Make sure to refresh the toggles.
+        feature_toggle_api()->refreshToggles();
         /** @var \Illuminate\Routing\Router $router */
         $router = $this->app['router'];
         $middleware = "featureToggle:{$name},{$status},{$abort}";
 
-        $router->get('testing/toggle')->name(self::ROUTE)->middleware($middleware);
+        $router->get('testing/toggle')->name('toggle.testing')->middleware($middleware)->uses(function () {
+            return response()->json(['success' => true]);
+        });
+    }
+
+    /**
+     * @param  string  $name
+     * @param $status
+     * @param  int  $abort
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function callEndpoint(string $name, $status, $abort = 404): TestResponse
+    {
+        $this->registerRoute($name, $status, $abort);
+
+        return $this->get(route('toggle.testing'));
     }
 
     /**
@@ -32,10 +46,10 @@ class FeatureToggleTest extends TestCase
      */
     public function testRequestIsOkWhenToggleIsNotActiveAndMiddlewareMatches(): void
     {
-        $this->registerRoute('foo', false);
-
-        $response = $this->get(route(self::ROUTE));
-        $response->isOk();
+        $this->callEndpoint('foo', false)->assertOk()->assertJson(['success' => true]);
+        $this->callEndpoint('foo', 'off')->assertOk()->assertJson(['success' => true]);
+        $this->callEndpoint('foo', 'no')->assertOk()->assertJson(['success' => true]);
+        $this->callEndpoint('foo', 'foo')->assertOk()->assertJson(['success' => true]);
     }
 
     /**
@@ -44,10 +58,8 @@ class FeatureToggleTest extends TestCase
     public function testRequestIsNotFoundWhenToggleIsActiveAndMiddlewareNotMatching(): void
     {
         config()->set('feature-toggle.toggles', ['foo' => true]);
-        $this->registerRoute('foo', false);
 
-        $response = $this->get(route(self::ROUTE));
-        $response->isNotFound();
+        $this->callEndpoint('foo', false)->assertNotFound();
     }
 
     /**
@@ -56,10 +68,10 @@ class FeatureToggleTest extends TestCase
     public function testRequestIsOKWhenToggleIsActiveAndMiddlewareMatches(): void
     {
         config()->set('feature-toggle.toggles', ['foo' => true]);
-        $this->registerRoute('foo', true);
 
-        $response = $this->get(route(self::ROUTE));
-        $response->isOk();
+        $this->callEndpoint('foo', true)->assertOk()->assertJson(['success' => true]);
+        $this->callEndpoint('foo', 'on')->assertOk()->assertJson(['success' => true]);
+        $this->callEndpoint('foo', 'yes')->assertOk()->assertJson(['success' => true]);
     }
 
     /**
@@ -67,10 +79,7 @@ class FeatureToggleTest extends TestCase
      */
     public function testRequestIsNotFoundWhenToggleIsNotActiveAndMiddlewareNotMatching(): void
     {
-        $this->registerRoute('foo', true);
-
-        $response = $this->get(route(self::ROUTE));
-        $response->isNotFound();
+        $this->callEndpoint('foo', true)->assertNotFound();
     }
 
     /**
@@ -78,9 +87,6 @@ class FeatureToggleTest extends TestCase
      */
     public function testRequestIsForbiddenWhenToggleIsNotActiveWhenMiddlewarePassed403(): void
     {
-        $this->registerRoute('foo', true, 403);
-
-        $response = $this->get(route(self::ROUTE));
-        $response->isForbidden();
+        $this->callEndpoint('foo', true, 403)->assertForbidden();
     }
 }
