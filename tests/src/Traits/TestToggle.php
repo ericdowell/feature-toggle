@@ -7,6 +7,8 @@ namespace FeatureToggle\Tests\Traits;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 
 /**
+ * @group unit
+ *
  * @mixin \PHPUnit\Framework\Assert
  */
 trait TestToggle

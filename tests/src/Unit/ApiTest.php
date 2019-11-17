@@ -18,6 +18,9 @@ use OutOfBoundsException;
 use RuntimeException;
 use stdClass;
 
+/**
+ * @group unit
+ */
 class ApiTest extends TestCase
 {
     use TestToggleProvider;

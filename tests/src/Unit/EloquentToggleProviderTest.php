@@ -17,6 +17,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 
+/**
+ * @group unit
+ */
 class EloquentToggleProviderTest extends TestCase
 {
     use RefreshDatabase, TestToggleProvider;

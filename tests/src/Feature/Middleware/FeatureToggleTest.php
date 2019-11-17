@@ -6,6 +6,9 @@ namespace FeatureToggle\Tests\Feature\Middleware;
 
 use FeatureToggle\Tests\TestCase;
 
+/**
+ * @group feature
+ */
 class FeatureToggleTest extends TestCase
 {
     /**
@@ -17,14 +20,17 @@ class FeatureToggleTest extends TestCase
      * @param  string  $name
      * @param  string|int|bool  $status
      * @param  int  $abort
+     * @returns void
      */
     public function registerRoute(string $name, $status, $abort = 404): void
     {
+        // Make sure to refresh the toggles.
+        feature_toggle_api()->refreshToggles();
         /** @var \Illuminate\Routing\Router $router */
         $router = $this->app['router'];
         $middleware = "featureToggle:{$name},{$status},{$abort}";
 
-        $router->get('testing/toggle')->name(self::ROUTE)->middleware($middleware)->uses(function() {
+        $router->get('testing/toggle')->name(self::ROUTE)->middleware($middleware)->uses(function () {
             return response()->json(['success' => true]);
         });
     }

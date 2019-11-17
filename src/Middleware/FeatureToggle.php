@@ -24,7 +24,7 @@ class FeatureToggle
     public function handle(Request $request, Closure $next, string $name, $active = true, $abort = 404)
     {
         $checkActive = Toggle::calculateIsActive($active);
-        if (feature_toggle($name, $checkActive)) {
+        if (! feature_toggle($name, $checkActive)) {
             return abort($abort);
         }
 

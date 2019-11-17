@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
+/**
+ * @group unit
+ */
 class QueryStringToggleProviderTest extends TestCase
 {
     use TestToggleProvider;

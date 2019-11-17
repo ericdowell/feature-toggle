@@ -9,6 +9,9 @@ use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Tests\Traits\TestToggle;
 use FeatureToggle\Toggle\Eloquent;
 
+/**
+ * @group unit
+ */
 class FeatureToggleTest extends TestCase
 {
     use TestToggle;

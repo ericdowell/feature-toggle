@@ -9,6 +9,9 @@ use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
 
+/**
+ * @group unit
+ */
 class ConditionalToggleProviderTest extends TestCase
 {
     use TestToggleProvider;
