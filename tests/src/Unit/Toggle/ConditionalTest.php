@@ -9,9 +9,6 @@ use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Tests\Traits\TestToggle;
 use FeatureToggle\Toggle\Conditional;
 
-/**
- * @group unit
- */
 class ConditionalTest extends TestCase
 {
     use TestToggle;

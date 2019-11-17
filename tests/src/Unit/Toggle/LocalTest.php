@@ -9,9 +9,6 @@ use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Tests\Traits\TestToggle;
 use FeatureToggle\Toggle\Local;
 
-/**
- * @group unit
- */
 class LocalTest extends TestCase
 {
     use TestToggle;

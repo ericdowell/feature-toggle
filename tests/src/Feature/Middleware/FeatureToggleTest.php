@@ -7,9 +7,6 @@ namespace FeatureToggle\Tests\Feature\Middleware;
 use FeatureToggle\Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
 
-/**
- * @group feature
- */
 class FeatureToggleTest extends TestCase
 {
     /**
