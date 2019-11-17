@@ -17,9 +17,13 @@ A simple feature toggle api for Laravel applications.
 - [Usage](#usage)
     - [Toggle Booting](#toggle-booting)
     - [Helper Functions](#helper-functions)
+    - [Use with Laravel Blade Custom Directive](#use-with-laravel-blade-custom-directive)
+    - [Use with Laravel Middleware](#use-with-laravel-middleware)
     - [Use with Laravel Task Scheduling](#use-with-laravel-task-scheduling)
 - [Toggle Providers](#toggle-providers)
+    - [Add Additional Toggle Providers](#add-additional-toggle-providers)
     - [Local Feature Toggles](#local-feature-toggles)
+        - [Toggle Parsing](#toggle-parsing)
     - [Conditional Feature Toggles](#conditional-feature-toggles)
     - [Eloquent Feature Toggles](#eloquent-feature-toggles)
         - [Database Migration](#database-migration)
@@ -33,7 +37,7 @@ A simple feature toggle api for Laravel applications.
 ## Installation
 Install using composer by running:
 ```bash
-composer require ericdowell/feature-toggle ^1.6
+composer require ericdowell/feature-toggle ^1.7
 ```
 
 Publish the `feature-toggle.php` config file by running:
@@ -102,7 +106,12 @@ Or if you'd like to check if the `Example` is inactive then you may pass a falsy
 ```
 
 ### Use with Laravel Middleware
-
+The middleware signature is as follows:
+```
+featureToggle:{name},{status},{abort}
+```
+Where `status` and `abort` are optional parameters. `status` will default to `true` (truthy) and `abort` will default to
+`404` status code. `name` is required.
 
 ### Use with Laravel Task Scheduling
 You can use the built-in `when` function in combination with the `feature_toggle` helper function in the `app/Console/Kernel.php`
