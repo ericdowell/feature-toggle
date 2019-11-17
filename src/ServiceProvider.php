@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace FeatureToggle;
 
 use FeatureToggle\Contracts\Api as ApiContract;
+use FeatureToggle\Middleware\FeatureToggle;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
 
 /**
@@ -98,8 +100,34 @@ class ServiceProvider extends SupportServiceProvider
      */
     public function boot(): void
     {
+        $this->registerBladeDirective();
+        $this->registerMiddleware();
         $this->registerMigrations();
         $this->registerPublishing();
+    }
+
+    /**
+     * Register the custom 'featureToggle' blade directive.
+     *
+     * @return void
+     */
+    protected function registerBladeDirective(): void
+    {
+        Blade::if('featureToggle', function (string $name, bool $status = true) {
+            return feature_toggle($name, $status);
+        });
+    }
+
+    /**
+     * Register the package migrations.
+     *
+     * @return void
+     */
+    protected function registerMiddleware(): void
+    {
+        if ($this->app['feature-toggle.api']->isMiddlewareEnabled()) {
+            $this->app['router']->aliasMiddleware('featureToggle', FeatureToggle::class);
+        }
     }
 
     /**

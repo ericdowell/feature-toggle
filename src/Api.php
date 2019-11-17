@@ -77,30 +77,6 @@ class Api implements ApiContract
     }
 
     /**
-     * @return bool
-     */
-    public function isMigrationsEnabled(): bool
-    {
-        return filter_var($this->getOption('useMigrations', false), FILTER_VALIDATE_BOOLEAN);
-    }
-
-    /**
-     * @return void
-     */
-    public static function useMigrations(): void
-    {
-        static::setOption('useMigrations', true);
-    }
-
-    /**
-     * @return void
-     */
-    public static function ignoreMigrations(): void
-    {
-        static::setOption('useMigrations', false);
-    }
-
-    /**
      * @return string
      */
     public function getName(): string
