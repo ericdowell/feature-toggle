@@ -69,7 +69,7 @@ class ServiceProvider extends SupportServiceProvider
     protected function registerToggleProviderDrivers(): void
     {
         $drivers = config('feature-toggle.drivers', []) + $this->defaultDrivers;
-        foreach($drivers as $name => $concrete) {
+        foreach ($drivers as $name => $concrete) {
             $this->app->singleton("feature-toggle.{$name}", $concrete);
         }
     }
@@ -95,7 +95,7 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerBladeDirective(): void
     {
-        Blade::if('featureToggle', function (string $name, bool $checkActive = true) {
+        Blade::if('featureToggle', function (string $name, $checkActive = true) {
             return feature_toggle($name, $checkActive);
         });
     }
@@ -108,7 +108,7 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerMiddleware(Router $router): void
     {
-        if (!feature_toggle_api()->isMiddlewareEnabled()) {
+        if (! feature_toggle_api()->isMiddlewareEnabled()) {
             return;
         }
         $router->aliasMiddleware('featureToggle', FeatureToggle::class);
@@ -121,10 +121,10 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerMigrations(): void
     {
-        if (!$this->app->runningInConsole() || !feature_toggle_api()->isMigrationsEnabled()) {
+        if (! $this->app->runningInConsole() || ! feature_toggle_api()->isMigrationsEnabled()) {
             return;
         }
-        $this->loadMigrationsFrom($this->packageBasePath('database', 'migrations'));
+        $this->loadMigrationsFrom($this->packageDatabaseMigrationsPath());
     }
 
     /**
@@ -134,7 +134,7 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerPublishing(): void
     {
-        if (!$this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole()) {
             return;
         }
         $this->publishes([
@@ -142,7 +142,7 @@ class ServiceProvider extends SupportServiceProvider
         ], $this->packageName().'-config');
 
         $this->publishes([
-            $this->packageBasePath('database', 'migrations') => $this->app->databasePath('migrations'),
+            $this->packageDatabaseMigrationsPath() => $this->app->databasePath('migrations'),
         ], $this->packageName().'-migrations');
     }
 
@@ -185,6 +185,16 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function packageConfigFilePath(): string
     {
-        return $this->packageBasePath('config'.DIRECTORY_SEPARATOR.$this->packageConfigFilename());
+        return $this->packageBasePath('config', $this->packageConfigFilename());
+    }
+
+    /**
+     * File path of database migrations folder for package.
+     *
+     * @return string
+     */
+    protected function packageDatabaseMigrationsPath(): string
+    {
+        return $this->packageBasePath('database', 'migrations');
     }
 }

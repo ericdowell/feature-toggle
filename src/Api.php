@@ -13,12 +13,13 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use OutOfBoundsException;
 use RuntimeException;
 
 class Api implements ApiContract
 {
-    use HasStaticOptions, ToggleProvider;
+    use HasStaticOptions, Macroable, ToggleProvider;
 
     /**
      * @var string
