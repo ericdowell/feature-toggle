@@ -42,10 +42,10 @@ return [
      */
 
     'providers' => [
-        'conditional' => [
+        [
             'driver' => 'conditional',
         ],
-        'local' => [
+        [
             'driver' => 'local',
         ],
     ],
