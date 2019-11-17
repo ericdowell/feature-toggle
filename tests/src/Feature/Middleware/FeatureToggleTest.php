@@ -24,7 +24,9 @@ class FeatureToggleTest extends TestCase
         $router = $this->app['router'];
         $middleware = "featureToggle:{$name},{$status},{$abort}";
 
-        $router->get('testing/toggle')->name(self::ROUTE)->middleware($middleware);
+        $router->get('testing/toggle')->name(self::ROUTE)->middleware($middleware)->uses(function() {
+            return response()->json(['success' => true]);
+        });
     }
 
     /**
@@ -35,7 +37,8 @@ class FeatureToggleTest extends TestCase
         $this->registerRoute('foo', false);
 
         $response = $this->get(route(self::ROUTE));
-        $response->isOk();
+        $response->assertOk();
+        $response->assertJson(['success' => true]);
     }
 
     /**
@@ -47,7 +50,7 @@ class FeatureToggleTest extends TestCase
         $this->registerRoute('foo', false);
 
         $response = $this->get(route(self::ROUTE));
-        $response->isNotFound();
+        $response->assertNotFound();
     }
 
     /**
@@ -59,7 +62,8 @@ class FeatureToggleTest extends TestCase
         $this->registerRoute('foo', true);
 
         $response = $this->get(route(self::ROUTE));
-        $response->isOk();
+        $response->assertOk();
+        $response->assertJson(['success' => true]);
     }
 
     /**
@@ -70,7 +74,7 @@ class FeatureToggleTest extends TestCase
         $this->registerRoute('foo', true);
 
         $response = $this->get(route(self::ROUTE));
-        $response->isNotFound();
+        $response->assertNotFound();
     }
 
     /**
@@ -81,6 +85,6 @@ class FeatureToggleTest extends TestCase
         $this->registerRoute('foo', true, 403);
 
         $response = $this->get(route(self::ROUTE));
-        $response->isForbidden();
+        $response->assertForbidden();
     }
 }
