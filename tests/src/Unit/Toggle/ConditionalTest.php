@@ -8,8 +8,6 @@ use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Tests\Traits\TestToggle;
 use FeatureToggle\Toggle\Conditional;
-use Mockery;
-use Mockery\MockInterface;
 
 class ConditionalTest extends TestCase
 {
@@ -18,11 +16,12 @@ class ConditionalTest extends TestCase
     /**
      * @param  string  $name
      * @param  mixed  $is_active
+     * @param  bool|null  $defer
      * @return ToggleContract|Conditional
      */
-    protected function getInstance(string $name, $is_active): ToggleContract
+    protected function getInstance(string $name, $is_active, bool $defer = null): ToggleContract
     {
-        return new Conditional($name, $is_active);
+        return new Conditional($name, $is_active, $defer);
     }
 
     /**
@@ -47,17 +46,9 @@ class ConditionalTest extends TestCase
 
             return $count === 1;
         };
-        $args = [
-            'foo',
-            $condition,
-            true,
-        ];
-        /* @var Conditional|MockInterface $toggle */
-        $toggle = Mockery::mock(Conditional::class, $args)
-                         ->makePartial()
-                         ->shouldAllowMockingProtectedMethods();
-        $toggle->shouldReceive('call')->once()->passthru();
+        $toggle = $this->getInstance('foo', $condition, true);
 
+        $this->assertTrue($toggle->isActive(), 'toggle calling isActive should return true.');
         $this->assertTrue($toggle->isActive(), 'toggle calling isActive should return true.');
         $this->assertTrue($toggle->isActive(), 'toggle calling isActive should return true.');
     }
