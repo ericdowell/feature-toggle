@@ -364,8 +364,8 @@ Then create a new js file within `resources/js` called `featureToggle.js`:
 ```js
 const toggles = Object.keys(window.activeToggles || {})
 
-export const featureToggle = (name, checkStatus = true) =>
-    checkStatus ? toggles.includes(name) : !toggles.includes(name)
+export const featureToggle = (name, checkActive = true) =>
+    checkActive ? toggles.includes(name) : !toggles.includes(name)
 ```
 
 Expose on the `window` within `app.js`:
@@ -391,8 +391,8 @@ and/or create a `Feature` component that uses `featureToggle.js`:
 // Feature.js
 import { featureToggle } from './featureToggle'
 
-export const Feature = ({ name, active = true, children }) => {
-    return featureToggle(name, active) && children
+export const Feature = ({ name, active: checkActive = true, children }) => {
+    return featureToggle(name, checkActive) && children
 }
 ```
 ```jsx
