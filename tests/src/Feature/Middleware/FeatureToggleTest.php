@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Feature\Middleware;
 
-use FeatureToggle\Middleware\FeatureToggle;
 use FeatureToggle\Tests\TestCase;
 
 class FeatureToggleTest extends TestCase
@@ -23,10 +22,7 @@ class FeatureToggleTest extends TestCase
     {
         /** @var \Illuminate\Routing\Router $router */
         $router = $this->app['router'];
-
-        $middlewareName = 'featureToggle';
-        $middleware = "{$middlewareName}:{$name},{$status},{$abort}";
-        $router->aliasMiddleware($middlewareName, FeatureToggle::class);
+        $middleware = "featureToggle:{$name},{$status},{$abort}";
 
         $router->get('testing/toggle')->name(self::ROUTE)->middleware($middleware);
     }
