@@ -16,11 +16,16 @@ if (! function_exists('feature_toggle_api')) {
 if (! function_exists('feature_toggle')) {
     /**
      * @param  string  $name
-     *
+     * @param  bool  $status
      * @return bool
      */
-    function feature_toggle(string $name)
+    function feature_toggle(string $name, bool $status = true)
     {
-        return feature_toggle_api()->isActive($name);
+        $isActive = feature_toggle_api()->isActive($name);
+        if ($status === true) {
+            return $isActive;
+        }
+
+        return ! $isActive;
     }
 }

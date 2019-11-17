@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FeatureToggle;
 
 use FeatureToggle\Contracts\Api as ApiContract;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
 
 /**
@@ -100,6 +101,18 @@ class ServiceProvider extends SupportServiceProvider
     {
         $this->registerMigrations();
         $this->registerPublishing();
+    }
+
+    /**
+     * Register the custom 'featureToggle' blade directive.
+     *
+     * @return void
+     */
+    protected function registerBladeDirective(): void
+    {
+        Blade::if('featureToggle', function (string $name, bool $status = true) {
+            return feature_toggle($name, $status);
+        });
     }
 
     /**

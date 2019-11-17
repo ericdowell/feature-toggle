@@ -32,7 +32,7 @@ trait Toggle
      * @param string|bool|int $isActive
      * @return bool
      */
-    protected function calculateIsActive($isActive): bool
+    public static function calculateIsActive($isActive): bool
     {
         if (is_bool($isActive)) {
             return $isActive;
