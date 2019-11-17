@@ -346,7 +346,7 @@ but this can be also be configured to any value.
     [
         'driver' => 'querystring',
         'apiKey' => env('FEATURE_TOGGLE_API_KEY'),
-        // Optional change to sometihing different than 'feature_token'.
+        // Optionally change to sometihing different than 'feature_token'.
         // 'apiInputKey' => 'feature_toggle_api_token',
     ],
 ],
@@ -364,7 +364,8 @@ Then create a new js file within `resources/js` called `featureToggle.js`:
 ```js
 const toggles = Object.keys(window.activeToggles || {})
 
-export const featureToggle = name => toggles.includes(name)
+export const featureToggle = (name, checkStatus = true) =>
+    checkStatus ? toggles.includes(name) : !toggles.includes(name)
 ```
 
 Expose on the `window` within `app.js`:
@@ -391,10 +392,7 @@ and/or create a `Feature` component that uses `featureToggle.js`:
 import { featureToggle } from './featureToggle'
 
 export const Feature = ({ name, active = true, children }) => {
-    if (active === true) {
-        return featureToggle(name) && children
-    }
-    return !featureToggle(name) && children
+    return featureToggle(name, active) && children
 }
 ```
 ```jsx
@@ -409,6 +407,9 @@ class App extends Component {
                 <Navigation />
                 <Feature name="Show Something">
                    <Something />
+                </Feature>
+                <Feature name="Show Something" active={false}>
+                   <p>Nothing to see here!</p>
                 </Feature>
             </Fragment>
         )
