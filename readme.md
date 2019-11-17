@@ -83,7 +83,7 @@ if (feature_toggle('Example', 'off')) {
     // do something when toggle is inactive
 }
 ```
-The second parameter will parse as the local toggle does, read me in the [Toggle Parsing](#toggle-parsing) section to
+The second parameter will parse as the local toggle does, read more in the [Toggle Parsing](#toggle-parsing) section to
 learn more.
 
 ### Use with Laravel Blade Custom Directive
