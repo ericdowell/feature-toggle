@@ -16,9 +16,12 @@ use Illuminate\Support\Facades\Facade;
  *
  * @method static \FeatureToggle\Contracts\Api|\FeatureToggle\Api setProviders(array $providers)
  * @method static array getProviders()
+ * @method static bool isMiddlewareEnabled()
  * @method static bool isMigrationsEnabled()
  * @method static void useMigrations()
  * @method static void ignoreMigrations()
+ * @method static void registerMiddleware()
+ * @method static void ignoreMiddleware()
  * @method static string getName()
  * @method static \FeatureToggle\ConditionalToggleProvider getConditionalProvider()
  * @method static \FeatureToggle\EloquentToggleProvider getEloquentProvider()

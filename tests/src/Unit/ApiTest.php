@@ -44,11 +44,27 @@ class ApiTest extends TestCase
     /**
      * @return void
      */
+    public function testRegisterOrIgnoreMiddlewareMethods(): void
+    {
+        $this->assertTrue(feature_toggle_api()->isMiddlewareEnabled(),
+            '"isMiddlewareEnabled" should BE true by default.');
+
+        FeatureToggleApi::ignoreMiddleware();
+        $this->assertFalse(feature_toggle_api()->isMiddlewareEnabled(),
+            '"isMiddlewareEnabled" should BE false after calling "Api::ignoreMiddleware()"');
+
+        FeatureToggleApi::registerMiddleware();
+        $this->assertTrue(feature_toggle_api()->isMiddlewareEnabled(),
+            '"isMiddlewareEnabled" should BE true after calling "Api::registerMiddleware()"');
+    }
+
+    /**
+     * @return void
+     */
     public function testUseOrIgnoreMigrationsMethods(): void
     {
-        FeatureToggleApi::ignoreMigrations();
         $this->assertFalse(feature_toggle_api()->isMigrationsEnabled(),
-            '"isMigrationsEnabled" should BE false after calling "Api::ignoreMigrations()"');
+            '"isMigrationsEnabled" should BE false by default.');
 
         FeatureToggleApi::useMigrations();
         $this->assertTrue(feature_toggle_api()->isMigrationsEnabled(),
