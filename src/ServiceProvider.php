@@ -101,16 +101,17 @@ class ServiceProvider extends SupportServiceProvider
     }
 
     /**
-     * Register the package migrations.
+     * Register the package middleware.
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
     protected function registerMiddleware(Router $router): void
     {
-        if (feature_toggle_api()->isMiddlewareEnabled()) {
-            $router->aliasMiddleware('featureToggle', FeatureToggle::class);
+        if (!feature_toggle_api()->isMiddlewareEnabled()) {
+            return;
         }
+        $router->aliasMiddleware('featureToggle', FeatureToggle::class);
     }
 
     /**
@@ -120,9 +121,10 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerMigrations(): void
     {
-        if ($this->app->runningInConsole() && feature_toggle_api()->isMigrationsEnabled()) {
-            $this->loadMigrationsFrom($this->packageBasePath('database', 'migrations'));
+        if (!$this->app->runningInConsole() || !feature_toggle_api()->isMigrationsEnabled()) {
+            return;
         }
+        $this->loadMigrationsFrom($this->packageBasePath('database', 'migrations'));
     }
 
     /**
@@ -132,15 +134,16 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerPublishing(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                $this->packageConfigFilePath() => $this->app->configPath($this->packageConfigFilename()),
-            ], $this->packageName().'-config');
-
-            $this->publishes([
-                $this->packageBasePath('database', 'migrations') => $this->app->databasePath('migrations'),
-            ], $this->packageName().'-migrations');
+        if (!$this->app->runningInConsole()) {
+            return;
         }
+        $this->publishes([
+            $this->packageConfigFilePath() => $this->app->configPath($this->packageConfigFilename()),
+        ], $this->packageName().'-config');
+
+        $this->publishes([
+            $this->packageBasePath('database', 'migrations') => $this->app->databasePath('migrations'),
+        ], $this->packageName().'-migrations');
     }
 
     /**
