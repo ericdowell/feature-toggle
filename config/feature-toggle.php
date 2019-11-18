@@ -59,6 +59,7 @@ return [
      |
      | 'registerMiddleware' => true/false,
      | 'useMigrations' => true/false,
+     |
      */
 
     'registerMiddleware' => true,
