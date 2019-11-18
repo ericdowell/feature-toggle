@@ -46,19 +46,38 @@ class ServiceProvider extends SupportServiceProvider
     protected function registerPrimaryToggleProvider(): void
     {
         $this->app->singleton(ApiContract::class, function () {
-            $providers = config('feature-toggle.providers', [
-                [
-                    'driver' => 'local',
-                ],
-            ]);
-            $registerMiddleware = config('feature-toggle.registerMiddleware', true);
-            $useMigrations = config('feature-toggle.useMigrations', false);
-
-            $options = compact('registerMiddleware', 'useMigrations');
-
-            return new Api($providers, $options);
+            return new Api($this->getRegisterProviders(), $this->getApiOptions());
         });
         $this->app->alias(ApiContract::class, 'feature-toggle.api');
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRegisterProviders(): array
+    {
+        return config('feature-toggle.providers', [
+            [
+                'driver' => 'local',
+            ],
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getApiOptions(): array
+    {
+        $options = [];
+        $supportOptions = [
+            'registerMiddleware' => true,
+            'useMigrations' => false,
+        ];
+        foreach ($supportOptions as $name => $default) {
+            $options[$name] = config("feature-toggle.{$name}", $default);
+        }
+
+        return $options;
     }
 
     /**
