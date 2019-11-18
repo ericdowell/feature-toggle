@@ -37,7 +37,7 @@ A simple feature toggle api for Laravel applications.
 ## Installation
 Install using composer by running:
 ```bash
-composer require ericdowell/feature-toggle ^1.7
+composer require ericdowell/feature-toggle ^1.8
 ```
 
 Publish the `feature-toggle.php` config file by running:
@@ -88,21 +88,31 @@ learn more.
 
 ### Use with Laravel Blade Custom Directive
 This custom directive uses the `feature_toggle` helper function directly, you can expect the same behavior:
-```php
-@feature('Example')
+```blade
+@featureToggle('Example')
     // do something
-@endfeature
+@endfeatureToggle
 ```
 Or if you'd like to check if the `Example` is inactive then you may pass a falsy value as the second parameter:
-```php
+```blade
 // returns true if toggle is inactive
-@feature('Example', false)
+@featureToggle('Example', false)
     // do something
-@endfeature
+@endfeatureToggle
 // OR
-@feature('Example', 'off')
+@featureToggle('Example', 'off')
     // do something
-@endfeature
+@endfeatureToggle
+```
+Or you can use the normal `@if` blade directive and call `feature_toggle` function directly:
+```blade
+@if(feature_toggle('Example'))
+    // do something
+@endif
+// OR
+@if(feature_toggle('Example', 'off'))
+    // do soemthing
+@endif
 ```
 
 ### Use with Laravel Middleware
@@ -112,6 +122,16 @@ featureToggle:{name},{status},{abort}
 ```
 Where `status` and `abort` are optional parameters. `status` will default to `true` (truthy) and `abort` will default to
 `404` status code. `name` is required.
+
+**Examples:**
+```php
+// Passing all three parameters, changing abort to 403 status code.
+Route::get('user/billing')->middleware('featureToggle:subscription,true,403')->uses('User\\BillingController@index')->name('billing.index');
+// Passing two parameters.
+Route::get('user/subscribe')->middleware('featureToggle:subscription,true')->uses('User\\SubscribeController@index')->name('subscribe.index');
+// Passing just the name.
+Route::get('user/trial')->middleware('featureToggle:trial')->uses('User\\TrialController@index')->name('trial.index');
+```
 
 ### Use with Laravel Task Scheduling
 You can use the built-in `when` function in combination with the `feature_toggle` helper function in the `app/Console/Kernel.php`
