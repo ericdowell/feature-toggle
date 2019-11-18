@@ -57,17 +57,13 @@ return [
      |
      | Options to enable/disable behavior.
      |
-     | [
-     |      'registerMiddleware' => true/false,
-     |      'useMigrations' => true/false,
-     | ]
-     |
+     | 'registerMiddleware' => true/false,
+     | 'useMigrations' => true/false,
      */
 
-    'options' => [
-        'registerMiddleware' => true,
-        'useMigrations' => false,
-    ],
+    'registerMiddleware' => true,
+
+    'useMigrations' => false,
 
     /*
      |--------------------------------------------------------------------------

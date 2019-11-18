@@ -51,10 +51,10 @@ class ServiceProvider extends SupportServiceProvider
                     'driver' => 'local',
                 ],
             ]);
-            $options = config('feature-toggle.options', [
-                'registerMiddleware' => true,
-                'useMigrations' => false,
-            ]);
+            $registerMiddleware = config('feature-toggle.registerMiddleware', true);
+            $useMigrations = config('feature-toggle.useMigrations', false);
+
+            $options = compact('registerMiddleware', 'useMigrations');
 
             return new Api($providers, $options);
         });
