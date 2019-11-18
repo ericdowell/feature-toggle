@@ -149,7 +149,7 @@ class Kernel extends ConsoleKernel
 ```
 
 ## Toggle Providers
-Currently there're are only four feature toggle providers:
+The default feature toggle providers are as follows:
 - `conditional`
 - `eloquent`
 - `local` (config)
@@ -195,8 +195,8 @@ You may add additional custom toggle providers or override the default toggle pr
 key within `config/feature-toggle.php`:
 ```php
 'drivers' => [
-    'cache' => \App\FeatureToggle\CacheToggleProvider::class,
     'local' => \App\FeatureToggle\LocalToggleProvider::class,
+    'redis' => \App\FeatureToggle\RedisToggleProvider::class,
     'session' => \App\FeatureToggle\SessionToggleProvider::class,
 ],
 ```
@@ -204,13 +204,13 @@ Then just add them in the order you'd like them to be checked within `providers`
 ```php
 'providers' => [
     [
+        'driver' => 'session',
+    ],
+    [
         'driver' => 'conditional',
     ],
     [
-        'driver' => 'cache',
-    ],
-    [
-        'driver' => 'session',
+        'driver' => 'redis',
     ],
     [
         'driver' => 'local',
@@ -252,7 +252,7 @@ feature_toggle_api()->setConditional('Example' function () {
 }, false);
 ```
 **NOTE:** The function passed to `setConditional` does not get called right by default, it is deferred to allow
-the Laravel app to bootstrap User/Request information. The conditional function is only called once and the value
+the Laravel app to bootstrap User/Session information. The conditional function is only called once and the value
 is cached to help prevent expensive operations from being recalculated when adding additional conditional toggles.
 Because of this design it is best to define these in `AppServiceProvider@boot` or in a
 `FeatureToggleServiceProvider@boot` that you create.
@@ -267,7 +267,7 @@ place the following within the `providers` key:
     ],
 ],
 ```
-or
+OR
 ```php
 feature_toggle_api()->setProviders([
     [
@@ -305,7 +305,8 @@ You may also publish the `migrations` to your application by running the followi
 php artisan vendor:publish --tag="feature-toggles-migrations"
 ```
 
-Once you've used one of the methods above to setup the `feature_toggles` migrations run the following to update your database:
+Once you've used one of the methods above, you can run the following command to update your database with
+the `feature_toggles` migration(s):
 ```php
 php artisan migrate
 ```
@@ -316,7 +317,7 @@ If you would like to use a different eloquent model you may do so by adding `mod
 'providers' => [
     [
         'driver' => 'eloquent',
-        'model' => App\CustomFeatureToggle::class
+        'model' => App\FeatureToggle::class
     ],
 ],
 ```
@@ -339,7 +340,7 @@ When making a request to your application you may now use the following query st
 e.g. `http://localhost/?feature=Example&feature_off[]=Example%20Off&feature_off[]=Example%20Query%20String`
 
 The following example will result in `Example` as active and `Example Off`/`Example Query String` as inactive. **NOTE:**
-This will only true if the `querystring` provider is placed above other toggle providers that haven't already defined
+This will only be true if the `querystring` provider is placed above other toggle providers that haven't already defined
 these feature toggles.
 
 #### Configure Query String Keys
@@ -358,9 +359,9 @@ Below is an example of configuring the query string keys as `active` and `inacti
 ```
 
 #### Add Api Key Authorization
-To keep users or bad actors from enabling/disabling a given feature toggle via the `querystring` toggle provider you
-may configure the driver with a `token`/api key. By default the query string input is configured as `feature_token`,
-but this can be also be configured to any value.
+To keep users or bad actors from enabling/disabling feature toggles via the `querystring` toggle provider you
+may configure the driver with a `token`/api key. By default the query string input is configured as
+`feature_token`, but this can be also be configured to any value.
 ```php
 'providers' => [
     [
