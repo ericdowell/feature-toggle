@@ -46,7 +46,7 @@ class ServiceProvider extends SupportServiceProvider
     protected function registerPrimaryToggleProvider(): void
     {
         $this->app->singleton(ApiContract::class, function () {
-            return new Api($this->getRegisterProviders(), $this->getApiOptions());
+            return new Api($this->getRegisteredProviders(), $this->getApiOptions());
         });
         $this->app->alias(ApiContract::class, 'feature-toggle.api');
     }
@@ -54,7 +54,7 @@ class ServiceProvider extends SupportServiceProvider
     /**
      * @return array
      */
-    protected function getRegisterProviders(): array
+    protected function getRegisteredProviders(): array
     {
         return config('feature-toggle.providers', [
             [
