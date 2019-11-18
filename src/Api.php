@@ -70,7 +70,7 @@ class Api implements ApiContract
     }
 
     /**
-     * @return array
+     * @return ToggleProviderContract[]
      */
     public function getProviders(): array
     {
