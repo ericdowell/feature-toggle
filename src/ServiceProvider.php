@@ -8,7 +8,9 @@ use FeatureToggle\Contracts\Api as ApiContract;
 use FeatureToggle\Middleware\FeatureToggle;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
+use Illuminate\Validation\Rule;
 
 /**
  * @codeCoverageIgnore
@@ -105,6 +107,7 @@ class ServiceProvider extends SupportServiceProvider
         $this->registerMiddleware($router);
         $this->registerMigrations();
         $this->registerPublishing();
+        $this->registerValidation();
     }
 
     /**
@@ -163,6 +166,20 @@ class ServiceProvider extends SupportServiceProvider
         $this->publishes([
             $this->packageDatabaseMigrationsPath() => $this->app->databasePath('migrations'),
         ], $this->packageName().'-migrations');
+    }
+
+    /**
+     * Register the package's validation rules.
+     *
+     * @return void
+     */
+    public function registerValidation(): void
+    {
+        Rule::macro('requiredIfFeature', function (string $name, $checkActive = true) {
+            return new Rules\FeatureToggle($name, $checkActive);
+        });
+
+        Validator::extendImplicit('required_if_feature', Validation\FeatureToggle::class);
     }
 
     /**
