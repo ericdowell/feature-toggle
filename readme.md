@@ -192,8 +192,6 @@ Validator::make($request->all(), [
 #### requiredIfRule Method on FeatureToggleApi
 You may also use the `requiredIfRule` method on the `FeatureToggleApi`/`feature_toggle_api` Facade or helper function:
 ```php
-use Illuminate\Validation\Rule;
-
 Validator::make($request->all(), [
     'phone' => FeatureToggleApi::requiredIfRule('Require phone'),
 ]);

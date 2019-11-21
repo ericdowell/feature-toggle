@@ -184,7 +184,7 @@ class Api implements ApiContract
      * @param  string|int|bool  $checkActive
      * @return \FeatureToggle\Rules\FeatureToggle
      */
-    public function requiredIfRule(string $name, $checkActive = true)
+    public function requiredIfRule(string $name, $checkActive = true): Rules\FeatureToggle
     {
         return new Rules\FeatureToggle($name, $checkActive);
     }
