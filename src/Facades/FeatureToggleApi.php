@@ -25,7 +25,10 @@ use Illuminate\Support\Facades\Facade;
  * @method static \FeatureToggle\QueryStringToggleProvider getQueryStringProvider()
  * @method static \FeatureToggle\Contracts\Api|\FeatureToggle\Api setConditional(string $name, callable $condition)
  * @method static \Illuminate\Support\Collection getToggles()
+ * @method static \Illuminate\Support\Collection getProviderToggles(string $name)
  * @method static \FeatureToggle\Contracts\ToggleProvider|\FeatureToggle\Api refreshToggles()
+ * @method static \FeatureToggle\Rules\FeatureToggle requiredIfRule(string $name, $checkActive = true)
+ * @method static \FeatureToggle\Contracts\ToggleProvider|\FeatureToggle\Api refreshProvider(string $name)
  * @method static \FeatureToggle\Contracts\ToggleProvider getProvider(string $name)
  * @method static \FeatureToggle\Api loadProvider(string $driver, array $parameters)
  *

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
-use FeatureToggle\Contracts\Api as ApiContract;
+use FeatureToggle\Contracts\Api as FeatureToggleApi;
 use FeatureToggle\Middleware\FeatureToggle;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
+use Illuminate\Validation\Rule;
 
 /**
  * @codeCoverageIgnore
@@ -45,10 +47,10 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerPrimaryToggleProvider(): void
     {
-        $this->app->singleton(ApiContract::class, function () {
+        $this->app->singleton(FeatureToggleApi::class, function () {
             return new Api($this->getRegisteredProviders(), $this->getApiOptions());
         });
-        $this->app->alias(ApiContract::class, 'feature-toggle.api');
+        $this->app->alias(FeatureToggleApi::class, 'feature-toggle.api');
     }
 
     /**
@@ -105,6 +107,7 @@ class ServiceProvider extends SupportServiceProvider
         $this->registerMiddleware($router);
         $this->registerMigrations();
         $this->registerPublishing();
+        $this->registerValidation();
     }
 
     /**
@@ -163,6 +166,20 @@ class ServiceProvider extends SupportServiceProvider
         $this->publishes([
             $this->packageDatabaseMigrationsPath() => $this->app->databasePath('migrations'),
         ], $this->packageName().'-migrations');
+    }
+
+    /**
+     * Register the package's validation rules.
+     *
+     * @return void
+     */
+    public function registerValidation(): void
+    {
+        Rule::macro('requiredIfFeature', function (string $name, $checkActive = true) {
+            return new Rules\FeatureToggle($name, $checkActive);
+        });
+
+        Validator::extendImplicit('required_if_feature', Validation\FeatureToggle::class);
     }
 
     /**

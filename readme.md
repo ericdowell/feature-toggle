@@ -20,6 +20,10 @@ A simple feature toggle api for Laravel applications.
     - [Use with Laravel Blade Custom Directive](#use-with-laravel-blade-custom-directive)
     - [Use with Laravel Middleware](#use-with-laravel-middleware)
     - [Use with Laravel Task Scheduling](#use-with-laravel-task-scheduling)
+    - [Use with Laravel Validation](#use-with-laravel-validation)
+        - [Simple String](#simple-string)
+        - [Via Illuminate\Validation\Rule](#via-illuminatevalidationrule)
+        - [requiredIfRule Method on FeatureToggleApi](#requiredifrule-method-on-featuretoggleapi)
 - [Toggle Providers](#toggle-providers)
     - [Add Additional Toggle Providers](#add-additional-toggle-providers)
     - [Local Feature Toggles](#local-feature-toggles)
@@ -146,6 +150,55 @@ class Kernel extends ConsoleKernel
                  ->when(feature_toggle('Inspire Command'));
     }
 }
+```
+
+### Use with Laravel Validation
+There are three ways you can use the validation logic:
+- Simple String
+- Via Illuminate\Validation\Rule
+- requiredIfRule Method on FeatureToggleApi
+
+#### Simple String
+Use the normal simple string signature via `required_if_feature`:
+```
+required_if_feature:{name},{status}
+```
+Where `status` is an optional parameter. `status` will default to `true` (truthy). `name` parameter is required.
+
+```php
+Validator::make($request->all(), [
+    'phone' => 'required_if_feature:Require phone',
+]);
+
+Validator::make($request->all(), [
+    'phone' => 'required_if_feature:Require phone,on',
+]);
+```
+
+#### Via Illuminate\Validation\Rule
+A macro method has been added to the `Rule` class called `requiredIfFeature`:
+```php
+use Illuminate\Validation\Rule;
+
+Validator::make($request->all(), [
+    'phone' => Rule::requiredIfFeature('Require phone'),
+]);
+
+Validator::make($request->all(), [
+    'phone' => Rule::requiredIfFeature('Require phone', true),
+]);
+```
+
+#### requiredIfRule Method on FeatureToggleApi
+You may also use the `requiredIfRule` method on the `FeatureToggleApi`/`feature_toggle_api` Facade or helper function:
+```php
+Validator::make($request->all(), [
+    'phone' => FeatureToggleApi::requiredIfRule('Require phone'),
+]);
+
+Validator::make($request->all(), [
+    'phone' => feature_toggle_api()->requiredIfRule('Require phone', true),
+]);
 ```
 
 ## Toggle Providers
@@ -447,5 +500,5 @@ class App extends Component {
 - [ ] Integrate toggles into:
     - [x] Blade
     - [x] Middleware
-    - [ ] Validation
+    - [x] Validation
 - [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).

@@ -13,6 +13,7 @@ use FeatureToggle\LocalToggleProvider;
 use FeatureToggle\QueryStringToggleProvider;
 use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Tests\Traits\TestToggleProvider;
+use FeatureToggle\Tests\Traits\TestToggleValidation;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use OutOfBoundsException;
 use RuntimeException;
@@ -20,7 +21,25 @@ use stdClass;
 
 class ApiTest extends TestCase
 {
-    use TestToggleProvider;
+    use TestToggleProvider, TestToggleValidation;
+
+    /**
+     * @return string
+     */
+    protected function getValidationMessage(): string
+    {
+        return 'The data field is required.';
+    }
+
+    /**
+     * @param  string  $name
+     * @param  bool  $checkActive
+     * @return string|object
+     */
+    protected function getValidationRule(string $name, $checkActive = true)
+    {
+        return feature_toggle_api()->requiredIfRule($name, $checkActive);
+    }
 
     /**
      * @return Api
