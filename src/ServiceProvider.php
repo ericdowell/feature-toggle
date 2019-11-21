@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
-use FeatureToggle\Contracts\Api as ApiContract;
+use FeatureToggle\Contracts\Api as FeatureToggleApi;
 use FeatureToggle\Middleware\FeatureToggle;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
@@ -47,10 +47,10 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function registerPrimaryToggleProvider(): void
     {
-        $this->app->singleton(ApiContract::class, function () {
+        $this->app->singleton(FeatureToggleApi::class, function () {
             return new Api($this->getRegisteredProviders(), $this->getApiOptions());
         });
-        $this->app->alias(ApiContract::class, 'feature-toggle.api');
+        $this->app->alias(FeatureToggleApi::class, 'feature-toggle.api');
     }
 
     /**
