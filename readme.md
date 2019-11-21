@@ -148,6 +148,9 @@ class Kernel extends ConsoleKernel
 }
 ```
 
+### Use with Laravel Validation
+//
+
 ## Toggle Providers
 The default feature toggle providers are as follows:
 - `conditional`
@@ -447,5 +450,5 @@ class App extends Component {
 - [ ] Integrate toggles into:
     - [x] Blade
     - [x] Middleware
-    - [ ] Validation
+    - [x] Validation
 - [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).

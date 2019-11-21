@@ -180,6 +180,16 @@ class Api implements ApiContract
     }
 
     /**
+     * @param  string  $name
+     * @param  bool  $checkActive
+     * @return \FeatureToggle\Rules\FeatureToggle
+     */
+    public function requiredIfRule(string $name, $checkActive = true)
+    {
+        return new Rules\FeatureToggle($name, $checkActive);
+    }
+
+    /**
      * Refresh all feature toggle data for a specific provider.
      *
      * @param  string  $name
