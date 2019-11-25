@@ -21,13 +21,20 @@ class LocalToggleProvider implements ToggleProviderContract
     protected $config;
 
     /**
+     * @var string
+     */
+    protected $key;
+
+    /**
      * LocalToggleProvider constructor.
      *
      * @param  \Illuminate\Contracts\Config\Repository  $config
+     * @param  string  $key
      */
-    public function __construct(ConfigContract $config)
+    public function __construct(ConfigContract $config, string $key = 'feature-toggle.toggles')
     {
         $this->config = $config;
+        $this->key = $key;
     }
 
     /**
@@ -61,7 +68,7 @@ class LocalToggleProvider implements ToggleProviderContract
      */
     protected function calculateLocalToggles(): array
     {
-        $localFeatures = $this->config->get('feature-toggle.toggles', []);
+        $localFeatures = $this->config->get($this->key, []);
 
         if (! is_array($localFeatures)) {
             return [];

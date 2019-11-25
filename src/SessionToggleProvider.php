@@ -16,6 +16,11 @@ class SessionToggleProvider implements ToggleProviderContract
     use ToggleProvider;
 
     /**
+     * @var string
+     */
+    protected $key;
+
+    /**
      * @var \Illuminate\Contracts\Session\Session
      */
     protected $session;
@@ -24,9 +29,11 @@ class SessionToggleProvider implements ToggleProviderContract
      * SessionToggleProvider constructor.
      *
      * @param  \Illuminate\Contracts\Session\Session  $session
+     * @param  string|null  $key
      */
-    public function __construct(Session $session)
+    public function __construct(Session $session, string $key = 'feature-toggles')
     {
+        $this->key = $key;
         $this->session = $session;
     }
 
@@ -61,7 +68,7 @@ class SessionToggleProvider implements ToggleProviderContract
      */
     protected function calculateSessionToggles(): array
     {
-        $sessionFeatures = $this->session->get('feature-toggles', []);
+        $sessionFeatures = $this->session->get($this->key, []);
 
         if (! is_array($sessionFeatures)) {
             return [];
