@@ -53,8 +53,12 @@ class RedisToggleProvider extends LocalToggleProvider
      * @param  string  $prefix
      * @param  string  $connection
      */
-    public function __construct(Redis $redis, string $key = 'feature_toggles', ?string $prefix = null, string $connection = 'default')
-    {
+    public function __construct(
+        Redis $redis,
+        string $key = 'feature_toggles',
+        ?string $prefix = null,
+        string $connection = 'default'
+    ) {
         $this->redis = $redis;
         $this->key = $key;
         $this->prefix = ! empty($prefix) ? $prefix.':' : '';
