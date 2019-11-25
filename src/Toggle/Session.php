@@ -7,6 +7,6 @@ namespace FeatureToggle\Toggle;
 /**
  * @codeCoverageIgnore
  */
-class QueryString extends AbstractToggle
+class Session extends AbstractToggle
 {
 }

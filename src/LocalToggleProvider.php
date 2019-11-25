@@ -8,6 +8,7 @@ use FeatureToggle\Concerns\ToggleProvider;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\Toggle\Local as LocalToggle;
+use Illuminate\Contracts\Config\Repository as ConfigContract;
 use Illuminate\Support\Collection;
 
 class LocalToggleProvider implements ToggleProviderContract
@@ -15,28 +16,33 @@ class LocalToggleProvider implements ToggleProviderContract
     use ToggleProvider;
 
     /**
+     * @var \Illuminate\Contracts\Config\Repository
+     */
+    protected $config;
+
+    /**
      * @var string
      */
-    const NAME = 'local';
+    protected $key;
+
+    /**
+     * LocalToggleProvider constructor.
+     *
+     * @param  \Illuminate\Contracts\Config\Repository  $config
+     * @param  string  $key
+     */
+    public function __construct(ConfigContract $config, string $key = 'feature-toggle.toggles')
+    {
+        $this->config = $config;
+        $this->key = $key;
+    }
 
     /**
      * @return string
      */
-    public function getName(): string
+    public static function getName(): string
     {
-        return static::NAME;
-    }
-
-    /**
-     * Initialize all feature toggles.
-     *
-     * @return $this
-     */
-    public function refreshToggles(): ToggleProviderContract
-    {
-        $this->toggles = $this->calculateToggles();
-
-        return $this;
+        return 'local';
     }
 
     /**
@@ -62,7 +68,7 @@ class LocalToggleProvider implements ToggleProviderContract
      */
     protected function calculateLocalToggles(): array
     {
-        $localFeatures = config('feature-toggle.toggles', []);
+        $localFeatures = $this->config->get($this->key, []);
 
         if (! is_array($localFeatures)) {
             return [];

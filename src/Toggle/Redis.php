@@ -7,6 +7,6 @@ namespace FeatureToggle\Toggle;
 /**
  * @codeCoverageIgnore
  */
-class Redis extends Local
+class Redis extends AbstractToggle
 {
 }

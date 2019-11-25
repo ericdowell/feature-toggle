@@ -16,6 +16,11 @@ trait ToggleProvider
     protected $toggles;
 
     /**
+     * @return string
+     */
+    abstract public static function getName(): string;
+
+    /**
      * Check if feature toggle is active.
      *
      * @param  string  $name
@@ -86,5 +91,23 @@ trait ToggleProvider
      *
      * @return $this|ToggleProviderContract
      */
-    abstract public function refreshToggles(): ToggleProviderContract;
+
+    /**
+     * Initialize all feature toggles.
+     *
+     * @return $this
+     */
+    public function refreshToggles(): ToggleProviderContract
+    {
+        $this->toggles = $this->calculateToggles();
+
+        return $this;
+    }
+
+    /**
+     * Get all toggles from source and normalize.
+     *
+     * @return ToggleContract[]|Collection
+     */
+    abstract protected function calculateToggles(): Collection;
 }

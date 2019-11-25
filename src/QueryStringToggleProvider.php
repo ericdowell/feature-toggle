@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
+use FeatureToggle\Concerns\ToggleProvider;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
+use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\Toggle\QueryString;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-class QueryStringToggleProvider extends LocalToggleProvider
+class QueryStringToggleProvider implements ToggleProviderContract
 {
-    /**
-     * @var string
-     */
-    const NAME = 'querystring';
+    use ToggleProvider;
 
     /**
      * @var \Illuminate\Http\Request
@@ -62,6 +61,14 @@ class QueryStringToggleProvider extends LocalToggleProvider
         $this->inactiveKey = $inactiveKey;
         $this->apiInputKey = $apiInputKey;
         $this->apiKey = $apiKey;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getName(): string
+    {
+        return 'querystring';
     }
 
     /**

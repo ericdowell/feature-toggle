@@ -26,6 +26,7 @@ class ServiceProvider extends SupportServiceProvider
         'local' => LocalToggleProvider::class,
         'querystring' => QueryStringToggleProvider::class,
         'redis' => RedisToggleProvider::class,
+        'session' => SessionToggleProvider::class,
     ];
 
     /**

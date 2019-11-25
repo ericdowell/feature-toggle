@@ -5,29 +5,29 @@ declare(strict_types=1);
 namespace FeatureToggle\Tests\Unit;
 
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
-use FeatureToggle\LocalToggleProvider;
+use FeatureToggle\SessionToggleProvider;
 use FeatureToggle\Tests\Concerns\TestToggleProvider;
 use FeatureToggle\Tests\TestCase;
 
-class LocalToggleProviderTest extends TestCase
+class SessionToggleProviderTest extends TestCase
 {
     use TestToggleProvider;
 
     /**
-     * @return \FeatureToggle\LocalToggleProvider
+     * @return \FeatureToggle\SessionToggleProvider
      */
-    protected function getToggleProvider(): LocalToggleProvider
+    protected function getToggleProvider(): SessionToggleProvider
     {
-        return (new LocalToggleProvider($this->app['config']))->refreshToggles();
+        return (new SessionToggleProvider($this->app['session']->driver()))->refreshToggles();
     }
 
     /**
      * @param  array|null  $toggles
-     * @return \FeatureToggle\LocalToggleProvider|ToggleProviderContract
+     * @return \FeatureToggle\SessionToggleProvider|ToggleProviderContract
      */
     protected function setToggles(array $toggles = null): ToggleProviderContract
     {
-        $this->app['config']->set('feature-toggle.toggles', $toggles);
+        $this->app['session']->put('feature-toggles', $toggles);
 
         return $this->getToggleProvider();
     }

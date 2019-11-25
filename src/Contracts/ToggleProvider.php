@@ -15,7 +15,7 @@ interface ToggleProvider
     /**
      * @return string
      */
-    public function getName(): string;
+    public static function getName(): string;
 
     /**
      * Check if feature toggle is active.
