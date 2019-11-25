@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
+use FeatureToggle\Concerns\ToggleProvider;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
+use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\Toggle\Eloquent;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Throwable;
 
-class EloquentToggleProvider extends LocalToggleProvider
+class EloquentToggleProvider implements ToggleProviderContract
 {
-    /**
-     * @var string
-     */
-    const NAME = 'eloquent';
+    use ToggleProvider;
 
     /**
      * @var string
@@ -31,6 +30,14 @@ class EloquentToggleProvider extends LocalToggleProvider
     public function __construct(?string $model = null)
     {
         $this->model = $model ?? Eloquent::class;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getName(): string
+    {
+        return 'eloquent';
     }
 
     /**

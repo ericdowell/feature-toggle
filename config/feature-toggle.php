@@ -38,7 +38,7 @@ return [
      | or not, will be used as the status value.
      |
      | Default Drivers: "conditional", "eloquent", "local", "querystring",
-     |                  "redis"
+     |                  "redis", "session"
      |
      */
 
@@ -83,6 +83,7 @@ return [
      | - 'local' => \FeatureToggle\LocalToggleProvider::class,
      | - 'querystring' => \FeatureToggle\QueryStringToggleProvider::class,
      | - 'redis' => \FeatureToggle\RedisToggleProvider::class,
+     | - 'session' => \FeatureToggle\SessionToggleProvider::class,
      |
      */
 

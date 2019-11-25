@@ -12,6 +12,7 @@ use FeatureToggle\Facades\FeatureToggleApi;
 use FeatureToggle\LocalToggleProvider;
 use FeatureToggle\QueryStringToggleProvider;
 use FeatureToggle\RedisToggleProvider;
+use FeatureToggle\SessionToggleProvider;
 use FeatureToggle\Tests\Concerns\TestToggleProvider;
 use FeatureToggle\Tests\Concerns\TestToggleValidation;
 use FeatureToggle\Tests\TestCase;
@@ -130,6 +131,16 @@ class ApiTest extends TestCase
     }
 
     /**
+     * @returns void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function testGetSessionProviderReturnsInstance(): void
+    {
+        $sessionProvider = feature_toggle_api()->loadProvider('session')->getSessionProvider();
+        $this->assertInstanceOf(SessionToggleProvider::class, $sessionProvider);
+    }
+
+    /**
      * @return void
      */
     public function testLocalAndConditionalToggleProviders(): void
@@ -149,8 +160,8 @@ class ApiTest extends TestCase
         $this->assertFalse($featureToggleApi->isActive('bar'), '"bar" toggle check, should BE false.');
         $this->assertTrue($featureToggleApi->isActive('baz'), '"baz" toggle check, should BE true.');
         $this->assertCount(3, $featureToggleApi->getToggles());
-        $this->assertCount(2, $featureToggleApi->getProviderToggles(LocalToggleProvider::NAME));
-        $this->assertCount(2, $featureToggleApi->getProviderToggles(ConditionalToggleProvider::NAME));
+        $this->assertCount(2, $featureToggleApi->getProviderToggles(LocalToggleProvider::getName()));
+        $this->assertCount(2, $featureToggleApi->getProviderToggles(ConditionalToggleProvider::getName()));
         $this->assertCount(1, $featureToggleApi->getActiveToggles());
     }
 
@@ -202,19 +213,19 @@ class ApiTest extends TestCase
     {
         feature_toggle_api()->setProviders([
             [
-                'driver' => LocalToggleProvider::NAME,
+                'driver' => LocalToggleProvider::getName(),
             ],
             [
-                'driver' => ConditionalToggleProvider::NAME,
+                'driver' => ConditionalToggleProvider::getName(),
             ],
             [
-                'driver' => EloquentToggleProvider::NAME,
+                'driver' => EloquentToggleProvider::getName(),
             ],
             [
-                'driver' => QueryStringToggleProvider::NAME,
+                'driver' => QueryStringToggleProvider::getName(),
             ],
         ]);
-        $providerLocal = feature_toggle_api()->getProvider(LocalToggleProvider::NAME);
+        $providerLocal = feature_toggle_api()->getProvider(LocalToggleProvider::getName());
         $this->assertInstanceOf(LocalToggleProvider::class, $providerLocal);
 
         $methods = [
@@ -237,7 +248,7 @@ class ApiTest extends TestCase
      */
     public function testLoadProviderAndRefreshProvider(): void
     {
-        $driver = LocalToggleProvider::NAME;
+        $driver = LocalToggleProvider::getName();
         feature_toggle_api()->setProviders([]);
         $this->assertCount(0, feature_toggle_api()->getProviders());
 

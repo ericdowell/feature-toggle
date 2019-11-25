@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Toggle;
 
-class Conditional extends Local
+class Conditional extends AbstractToggle
 {
     /**
      * @var callable

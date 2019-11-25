@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
+use FeatureToggle\Concerns\ToggleProvider;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
+use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\Toggle\Redis as RedisToggle;
 use Illuminate\Contracts\Redis\Factory as Redis;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Support\Collection;
 
-class RedisToggleProvider extends LocalToggleProvider
+class RedisToggleProvider implements ToggleProviderContract
 {
-    /**
-     * @var string
-     */
-    const NAME = 'redis';
+    use ToggleProvider;
 
     /**
      * The Redis connection that should be used.
@@ -66,9 +65,17 @@ class RedisToggleProvider extends LocalToggleProvider
     }
 
     /**
+     * @return string
+     */
+    public static function getName(): string
+    {
+        return 'redis';
+    }
+
+    /**
      * Get all toggles from redis and normalize.
      *
-     * @return Collection
+     * @return ToggleContract[]|Collection
      */
     public function calculateToggles(): Collection
     {

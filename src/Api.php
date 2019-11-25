@@ -24,7 +24,7 @@ class Api implements ApiContract
     /**
      * @var string
      */
-    protected $name;
+    protected static $name = 'primary';
 
     /**
      * @var ToggleProviderContract[]
@@ -41,7 +41,7 @@ class Api implements ApiContract
      */
     public function __construct(array $providers, array $options = [])
     {
-        $this->name = 'primary-'.Str::random(5);
+        self::$name = 'primary-'.Str::random(5);
 
         static::$options = static::$options + $options;
 
@@ -80,9 +80,9 @@ class Api implements ApiContract
     /**
      * @return string
      */
-    public function getName(): string
+    public static function getName(): string
     {
-        return $this->name;
+        return self::$name;
     }
 
     /**
@@ -90,7 +90,7 @@ class Api implements ApiContract
      */
     public function &getConditionalProvider(): ConditionalToggleProvider
     {
-        return $this->getProvider(ConditionalToggleProvider::NAME);
+        return $this->getProvider(ConditionalToggleProvider::getName());
     }
 
     /**
@@ -98,7 +98,7 @@ class Api implements ApiContract
      */
     public function getEloquentProvider(): EloquentToggleProvider
     {
-        return $this->getProvider(EloquentToggleProvider::NAME);
+        return $this->getProvider(EloquentToggleProvider::getName());
     }
 
     /**
@@ -106,7 +106,7 @@ class Api implements ApiContract
      */
     public function getLocalProvider(): LocalToggleProvider
     {
-        return $this->getProvider(LocalToggleProvider::NAME);
+        return $this->getProvider(LocalToggleProvider::getName());
     }
 
     /**
@@ -114,7 +114,7 @@ class Api implements ApiContract
      */
     public function getQueryStringProvider(): QueryStringToggleProvider
     {
-        return $this->getProvider(QueryStringToggleProvider::NAME);
+        return $this->getProvider(QueryStringToggleProvider::getName());
     }
 
     /**
@@ -122,7 +122,15 @@ class Api implements ApiContract
      */
     public function getRedisProvider(): RedisToggleProvider
     {
-        return $this->getProvider(RedisToggleProvider::NAME);
+        return $this->getProvider(RedisToggleProvider::getName());
+    }
+
+    /**
+     * @return ToggleProviderContract|SessionToggleProvider
+     */
+    public function getSessionProvider(): SessionToggleProvider
+    {
+        return $this->getProvider(SessionToggleProvider::getName());
     }
 
     /**
