@@ -123,7 +123,7 @@ class ApiTest extends TestCase
      */
     public function testGetRedisProviderReturnsInstance(): void
     {
-        $this->ifRedisAvailable(function() {
+        $this->ifRedisAvailable(function () {
             $redisProvider = feature_toggle_api()->loadProvider('redis')->getRedisProvider();
             $this->assertInstanceOf(RedisToggleProvider::class, $redisProvider);
         });

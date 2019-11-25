@@ -46,7 +46,7 @@ class RedisToggleProviderTest extends TestCase
         $toggleProvider = $this->setToggles([
             'foo' => new RedisToggle('foo', true),
             'bar' => new RedisToggle('bar', false),
-            'baz' => new RedisToggle('baz','on'),
+            'baz' => new RedisToggle('baz', 'on'),
         ]);
 
         $this->assertCommonToggles($toggleProvider);
