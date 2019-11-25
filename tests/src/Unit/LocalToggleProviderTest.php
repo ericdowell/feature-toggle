@@ -6,8 +6,8 @@ namespace FeatureToggle\Tests\Unit;
 
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\LocalToggleProvider;
+use FeatureToggle\Tests\Concerns\TestToggleProvider;
 use FeatureToggle\Tests\TestCase;
-use FeatureToggle\Tests\Traits\TestToggleProvider;
 
 class LocalToggleProviderTest extends TestCase
 {

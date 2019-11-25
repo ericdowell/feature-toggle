@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FeatureToggle\Tests\Traits;
+namespace FeatureToggle\Tests\Concerns;
 
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 
@@ -29,6 +29,19 @@ trait TestToggleProvider
     public function getIsActiveAttribute($value)
     {
         return $value;
+    }
+
+    /**
+     * @param  \FeatureToggle\Contracts\ToggleProvider  $toggleProvider
+     * @returns void
+     */
+    protected function assertCommonToggles(ToggleProviderContract $toggleProvider): void
+    {
+        $this->assertTrue($toggleProvider->isActive('foo'), '"foo" toggle check, should BE true.');
+        $this->assertFalse($toggleProvider->isActive('bar'), '"bar" toggle check, should BE false.');
+        $this->assertTrue($toggleProvider->isActive('baz'), '"baz" toggle check, should BE true.');
+        $this->assertCount(3, $toggleProvider->getToggles(), 'Checking "getToggles" count.');
+        $this->assertCount(2, $toggleProvider->getActiveToggles(), 'Checking "getActiveToggles" count.');
     }
 
     /**

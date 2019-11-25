@@ -6,13 +6,13 @@ namespace FeatureToggle\Tests\Unit;
 
 use Exception;
 use FeatureToggle\Api;
+use FeatureToggle\Concerns\Toggle;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\EloquentToggleProvider;
 use FeatureToggle\Tests\TestCase;
-use FeatureToggle\Tests\Traits\TestToggleProvider;
+use FeatureToggle\Tests\Concerns\TestToggleProvider;
 use FeatureToggle\Toggle\Eloquent;
-use FeatureToggle\Traits\Toggle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;

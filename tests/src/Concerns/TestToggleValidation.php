@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FeatureToggle\Tests\Traits;
+namespace FeatureToggle\Tests\Concerns;
 
 use Illuminate\Support\Arr;
 

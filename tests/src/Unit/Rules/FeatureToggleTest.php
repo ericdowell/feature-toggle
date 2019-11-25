@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit\Rules;
 
+use FeatureToggle\Tests\Concerns\TestToggleValidation;
 use FeatureToggle\Tests\TestCase;
-use FeatureToggle\Tests\Traits\TestToggleValidation;
 use Illuminate\Validation\Rule;
 
 class FeatureToggleTest extends TestCase

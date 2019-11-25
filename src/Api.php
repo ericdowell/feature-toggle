@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
+use FeatureToggle\Concerns\HasStaticOptions;
+use FeatureToggle\Concerns\ToggleProvider;
 use FeatureToggle\Contracts\Api as ApiContract;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
-use FeatureToggle\Traits\HasStaticOptions;
-use FeatureToggle\Traits\ToggleProvider;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -115,6 +115,14 @@ class Api implements ApiContract
     public function getQueryStringProvider(): QueryStringToggleProvider
     {
         return $this->getProvider(QueryStringToggleProvider::NAME);
+    }
+
+    /**
+     * @return ToggleProviderContract|RedisToggleProvider
+     */
+    public function getRedisProvider(): RedisToggleProvider
+    {
+        return $this->getProvider(RedisToggleProvider::NAME);
     }
 
     /**

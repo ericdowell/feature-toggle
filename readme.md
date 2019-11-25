@@ -501,4 +501,6 @@ class App extends Component {
     - [x] Blade
     - [x] Middleware
     - [x] Validation
+- [ ] Create/update toggles via common contract interface.
+- [ ] Create Command to create/update toggles to be active/inactive.
 - [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).

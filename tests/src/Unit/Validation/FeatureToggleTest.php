@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FeatureToggle\Tests\Unit\Validation;
 
+use FeatureToggle\Tests\Concerns\TestToggleValidation;
 use FeatureToggle\Tests\TestCase;
-use FeatureToggle\Tests\Traits\TestToggleValidation;
 use FeatureToggle\Validation\FeatureToggle;
 use InvalidArgumentException;
 

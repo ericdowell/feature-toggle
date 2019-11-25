@@ -34,7 +34,7 @@ class ConditionalToggleProvider extends LocalToggleProvider
     }
 
     /**
-     * Get from all sources of toggles and normalize.
+     * Get all toggles from conditions array and normalize.
      *
      * @return ToggleContract[]|Collection
      */

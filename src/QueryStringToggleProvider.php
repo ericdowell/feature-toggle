@@ -55,7 +55,7 @@ class QueryStringToggleProvider extends LocalToggleProvider
         string $activeKey = 'feature',
         string $inactiveKey = 'feature_off',
         string $apiInputKey = 'feature_token',
-        string $apiKey = null
+        ?string $apiKey = null
     ) {
         $this->request = $request;
         $this->activeKey = $activeKey;
@@ -105,7 +105,7 @@ class QueryStringToggleProvider extends LocalToggleProvider
     }
 
     /**
-     * Get from all sources of toggles and normalize.
+     * Get all toggles from query strings and normalize.
      *
      * @return ToggleContract[]|Collection
      */
