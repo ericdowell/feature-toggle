@@ -14,7 +14,7 @@ if (! function_exists('feature_toggle_api')) {
     {
         /** @var FeatureToggleApi|Api $featureToggleApi */
         $featureToggleApi = app(FeatureToggleApi::class);
-        if (!$provider) {
+        if (! $provider) {
             return $featureToggleApi;
         }
 

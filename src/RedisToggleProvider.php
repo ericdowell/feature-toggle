@@ -69,11 +69,11 @@ class RedisToggleProvider extends LocalToggleProvider
     public function calculateToggles(): Collection
     {
         $toggles = collect();
-        foreach($this->calculateRedisToggles() as $name => $isActive) {
+        foreach ($this->calculateRedisToggles() as $name => $isActive) {
             if ($isActive instanceof ToggleContract) {
                 $toggles->put($isActive->getName(), $isActive);
-            } elseif(is_string($name)) {
-                $toggles->put($name,  new RedisToggle($name, $isActive));
+            } elseif (is_string($name)) {
+                $toggles->put($name, new RedisToggle($name, $isActive));
             }
         }
 
@@ -88,7 +88,7 @@ class RedisToggleProvider extends LocalToggleProvider
     protected function calculateRedisToggles(): array
     {
         $value = $this->connection()->get($this->prefix.$this->key);
-        if (is_null($value) || !is_array($redisToggles = $this->unserialize($value))) {
+        if (is_null($value) || ! is_array($redisToggles = $this->unserialize($value))) {
             return [];
         }
 
