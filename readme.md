@@ -156,8 +156,8 @@ class Kernel extends ConsoleKernel
 ### Use with Laravel Validation
 There are three ways you can use the validation logic:
 - Simple String
-- Via Illuminate\Validation\Rule
-- requiredIfRule Method on FeatureToggleApi
+- Via `Illuminate\Validation\Rule`
+- `requiredIfRule` Method on `FeatureToggleApi`
 
 #### Simple String
 Use the normal simple string signature via `required_if_feature`:
