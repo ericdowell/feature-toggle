@@ -36,6 +36,7 @@ A simple feature toggle api for Laravel applications.
         - [Configure Query String Keys](#configure-query-string-keys)
         - [Add Api Key Authorization](#add-api-key-authorization)
     - [Redis Toggle Provider](#redis-toggle-provider)
+    - [Session Toggle Provider](#session-toggle-provider)
 - [Frontend Feature Toggle Api](#frontend-feature-toggle-api)
 - [Road Map](#road-map)
 
@@ -209,6 +210,7 @@ The default feature toggle providers are as follows:
 - `local` (config)
 - `querystring`
 - `redis`
+- `session`
 
 You can access these directly via:
 ```php
@@ -453,6 +455,21 @@ There are three options that can be configured:
     ],
 ],
 ```
+
+Current implementation requires the array of toggles to be serialized in redis, you can use
+`Illuminate\Cache\RedisStore` `forever` method to persist toggle values.
+
+### Session Toggle Provider
+To use the `session` driver you will need to update the `feature-toggle` config/`setProviders` method call,
+place the following within the `providers` key:
+```php
+'providers' => [
+    [
+        'driver' => 'session',
+    ],
+],
+```
+
 
 ## Frontend Feature Toggle Api
 Place the following in your main layout blade template in the `<head>` tag.
