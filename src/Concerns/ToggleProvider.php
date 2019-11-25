@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FeatureToggle\Traits;
+namespace FeatureToggle\Concerns;
 
 use FeatureToggle\Contracts\Toggle as ToggleContract;
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;

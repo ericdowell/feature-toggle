@@ -34,7 +34,6 @@
     },
     "scripts": {
         "test": [
-            "@php vendor/orchestra/testbench-core/create-sqlite-db",
             "phpunit --colors=always"
         ]
     },
@@ -50,6 +49,9 @@
         "branch-alias": {
             "dev-master": "1.8-dev"
         }
+    },
+    "suggest": {
+        "ext-redis": "Required to use the Redis driver."
     },
     "config": {
         "preferred-install": "dist",

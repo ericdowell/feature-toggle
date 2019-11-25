@@ -1,16 +1,24 @@
 <?php
 
 use FeatureToggle\Api;
+use FeatureToggle\Concerns\Toggle;
 use FeatureToggle\Contracts\Api as FeatureToggleApi;
-use FeatureToggle\Traits\Toggle;
 
 if (! function_exists('feature_toggle_api')) {
     /**
+     * @param  string|null  $provider
      * @return FeatureToggleApi|Api
+     * @throws RuntimeException
      */
-    function feature_toggle_api()
+    function feature_toggle_api(?string $provider = null)
     {
-        return app(FeatureToggleApi::class);
+        /** @var FeatureToggleApi|Api $featureToggleApi */
+        $featureToggleApi = app(FeatureToggleApi::class);
+        if (! $provider) {
+            return $featureToggleApi;
+        }
+
+        return $featureToggleApi->getProvider($provider);
     }
 }
 

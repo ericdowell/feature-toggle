@@ -28,7 +28,7 @@ class EloquentToggleProvider extends LocalToggleProvider
      *
      * @param  null|string  $model
      */
-    public function __construct($model = null)
+    public function __construct(?string $model = null)
     {
         $this->model = $model ?? Eloquent::class;
     }
@@ -43,7 +43,7 @@ class EloquentToggleProvider extends LocalToggleProvider
     }
 
     /**
-     * Get from all sources of toggles and normalize.
+     * Get all toggles from database and normalize.
      *
      * @return ToggleContract[]|Collection
      */

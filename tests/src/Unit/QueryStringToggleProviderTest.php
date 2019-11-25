@@ -6,8 +6,8 @@ namespace FeatureToggle\Tests\Unit;
 
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\QueryStringToggleProvider;
+use FeatureToggle\Tests\Concerns\TestToggleProvider;
 use FeatureToggle\Tests\TestCase;
-use FeatureToggle\Tests\Traits\TestToggleProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -95,19 +95,6 @@ class QueryStringToggleProviderTest extends TestCase
             'baz' => $this->getIsActiveAttribute('on'),
         ];
         $this->setupQueryToggles($request, $toggles);
-    }
-
-    /**
-     * @param  \FeatureToggle\Contracts\ToggleProvider  $toggleProvider
-     * @returns void
-     */
-    protected function assertCommonToggles(ToggleProviderContract $toggleProvider): void
-    {
-        $this->assertTrue($toggleProvider->isActive('foo'), '"foo" toggle check, should BE true.');
-        $this->assertFalse($toggleProvider->isActive('bar'), '"bar" toggle check, should BE false.');
-        $this->assertTrue($toggleProvider->isActive('baz'), '"baz" toggle check, should BE true.');
-        $this->assertCount(3, $toggleProvider->getToggles(), 'Checking "getToggles" count.');
-        $this->assertCount(2, $toggleProvider->getActiveToggles(), 'Checking "getActiveToggles" count.');
     }
 
     /**

@@ -28,7 +28,7 @@ class Conditional extends Local
      * @param  callable  $condition
      * @param  bool|null  $defer
      */
-    public function __construct(string $name, callable $condition, bool $defer = null)
+    public function __construct(string $name, callable $condition, ?bool $defer = null)
     {
         $this->condition = $condition;
         $this->defer = $defer ?? $this->defer;

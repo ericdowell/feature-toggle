@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: ericdowell/laravel-circleci
+      - image: redis:latest
     environment:
       TZ: "/usr/share/zoneinfo/America/Chicago"
     steps:

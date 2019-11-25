@@ -25,6 +25,7 @@ class ServiceProvider extends SupportServiceProvider
         'eloquent' => EloquentToggleProvider::class,
         'local' => LocalToggleProvider::class,
         'querystring' => QueryStringToggleProvider::class,
+        'redis' => RedisToggleProvider::class,
     ];
 
     /**

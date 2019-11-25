@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FeatureToggle\Traits;
+namespace FeatureToggle\Concerns;
 
 /**
  * @property string $name

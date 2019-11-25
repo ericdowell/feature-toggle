@@ -11,17 +11,19 @@ use FeatureToggle\EloquentToggleProvider;
 use FeatureToggle\Facades\FeatureToggleApi;
 use FeatureToggle\LocalToggleProvider;
 use FeatureToggle\QueryStringToggleProvider;
+use FeatureToggle\RedisToggleProvider;
+use FeatureToggle\Tests\Concerns\TestToggleProvider;
+use FeatureToggle\Tests\Concerns\TestToggleValidation;
 use FeatureToggle\Tests\TestCase;
-use FeatureToggle\Tests\Traits\TestToggleProvider;
-use FeatureToggle\Tests\Traits\TestToggleValidation;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithRedis;
 use OutOfBoundsException;
 use RuntimeException;
 use stdClass;
 
 class ApiTest extends TestCase
 {
-    use TestToggleProvider, TestToggleValidation;
+    use InteractsWithRedis, TestToggleProvider, TestToggleValidation;
 
     /**
      * @return string
@@ -58,6 +60,18 @@ class ApiTest extends TestCase
         config()->set('feature-toggle.toggles', $toggles);
 
         return $this->getToggleProvider();
+    }
+
+    /**
+     * Get redis driver provider.
+     *
+     * @return array
+     */
+    public function redisDriverProvider()
+    {
+        return [
+            ['phpredis'],
+        ];
     }
 
     /**
@@ -102,6 +116,17 @@ class ApiTest extends TestCase
         $featureToggleApi = feature_toggle_api();
 
         $this->assertStringContainsString('primary-', $featureToggleApi->getName());
+    }
+
+    /**
+     * @returns void
+     */
+    public function testGetRedisProviderReturnsInstance(): void
+    {
+        $this->ifRedisAvailable(function () {
+            $redisProvider = feature_toggle_api()->loadProvider('redis')->getRedisProvider();
+            $this->assertInstanceOf(RedisToggleProvider::class, $redisProvider);
+        });
     }
 
     /**

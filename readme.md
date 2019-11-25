@@ -35,6 +35,7 @@ A simple feature toggle api for Laravel applications.
     - [QueryString Toggle Provider](#querystring-toggle-provider)
         - [Configure Query String Keys](#configure-query-string-keys)
         - [Add Api Key Authorization](#add-api-key-authorization)
+    - [Redis Toggle Provider](#redis-toggle-provider)
 - [Frontend Feature Toggle Api](#frontend-feature-toggle-api)
 - [Road Map](#road-map)
 
@@ -115,7 +116,7 @@ Or you can use the normal `@if` blade directive and call `feature_toggle` functi
 @endif
 // OR
 @if(feature_toggle('Example', 'off'))
-    // do soemthing
+    // do something
 @endif
 ```
 
@@ -207,6 +208,7 @@ The default feature toggle providers are as follows:
 - `eloquent`
 - `local` (config)
 - `querystring`
+- `redis`
 
 You can access these directly via:
 ```php
@@ -420,8 +422,34 @@ may configure the driver with a `token`/api key. By default the query string inp
     [
         'driver' => 'querystring',
         'apiKey' => env('FEATURE_TOGGLE_API_KEY'),
-        // Optionally change to sometihing different than 'feature_token'.
+        // Optionally change to something different.
         // 'apiInputKey' => 'feature_toggle_api_token',
+    ],
+],
+```
+
+### Redis Toggle Provider
+To use the `redis` driver you will need to update the `feature-toggle` config/`setProviders` method call,
+place the following within the `providers` key:
+```php
+'providers' => [
+    [
+        'driver' => 'redis',
+    ],
+],
+```
+
+There are three options that can be configured:
+- `key`, defaults to `feature_toggles`
+- `prefix`, defaults to `null`
+- `connection`, defaults to `default`
+```php
+'providers' => [
+    [
+        'driver' => 'querystring',
+        'key' => 'toggles', // Optional, otherwise 'feature_toggles'
+        'prefix' => 'feature', // Optional
+        'connection' => 'toggles', // Must match key in database.redis.{connection}
     ],
 ],
 ```
@@ -501,4 +529,6 @@ class App extends Component {
     - [x] Blade
     - [x] Middleware
     - [x] Validation
+- [ ] Create/update toggles via common contract interface.
+- [ ] Create Command to create/update toggles to be active/inactive.
 - [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).
