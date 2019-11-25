@@ -37,7 +37,8 @@ return [
      | status. The first provider to have a feature toggle defined, active
      | or not, will be used as the status value.
      |
-     | Default Drivers: "conditional", "eloquent", "local", "querystring"
+     | Default Drivers: "conditional", "eloquent", "local", "querystring",
+     |                  "redis"
      |
      */
 
@@ -71,15 +72,17 @@ return [
      | Additional Feature Toggle Drivers
      |--------------------------------------------------------------------------
      |
-     | Classmap of drivers to load within the 'feature-api.*' container namespace.
+     | Classmap of drivers that can be used in the "providers" config key above.
+     | Drivers will be registered within the 'feature-api.*' container namespace.
      |
      | The driver class must implement FeatureToggle\Contracts\ToggleProvider.
      |
-     | By default the following drivers are loaded:
+     | By default the following drivers are registered:
      | - 'conditional' => \FeatureToggle\ConditionalToggleProvider::class,
      | - 'eloquent' => \FeatureToggle\EloquentToggleProvider::class,
      | - 'local' => \FeatureToggle\LocalToggleProvider::class,
      | - 'querystring' => \FeatureToggle\QueryStringToggleProvider::class,
+     | - 'redis' => \FeatureToggle\RedisToggleProvider::class,
      |
      */
 
