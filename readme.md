@@ -43,7 +43,7 @@ A simple feature toggle api for Laravel applications.
 ## Installation
 Install using composer by running:
 ```bash
-composer require ericdowell/feature-toggle ^1.8
+composer require ericdowell/feature-toggle ^1.9
 ```
 
 Publish the `feature-toggle.php` config file by running:
