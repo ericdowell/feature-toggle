@@ -18,7 +18,7 @@ trait HasStaticOptions
      */
     public function isMiddlewareEnabled(): bool
     {
-        return filter_var($this->getOption('registerMiddleware', false), FILTER_VALIDATE_BOOLEAN);
+        return filter_var($this->getOption('registerMiddleware', true), FILTER_VALIDATE_BOOLEAN);
     }
 
     /**
@@ -34,7 +34,7 @@ trait HasStaticOptions
      */
     public static function useMigrations(): void
     {
-        static::setOption('useMigrations', true);
+        static::setOptionTrue('useMigrations');
     }
 
     /**
@@ -42,7 +42,7 @@ trait HasStaticOptions
      */
     public static function ignoreMigrations(): void
     {
-        static::setOption('useMigrations', false);
+        static::setOptionFalse('useMigrations');
     }
 
     /**
@@ -50,7 +50,7 @@ trait HasStaticOptions
      */
     public static function registerMiddleware(): void
     {
-        static::setOption('registerMiddleware', true);
+        static::setOptionTrue('registerMiddleware');
     }
 
     /**
@@ -58,7 +58,7 @@ trait HasStaticOptions
      */
     public static function ignoreMiddleware(): void
     {
-        static::setOption('registerMiddleware', false);
+        static::setOptionFalse('registerMiddleware');
     }
 
     /**
@@ -69,6 +69,24 @@ trait HasStaticOptions
     protected function getOption(string $name, $default = null)
     {
         return Arr::get(static::$options, $name, $default);
+    }
+
+    /**
+     * @param  string  $name
+     * @return void
+     */
+    protected static function setOptionFalse(string $name): void
+    {
+        static::setOption($name, false);
+    }
+
+    /**
+     * @param  string  $name
+     * @return void
+     */
+    protected static function setOptionTrue(string $name): void
+    {
+        static::setOption($name, true);
     }
 
     /**
