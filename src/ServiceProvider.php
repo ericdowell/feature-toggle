@@ -203,7 +203,7 @@ class ServiceProvider extends SupportServiceProvider
      */
     protected function packageBasePath(...$path): string
     {
-        return realpath(dirname(__DIR__).DIRECTORY_SEPARATOR.implode($path, DIRECTORY_SEPARATOR));
+        return realpath(dirname(__DIR__).DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $path));
     }
 
     /**
