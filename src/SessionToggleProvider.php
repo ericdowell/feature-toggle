@@ -14,7 +14,7 @@ class SessionToggleProvider extends AbstractToggleProvider
      * SessionToggleProvider constructor.
      *
      * @param  \Illuminate\Contracts\Session\Session  $repository
-     * @param  string|null  $key
+     * @param  string  $key
      */
     public function __construct(Session $repository, string $key = 'feature-toggles')
     {
