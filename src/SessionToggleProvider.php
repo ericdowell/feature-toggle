@@ -4,37 +4,22 @@ declare(strict_types=1);
 
 namespace FeatureToggle;
 
-use FeatureToggle\Concerns\ToggleProvider;
 use FeatureToggle\Contracts\Toggle as ToggleContract;
-use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\Toggle\Session as SessionToggle;
 use Illuminate\Contracts\Session\Session;
-use Illuminate\Support\Collection;
 
-class SessionToggleProvider implements ToggleProviderContract
+class SessionToggleProvider extends AbstractToggleProvider
 {
-    use ToggleProvider;
-
-    /**
-     * @var string
-     */
-    protected $key;
-
-    /**
-     * @var \Illuminate\Contracts\Session\Session
-     */
-    protected $session;
-
     /**
      * SessionToggleProvider constructor.
      *
-     * @param  \Illuminate\Contracts\Session\Session  $session
-     * @param  string|null  $key
+     * @param  \Illuminate\Contracts\Session\Session  $repository
+     * @param  string  $key
      */
-    public function __construct(Session $session, string $key = 'feature-toggles')
+    public function __construct(Session $repository, string $key = 'feature-toggles')
     {
         $this->key = $key;
-        $this->session = $session;
+        $this->repository = $repository;
     }
 
     /**
@@ -46,34 +31,12 @@ class SessionToggleProvider implements ToggleProviderContract
     }
 
     /**
-     * Get all toggles from session and normalize.
-     *
-     * @return ToggleContract[]|Collection
+     * @param  string  $name
+     * @param  mixed  $isActive
+     * @return SessionToggle
      */
-    protected function calculateToggles(): Collection
+    public function newRepositoryToggle(string $name, $isActive): ToggleContract
     {
-        $toggles = collect();
-
-        foreach ($this->calculateSessionToggles() as $name => $isActive) {
-            $toggles->put($name, new SessionToggle($name, $isActive));
-        }
-
-        return $toggles;
-    }
-
-    /**
-     * Pull feature toggles from the application user session.
-     *
-     * @return array
-     */
-    protected function calculateSessionToggles(): array
-    {
-        $sessionFeatures = $this->session->get($this->key, []);
-
-        if (! is_array($sessionFeatures)) {
-            return [];
-        }
-
-        return $sessionFeatures;
+        return new SessionToggle($name, $isActive);
     }
 }
