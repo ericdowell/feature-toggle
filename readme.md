@@ -131,6 +131,8 @@ Where `status` and `abort` are optional parameters. `status` will default to `tr
 
 **Examples:**
 ```php
+use Illuminate\Support\Facades\Route;
+
 // Passing all three parameters, changing abort to 403 status code.
 Route::get('user/billing')->middleware('featureToggle:subscription,true,403')->uses('User\\BillingController@index')->name('billing.index');
 // Passing two parameters.
@@ -143,6 +145,9 @@ Route::get('user/trial')->middleware('featureToggle:trial')->uses('User\\TrialCo
 You can use the built-in `when` function in combination with the `feature_toggle` helper function in the `app/Console/Kernel.php`
 `schedule` method.
 ```php
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
 class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
@@ -168,11 +173,13 @@ required_if_feature:{name},{status}
 Where `status` is an optional parameter. `status` will default to `true` (truthy). `name` parameter is required.
 
 ```php
-Validator::make($request->all(), [
+use Illuminate\Support\Facades\Validator;
+
+Validator::make(request()->all(), [
     'phone' => 'required_if_feature:Require phone',
 ]);
 
-Validator::make($request->all(), [
+Validator::make(request()->all(), [
     'phone' => 'required_if_feature:Require phone,on',
 ]);
 ```
@@ -180,13 +187,14 @@ Validator::make($request->all(), [
 #### Via Illuminate\Validation\Rule
 A macro method has been added to the `Rule` class called `requiredIfFeature`:
 ```php
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-Validator::make($request->all(), [
+Validator::make(request()->all(), [
     'phone' => Rule::requiredIfFeature('Require phone'),
 ]);
 
-Validator::make($request->all(), [
+Validator::make(request()->all(), [
     'phone' => Rule::requiredIfFeature('Require phone', true),
 ]);
 ```
@@ -194,11 +202,14 @@ Validator::make($request->all(), [
 #### requiredIfRule Method on FeatureToggleApi
 You may also use the `requiredIfRule` method on the `FeatureToggleApi`/`feature_toggle_api` Facade or helper function:
 ```php
-Validator::make($request->all(), [
+use FeatureToggle\Facades\FeatureToggleApi;
+use Illuminate\Support\Facades\Validator;
+
+Validator::make(request()->all(), [
     'phone' => FeatureToggleApi::requiredIfRule('Require phone'),
 ]);
 
-Validator::make($request->all(), [
+Validator::make(request()->all(), [
     'phone' => feature_toggle_api()->requiredIfRule('Require phone', true),
 ]);
 ```
@@ -251,28 +262,32 @@ feature_toggle_api()->setProviders([
 You may add additional custom toggle providers or override the default toggle providers by adding them to the `drivers`
 key within `config/feature-toggle.php`:
 ```php
-'drivers' => [
-    'local' => \App\FeatureToggle\LocalToggleProvider::class,
-    'redis' => \App\FeatureToggle\RedisToggleProvider::class,
-    'session' => \App\FeatureToggle\SessionToggleProvider::class,
-],
+return [
+    'drivers' => [
+        'local' => \App\FeatureToggle\LocalToggleProvider::class,
+        'redis' => \App\FeatureToggle\RedisToggleProvider::class,
+        'session' => \App\FeatureToggle\SessionToggleProvider::class,
+    ],
+];
 ```
 Then just add them in the order you'd like them to be checked within `providers` as you would the defaults:
 ```php
-'providers' => [
-    [
-        'driver' => 'session',
+return [
+    'providers' => [
+        [
+            'driver' => 'session',
+        ],
+        [
+            'driver' => 'conditional',
+        ],
+        [
+            'driver' => 'redis',
+        ],
+        [
+            'driver' => 'local',
+        ],
     ],
-    [
-        'driver' => 'conditional',
-    ],
-    [
-        'driver' => 'redis',
-    ],
-    [
-        'driver' => 'local',
-    ],
-],
+];
 ```
 
 ### Local Feature Toggles
@@ -297,32 +312,37 @@ The value passed from the `.env` file or set directly within config file can be:
 ### Conditional Feature Toggles
 To add new conditional toggle(s) you will need to call `feature_toggle_api()->setConditional` method:
 ```php
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
 // calling conditional function is deferred by default
-feature_toggle_api()->setConditional('Example' function (Request $request) {
+feature_toggle_api()->setConditional('Example', function (Request $request) {
     $user = $request->user();
     return $user instanceof \App\User && $user->email === 'johndoe@example.com';
 });
 
 // OR call right away by passing false as $defer parameter
-feature_toggle_api()->setConditional('Example' function () {
-    return cache()->get('feature:example');
+feature_toggle_api()->setConditional('Example', function () {
+    return Cache::get('feature:example');
 }, false);
 ```
-**NOTE:** The function passed to `setConditional` does not get called right by default, it is deferred to allow
+**NOTE:** The function passed to `setConditional` does not get called right away by default, it is deferred to allow
 the Laravel app to bootstrap User/Session information. The conditional function is only called once and the value
 is cached to help prevent expensive operations from being recalculated when adding additional conditional toggles.
 Because of this design it is best to define these in `AppServiceProvider@boot` or in a
 `FeatureToggleServiceProvider@boot` that you create.
 
 ### Eloquent Feature Toggles
-To use the `eloquent` driver you will need to update the `feature-toggle` config/`setProviders` method call,
+To use the `eloquent` driver you will need to update the `feature-toggle` config or `setProviders` method call,
 place the following within the `providers` key:
 ```php
-'providers' => [
-    [
-        'driver' => 'eloquent',
+[
+    'providers' => [
+        [
+            'driver' => 'eloquent',
+        ],
     ],
-],
+];
 ```
 OR
 ```php
@@ -344,9 +364,11 @@ feature_toggle_api()->setProviders([
 By default the migration for `feature_toggles` is not loaded, to load this you can update the `options` key
 within `feature-toggle` config setting the `useMigrations` value to `true`:
 ```php
-'options' => [
-    'useMigrations' => true,
-],
+return [
+    'options' => [
+        'useMigrations' => true,
+    ],
+];
 ```
 
 If you would like to set the `useMigrations` in code you may call the following in the `register` method of your
@@ -358,36 +380,40 @@ Api::useMigrations();
 ```
 
 You may also publish the `migrations` to your application by running the following:
-```php
+```bash
 php artisan vendor:publish --tag="feature-toggles-migrations"
 ```
 
 Once you've used one of the methods above, you can run the following command to update your database with
 the `feature_toggles` migration(s):
-```php
+```bash
 php artisan migrate
 ```
 
 #### Eloquent Model
 If you would like to use a different eloquent model you may do so by adding `model` to the config file:
 ```php
-'providers' => [
-    [
-        'driver' => 'eloquent',
-        'model' => App\FeatureToggle::class
+return [
+    'providers' => [
+        [
+            'driver' => 'eloquent',
+            'model' => \App\FeatureToggle::class
+        ],
     ],
-],
+];
 ```
 
 ### QueryString Toggle Provider
-To use the `querystring` driver you will need to update the `feature-toggle` config/`setProviders` method call,
+To use the `querystring` driver you will need to update the `feature-toggle` config or `setProviders` method call,
 place the following within the `providers` key:
 ```php
-'providers' => [
-    [
-        'driver' => 'querystring',
+[
+    'providers' => [
+        [
+            'driver' => 'querystring',
+        ],
     ],
-],
+];
 ```
 
 When making a request to your application you may now use the following query strings to make feature toggles active/inactive:
@@ -406,13 +432,15 @@ and `inactiveKey` to config file.
 
 Below is an example of configuring the query string keys as `active` and `inactive`:
 ```php
-'providers' => [
-    [
-        'driver' => 'querystring',
-        'activeKey' => 'active',
-        'inactiveKey' => 'inactive',
+return [
+    'providers' => [
+        [
+            'driver' => 'querystring',
+            'activeKey' => 'active',
+            'inactiveKey' => 'inactive',
+        ],
     ],
-],
+];
 ```
 
 #### Add Api Key Authorization
@@ -420,25 +448,29 @@ To keep users or bad actors from enabling/disabling feature toggles via the `que
 may configure the driver with a `token`/api key. By default the query string input is configured as
 `feature_token`, but this can be also be configured to any value.
 ```php
-'providers' => [
-    [
-        'driver' => 'querystring',
-        'apiKey' => env('FEATURE_TOGGLE_API_KEY'),
-        // Optionally change to something different.
-        // 'apiInputKey' => 'feature_toggle_api_token',
+return [
+    'providers' => [
+        [
+            'driver' => 'querystring',
+            'apiKey' => env('FEATURE_TOGGLE_API_KEY'),
+            // Optionally change to something different.
+            // 'apiInputKey' => 'feature_toggle_api_token',
+        ],
     ],
-],
+];
 ```
 
 ### Redis Toggle Provider
-To use the `redis` driver you will need to update the `feature-toggle` config/`setProviders` method call,
+To use the `redis` driver you will need to update the `feature-toggle` config or `setProviders` method call,
 place the following within the `providers` key:
 ```php
-'providers' => [
-    [
-        'driver' => 'redis',
+[
+    'providers' => [
+        [
+            'driver' => 'redis',
+        ],
     ],
-],
+];
 ```
 
 There are three options that can be configured:
@@ -446,28 +478,32 @@ There are three options that can be configured:
 - `prefix`, defaults to `null`
 - `connection`, defaults to `default`
 ```php
-'providers' => [
-    [
-        'driver' => 'querystring',
-        'key' => 'toggles', // Optional, otherwise 'feature_toggles'
-        'prefix' => 'feature', // Optional
-        'connection' => 'toggles', // Must match key in database.redis.{connection}
+return [
+    'providers' => [
+        [
+            'driver' => 'querystring',
+            'key' => 'toggles', // Optional, otherwise 'feature_toggles'
+            'prefix' => 'feature', // Optional
+            'connection' => 'toggles', // Must match key in database.redis.{connection}
+        ],
     ],
-],
+];
 ```
 
 Current implementation requires the array of toggles to be serialized in redis, you can use
 `Illuminate\Cache\RedisStore` `forever` method to persist toggle values.
 
 ### Session Toggle Provider
-To use the `session` driver you will need to update the `feature-toggle` config/`setProviders` method call,
+To use the `session` driver you will need to update the `feature-toggle` config or `setProviders` method call,
 place the following within the `providers` key:
 ```php
-'providers' => [
-    [
-        'driver' => 'session',
+[
+    'providers' => [
+        [
+            'driver' => 'session',
+        ],
     ],
-],
+];
 ```
 
 
