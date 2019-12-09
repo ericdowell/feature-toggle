@@ -10,7 +10,6 @@ use Illuminate\Contracts\Session\Session;
 
 class SessionToggleProvider extends AbstractToggleProvider
 {
-
     /**
      * SessionToggleProvider constructor.
      *
