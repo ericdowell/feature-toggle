@@ -7,7 +7,7 @@ use FeatureToggle\Contracts\Api as FeatureToggleApi;
 if (! function_exists('feature_toggle_api')) {
     /**
      * @param  string|null  $provider
-     * @return FeatureToggleApi|Api
+     * @return Api|FeatureToggleApi|\FeatureToggle\Contracts\ToggleProvider
      * @throws RuntimeException
      */
     function feature_toggle_api(?string $provider = null)
