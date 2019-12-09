@@ -1,7 +1,22 @@
 {
     "name": "ericdowell/feature-toggle",
-    "description": "Simple feature toggle library.",
-    "keywords": ["laravel", "laravel-package", "toggles", "feature-toggles"],
+    "description": "Simple feature toggle api for Laravel applications.",
+    "keywords": [
+        "laravel",
+        "laravel-package",
+        "toggles",
+        "feature-toggles",
+        "feature-flags",
+        "toggle-provider",
+        "features",
+        "database",
+        "local-toggles",
+        "conditional-toggles",
+        "database-toggles",
+        "querystring-toggles",
+        "redis",
+        "redis-toggles"
+    ],
     "license": "MIT",
     "authors": [
         {

@@ -293,8 +293,6 @@ return [
 ### Local Feature Toggles
 To add new toggle(s) you will need to update the published `config/feature-toggles.php` file:
 ```php
-<?php
-
 return [
     // ...
     'toggles' => [
@@ -582,6 +580,7 @@ class App extends Component {
     - [x] Blade
     - [x] Middleware
     - [x] Validation
+### v2.x
 - [ ] Create/update toggles via common contract interface.
 - [ ] Create Command to create/update toggles to be active/inactive.
 - [ ] Classmap Feature Toggles (FeatureToggleServiceProvider similar to AuthServiceProvider $policies).
