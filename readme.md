@@ -223,7 +223,26 @@ The default feature toggle providers are as follows:
 - `redis`
 - `session`
 
-You can access these directly via:
+You can pass the `feature_toggle_api` helper function one of the above strings to get the toggle provider:
+```php
+$redisProvider = feature_toggle_api('redis');
+// return false
+$redisProvider->isActive('Example Off');
+
+$sessionProvider = feature_toggle_api('session');
+// return false
+$sessionProvider->isActive('Example False');
+```
+
+Or you can access each toggle provider via:
+- `feature_toggle_api()->getConditionalProvider()`
+- `feature_toggle_api()->getEloquentProvider()`
+- `feature_toggle_api()->getLocalProvider()`
+- `feature_toggle_api()->getQueryStringProvider()`
+- `feature_toggle_api()->getRedisProvider()`
+- `feature_toggle_api()->getSessionProvider()`
+
+E.g.
 ```php
 $localProvider = feature_toggle_api()->getLocalProvider();
 // return false
