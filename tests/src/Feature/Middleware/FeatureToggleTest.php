@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FeatureToggle\Tests\Feature\Middleware;
 
 use FeatureToggle\Tests\TestCase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 
 class FeatureToggleTest extends TestCase
 {
@@ -32,7 +32,7 @@ class FeatureToggleTest extends TestCase
      * @param  string  $name
      * @param $status
      * @param  int  $abort
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function callEndpoint(string $name, $status, $abort = 404): TestResponse
     {
