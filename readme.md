@@ -498,7 +498,7 @@ There are three options that can be configured:
 return [
     'providers' => [
         [
-            'driver' => 'querystring',
+            'driver' => 'redis',
             'key' => 'toggles', // Optional, otherwise 'feature_toggles'
             'prefix' => 'feature', // Optional
             'connection' => 'toggles', // Must match key in database.redis.{connection}
