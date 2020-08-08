@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace FeatureToggle\Tests;
+namespace FeatureToggle\Tests\Unit;
 
 use FeatureToggle\Contracts\ToggleProvider as ToggleProviderContract;
 use FeatureToggle\RedisToggleProvider;
 use FeatureToggle\Tests\Concerns\TestToggleProvider;
+use FeatureToggle\Tests\TestCase;
 use FeatureToggle\Toggle\Redis as RedisToggle;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithRedis;
 
