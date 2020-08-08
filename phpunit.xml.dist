@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/schema/9.3.xsd"
          beStrictAboutTestsThatDoNotTestAnything="false"
          bootstrap="phpunit.php"
          colors="true"
@@ -15,20 +15,22 @@
             <directory suffix="Test.php">./tests/src/Feature</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
+    <coverage processUncoveredFiles="true">
+        <include>
             <directory suffix=".php">./src</directory>
-            <exclude>
-                <directory>./src/Contracts</directory>
-                <file>./src/Facade.php</file>
-                <file>./src/ServiceProvider.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
+        </include>
+        <exclude>
+            <directory>./src/Contracts</directory>
+            <file>./src/Facade.php</file>
+            <file>./src/ServiceProvider.php</file>
+        </exclude>
+        <report>
+            <clover outputFile="clover.xml"/>
+            <html outputDirectory="coverage"/>
+        </report>
+    </coverage>
     <logging>
-        <log type="coverage-html" target="coverage"/>
-        <log type="coverage-clover" target="clover.xml"/>
-        <log type="junit" target="build/junit/junit.xml"/>
+        <junit outputFile="build/junit/junit.xml"/>
     </logging>
     <php>
         <env name="APP_ENV" value="testing"/>
