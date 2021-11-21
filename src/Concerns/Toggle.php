@@ -29,7 +29,7 @@ trait Toggle
     }
 
     /**
-     * @param string|bool|int $isActive
+     * @param  string|bool|int  $isActive
      * @return bool
      */
     public static function calculateIsActive($isActive): bool
@@ -44,7 +44,7 @@ trait Toggle
     }
 
     /**
-     * @param string|bool|int $isActive
+     * @param  string|bool|int  $isActive
      * @return $this
      */
     protected function setIsActive($isActive): self

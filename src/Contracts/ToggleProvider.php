@@ -21,7 +21,6 @@ interface ToggleProvider
      * Check if feature toggle is active.
      *
      * @param  string  $name
-     *
      * @return bool
      */
     public function isActive(string $name): bool;

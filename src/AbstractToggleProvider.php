@@ -30,7 +30,7 @@ abstract class AbstractToggleProvider implements ToggleProviderContract
 
     /**
      * @param  string  $name
-     * @param mixed $isActive
+     * @param  mixed  $isActive
      * @return \FeatureToggle\Contracts\Toggle
      */
     abstract public function newRepositoryToggle(string $name, $isActive): ToggleContract;

@@ -51,7 +51,6 @@ trait TestToggle
      *
      * @param  string  $assertMethod
      * @param  array  $values
-     *
      * @return void
      */
     public function testIsActiveTrueOFalse(string $assertMethod, array $values): void

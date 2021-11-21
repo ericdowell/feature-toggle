@@ -99,6 +99,7 @@ class QueryStringToggleProviderTest extends TestCase
 
     /**
      * @return void
+     *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testPassingActiveKeyAndInactiveKeyParameterToAppMake(): void
@@ -115,6 +116,7 @@ class QueryStringToggleProviderTest extends TestCase
 
     /**
      * @return void
+     *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testPassingApiKeyParameterToAppMakeWithInputKeyOnRequestReturnsToggles(): void
@@ -138,6 +140,7 @@ class QueryStringToggleProviderTest extends TestCase
 
     /**
      * @return void
+     *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testPassingApiKeyParameterToAppMakeWithInputKeyNotOnRequestReturnsNoToggles(): void

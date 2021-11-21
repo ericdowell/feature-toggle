@@ -198,7 +198,6 @@ class ServiceProvider extends SupportServiceProvider
      * Return the base path for this package.
      *
      * @param  array  $path
-     *
      * @return string
      */
     protected function packageBasePath(...$path): string

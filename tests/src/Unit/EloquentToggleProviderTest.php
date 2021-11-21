@@ -45,6 +45,7 @@ class EloquentToggleProviderTest extends TestCase
 
     /**
      * @return void
+     *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testCalculateTogglesCatchesErrorAndReturnEmptyCollection(): void
@@ -72,6 +73,7 @@ class EloquentToggleProviderTest extends TestCase
 
     /**
      * @return void
+     *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testPassingModelParameterToAppMake(): void

@@ -44,7 +44,7 @@ trait ToggleProvider
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @param  ToggleContract  $toggle
      * @return $this
      */
