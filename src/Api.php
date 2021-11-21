@@ -36,6 +36,7 @@ class Api implements ApiContract
      *
      * @param  array  $providers
      * @param  array  $options
+     *
      * @throws OutOfBoundsException
      * @throws BindingResolutionException
      */
@@ -51,6 +52,7 @@ class Api implements ApiContract
     /**
      * @param  array  $providers
      * @return $this
+     *
      * @throws OutOfBoundsException
      * @throws BindingResolutionException
      */
@@ -161,6 +163,7 @@ class Api implements ApiContract
      *
      * @param  string  $name
      * @return ToggleContract[]|Collection
+     *
      * @throws RuntimeException
      */
     public function getProviderToggles(string $name): Collection
@@ -221,6 +224,7 @@ class Api implements ApiContract
     /**
      * @param  string  $name
      * @return ToggleProviderContract
+     *
      * @throws RuntimeException
      */
     public function &getProvider(string $name): ToggleProviderContract
@@ -236,6 +240,7 @@ class Api implements ApiContract
      * @param  string  $driver
      * @param  array  $parameters
      * @return $this
+     *
      * @throws OutOfBoundsException
      * @throws BindingResolutionException
      */

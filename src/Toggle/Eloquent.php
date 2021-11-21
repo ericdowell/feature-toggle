@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent query()

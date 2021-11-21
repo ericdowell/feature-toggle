@@ -42,6 +42,7 @@ class EloquentToggleProvider implements ToggleProviderContract
 
     /**
      * @return Eloquent|Model
+     *
      * @throws BindingResolutionException
      */
     public function newModel(): Model

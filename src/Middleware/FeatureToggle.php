@@ -17,7 +17,6 @@ class FeatureToggle
      * @param  string  $name
      * @param  string|int|bool  $checkActive
      * @param  int  $abort
-     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next, string $name, $checkActive = true, $abort = 404)

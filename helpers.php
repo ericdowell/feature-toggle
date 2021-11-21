@@ -8,6 +8,7 @@ if (! function_exists('feature_toggle_api')) {
     /**
      * @param  string|null  $provider
      * @return Api|FeatureToggleApi|\FeatureToggle\Contracts\ToggleProvider
+     *
      * @throws RuntimeException
      */
     function feature_toggle_api(?string $provider = null)
