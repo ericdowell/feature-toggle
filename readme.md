@@ -398,7 +398,7 @@ Api::useMigrations();
 
 You may also publish the `migrations` to your application by running the following:
 ```bash
-php artisan vendor:publish --tag="feature-toggles-migrations"
+php artisan vendor:publish --tag="feature-toggle-migrations"
 ```
 
 Once you've used one of the methods above, you can run the following command to update your database with
