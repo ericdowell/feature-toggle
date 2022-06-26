@@ -11,6 +11,7 @@ jobs:
       - run:
           name: Enable xdebug & Redis Extension
           command: |
+            sudo pecl install xdebug
             sudo docker-php-ext-enable xdebug
             sudo pecl install redis
             sudo docker-php-ext-enable redis
