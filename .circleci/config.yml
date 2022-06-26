@@ -10,7 +10,9 @@ jobs:
       - checkout
       - run:
           name: Enable Redis Extension
-          command: sudo docker-php-ext-enable redis
+          command: |
+            sudo pecl install redis
+            sudo docker-php-ext-enable redis
       - run:
           name: Install PHP Dependencies
           command: composer install --no-interaction --optimize-autoloader --prefer-dist
