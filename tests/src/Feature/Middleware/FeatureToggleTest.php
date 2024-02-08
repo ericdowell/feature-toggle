@@ -13,6 +13,7 @@ class FeatureToggleTest extends TestCase
      * @param  string  $name
      * @param  string|int|bool  $status
      * @param  int  $abort
+     *
      * @returns void
      */
     public function registerRoute(string $name, $status, $abort = 404): void
@@ -30,7 +31,7 @@ class FeatureToggleTest extends TestCase
 
     /**
      * @param  string  $name
-     * @param $status
+     * @param  $status
      * @param  int  $abort
      * @return \Illuminate\Testing\TestResponse
      */

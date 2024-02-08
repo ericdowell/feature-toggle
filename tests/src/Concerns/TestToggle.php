@@ -32,7 +32,7 @@ trait TestToggle
      */
     public function testGetName(): void
     {
-        $this->assertSame('foo', ($this->getInstance('foo', $this->getIsActiveAttribute(true)))->getName());
+        $this->assertSame('foo', $this->getInstance('foo', $this->getIsActiveAttribute(true))->getName());
     }
 
     /**
@@ -43,7 +43,7 @@ trait TestToggle
         $this->assertSame([
             'name' => 'foo',
             'is_active' => true,
-        ], ($this->getInstance('foo', $this->getIsActiveAttribute(true)))->toArray());
+        ], $this->getInstance('foo', $this->getIsActiveAttribute(true))->toArray());
     }
 
     /**
@@ -56,7 +56,7 @@ trait TestToggle
     public function testIsActiveTrueOFalse(string $assertMethod, array $values): void
     {
         foreach ($values as $isActive) {
-            $isActive = ($this->getInstance('foo', $this->getIsActiveAttribute($isActive)))->isActive();
+            $isActive = $this->getInstance('foo', $this->getIsActiveAttribute($isActive))->isActive();
             $this->{$assertMethod}($isActive, 'The value being tested is '.$isActive);
         }
     }

@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\FeatureToggle\Toggle\Eloquent whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Eloquent extends Model implements ToggleContract
