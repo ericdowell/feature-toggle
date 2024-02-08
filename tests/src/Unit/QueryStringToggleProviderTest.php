@@ -85,6 +85,7 @@ class QueryStringToggleProviderTest extends TestCase
 
     /**
      * @param  \Illuminate\Http\Request  $request
+     *
      * @returns void
      */
     protected function setupCommonToggles(Request $request): void

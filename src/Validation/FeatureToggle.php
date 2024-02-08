@@ -18,9 +18,9 @@ class FeatureToggle
     const ERROR_MESSAGE = 'Feature toggle name was not provided as the first validation parameter.';
 
     /**
-     * @param $attribute
-     * @param $value
-     * @param $parameters
+     * @param  $attribute
+     * @param  $value
+     * @param  $parameters
      * @return bool
      */
     public function validate($attribute, $value, array $parameters): bool

@@ -33,6 +33,7 @@ trait TestToggleProvider
 
     /**
      * @param  \FeatureToggle\Contracts\ToggleProvider  $toggleProvider
+     *
      * @returns void
      */
     protected function assertCommonToggles(ToggleProviderContract $toggleProvider): void
